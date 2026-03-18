@@ -3,14 +3,27 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 
-export default async function GET(req: NextRequest) {
+export async function GET(req: NextRequest) {
     try {
-        await prisma.ban.findMany();
-        return NextResponse.json({ message: 'Dashboard data fetched successfully' });
+        const users = await prisma.player.findMany({
+            select: {
+                Nome: true,
+                id: true,
+                banreason: true,
+            },
+                orderBy: {
+                    id: 'desc'
+                },
+                where: {
+                    BANNED: 1
+                }
+            
+        });
+        return NextResponse.json({ message: 'UCP data fetched successfully', users },{status: 200});
     }
     catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        return NextResponse.json({ error: 'Failed to fetch dashboard data' }, { status: 500 });
+        console.error('Error fetching UCP data:', error);
+        return NextResponse.json({ error: 'Failed to fetch UCP data' }, { status: 500 });
     }
 }
 
