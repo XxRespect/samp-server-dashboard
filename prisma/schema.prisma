@@ -1,0 +1,654 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model acessories {
+  ID             Int    @id @default(autoincrement())
+  index          Int    @default(0)
+  modelid        Int    @default(23455)
+  bone           Int    @default(2)
+  offsetX        Float? @default(0) @db.Float
+  offsetY        Float? @default(0) @db.Float
+  offsetZ        Float? @default(0) @db.Float
+  rotX           Float? @default(0) @db.Float
+  rotY           Float? @default(0) @db.Float
+  rotZ           Float? @default(0) @db.Float
+  fScaleX        Float  @default(1) @db.Float
+  fScaleY        Float  @default(1) @db.Float
+  fScaleZ        Float  @default(1) @db.Float
+  materialcolor1 Int    @default(0)
+  materialcolor2 Int    @default(0)
+  player_id      Int    @default(0)
+}
+
+model admin_commands_logs {
+  id           Int      @id @default(autoincrement())
+  admin_accid  Int
+  admin_name   String   @db.VarChar(24)
+  admin_ip     String   @db.VarChar(16)
+  admin_serial String   @db.VarChar(64)
+  command      String   @db.VarChar(64)
+  details      String   @db.Text
+  timestamp    DateTime @default(now()) @db.Timestamp(0)
+}
+
+model admin_set_logs {
+  id            Int                   @id @default(autoincrement())
+  admin_id      Int
+  prevlevel     Int
+  admin_name    String                @db.VarChar(24)
+  admin_ip      String                @db.VarChar(16)
+  admin_serial  String                @db.VarChar(64)
+  target_id     Int
+  target_name   String                @db.VarChar(24)
+  target_ip     String                @db.VarChar(16)
+  target_serial String                @db.VarChar(64)
+  action        admin_set_logs_action
+  admin_level   Int
+  executed_at   DateTime              @default(now()) @db.Timestamp(0)
+}
+
+model adminchat_logs {
+  id           Int      @id @default(autoincrement())
+  accid        Int
+  player_name  String   @db.VarChar(24)
+  ip           String   @db.VarChar(16)
+  version      String   @db.VarChar(32)
+  ping         Int
+  package_lost String   @db.VarChar(16)
+  system       String   @db.VarChar(32)
+  serial       String   @db.VarChar(64)
+  country      String   @db.VarChar(32)
+  message      String   @db.Text
+  timestamp    DateTime @default(now()) @db.Timestamp(0)
+}
+
+model admintemp {
+  ADMIN_ID    Int    @id @default(autoincrement())
+  ADMIN_NAME  String @db.VarChar(24)
+  ADMIN_ACCID Int
+  ADMIN_LEVEL Int    @default(0)
+  ADMIN_IP    String @db.VarChar(24)
+  ADMIN_END   Int    @default(0)
+  ADMIN_WHEN  Int    @default(0)
+  ADMIN_GIVE  String @default("Key_Actived") @db.VarChar(30)
+  player      player @relation(fields: [ADMIN_ACCID], references: [id], onUpdate: Restrict, map: "AdminTemp_ibfk_1")
+
+  @@index([ADMIN_ACCID], map: "ADMIN_ACCID")
+}
+
+model anticheat_logs {
+  id             Int                           @id @default(autoincrement())
+  player_accid   Int
+  player_name    String                        @db.VarChar(24)
+  ip             String                        @db.VarChar(16)
+  serial         String                        @db.VarChar(64)
+  detection_type anticheat_logs_detection_type
+  details        String                        @db.Text
+  timestamp      DateTime                      @default(now()) @db.Timestamp(0)
+}
+
+model ban {
+  Nick    String   @db.VarChar(24)
+  data    DateTime @default(now()) @db.Timestamp(0)
+  banid   Int      @id @default(autoincrement())
+  accid   Int
+  ip      String   @db.VarChar(25)
+  adm     String   @db.VarChar(25)
+  ban     Int
+  desban  Int
+  motivo  String   @db.VarChar(255)
+  Banip   Int?     @default(0)
+  Gpci    String   @db.VarChar(255)
+  adminid Int
+  player  player   @relation(fields: [accid], references: [id], onUpdate: Restrict, map: "Ban_ibfk_1")
+
+  @@index([accid], map: "accid")
+}
+
+model ban_logs {
+  id             Int             @id @default(autoincrement())
+  action         ban_logs_action
+  admin_accid    Int
+  admin_name     String          @db.VarChar(24)
+  admin_ip       String          @db.VarChar(16)
+  admin_serial   String          @db.VarChar(64)
+  target_accid   Int
+  target_name    String          @db.VarChar(24)
+  target_ip      String          @db.VarChar(16)
+  target_serial  String          @db.VarChar(64)
+  reason         String          @db.Text
+  duration_days  Int             @default(0)
+  duration_hours Int             @default(0)
+  country        String?         @db.VarChar(64)
+  region         String?         @db.VarChar(64)
+  city           String?         @db.VarChar(64)
+  cep            String?         @db.VarChar(16)
+  organization   String?         @db.VarChar(128)
+  isp            String?         @db.VarChar(128)
+  using_vpn      Boolean?        @default(false)
+  timestamp      DateTime        @default(now()) @db.Timestamp(0)
+  text           String          @db.VarChar(255)
+}
+
+model bantemp {
+  banid  Int     @id @default(autoincrement())
+  Nick   String  @db.VarChar(25)
+  accid  Int
+  IP     String? @db.VarChar(25)
+  GPCI   String? @db.VarChar(120)
+  BanT   Int
+  desban Int
+  Motivo String  @db.VarChar(128)
+  Admin  String  @db.VarChar(24)
+  player player  @relation(fields: [accid], references: [id], onUpdate: Restrict, map: "BanTemp_ibfk_1")
+
+  @@index([accid], map: "accid")
+}
+
+model blocked {
+  id          Int     @id @default(autoincrement())
+  blocked_i   Int?
+  blocker_id  Int?
+  description String? @db.VarChar(255)
+}
+
+model chat_logs {
+  id           Int      @id @default(autoincrement())
+  player_name  String   @db.VarChar(24)
+  accid        Int
+  ip           String   @db.VarChar(16)
+  version      String   @db.VarChar(32)
+  ping         Int
+  package_lost String   @db.VarChar(16)
+  system       String   @db.VarChar(32)
+  serial       String   @db.VarChar(64)
+  country      String   @db.VarChar(32)
+  message      String   @db.Text
+  timestamp    DateTime @default(now()) @db.Timestamp(0)
+  source       String   @default("default_chat") @db.VarChar(24)
+}
+
+model clan {
+  CLAN_ID        Int     @id @default(autoincrement())
+  CLAN_NAME      String  @db.VarChar(24)
+  CLAN_ONWER     String  @default("Ninguem") @db.VarChar(24)
+  CLAN_MAX_SLOTS Int     @default(25)
+  CLAN_LEVEL     Int     @default(1)
+  CLAN_ON        Boolean @default(false)
+  CLAN_STATUS    Boolean @default(false)
+  CLAN_MONEY     Int     @default(300000)
+  CLAN_ZONES     Int     @default(0)
+  CLAN_WHEN      Int     @default(0)
+  CLAN_COLOR     String  @default("FF0000") @db.VarChar(26)
+  CLAN_TAG       String  @default("Nenhuma") @db.VarChar(25)
+  CLAN_M_T       Int     @default(1)
+  PCX            Float   @default(2034.26123)
+  PCY            Float   @default(1009.479248)
+  PCZ            Float   @default(10.820312)
+  PCA            Float   @default(93.481964)
+  CLAN_MEMBROS   Int     @default(0)
+  CLAN_MOD       String  @default("Acabem Com Todos") @db.VarChar(255)
+}
+
+model cnr {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(255)
+  wanted       Int      @default(0)
+  score        Int      @default(0)
+  player_accid Int?
+  timestamp    DateTime @default(now()) @db.Timestamp(0)
+  Ip           String   @db.VarChar(26)
+  system       String   @db.VarChar(255)
+  cash         Int      @default(0)
+  skin         Int      @default(7)
+  kills        Int      @default(0)
+  death        Int      @default(0)
+  classname    String?  @default("Nenhum") @db.VarChar(24)
+  player       player?  @relation(fields: [player_accid], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "cnr_ibfk_1")
+
+  @@index([player_accid], map: "player_accid")
+}
+
+model config {
+  C_ID          Int     @id @default(autoincrement())
+  C_S_ADMIN     Int     @default(217)
+  C_TAG_ADMIN   Boolean @default(false)
+  C_CMSG        Boolean @default(true)
+  C_DMSG        Boolean @default(true)
+  C_RANMSG      Boolean @default(false)
+  C_READMSG     Boolean @default(false)
+  C_CHNICK      Boolean @default(true)
+  C_SPAWN_LOCAL Boolean @default(false)
+  C_AUTOLOGIN   Boolean @default(false)
+  C_ANTBOT      Boolean @default(true)
+  C_SCMDADMIN   Boolean @default(true)
+  C_READPMS     Boolean @default(true)
+  C_MAX_PING    Int     @default(950)
+  C_MIN_PING    Int     @default(85)
+  C_A_MOBILES   Boolean @default(true)
+  C_MAX_MONEY   Int     @default(999999999)
+  C_CHECKPING   Boolean @default(false)
+  C_CHECKBWORD  Boolean @default(true)
+  C_CHECKMONEY  Boolean @default(true)
+  C_ANTSPAWNK   Boolean @default(true)
+  C_SCOREB      Boolean @default(true)
+  C_LOWERCASE   Boolean @default(false)
+  C_UPPERCASE   Boolean @default(false)
+  C_CHATNORMAL  Boolean @default(true)
+  C_ALLOWMUSIC  Boolean @default(true)
+  C_REQEMAIL    Boolean @default(true)
+  C_MUSICSTREAM String  @default("https://live.hunter.fm/sertanejo_high") @db.VarChar(255)
+  C_FORUM       String  @default("https://brasilmatamata.forumotion.com/") @db.VarChar(255)
+  C_DISCORD     String  @default("https://discord.gg/eyyjyT6sub") @db.VarChar(255)
+  C_PROHIBIT    Boolean @default(false)
+}
+
+model connect_logs {
+  id           Int                 @id @default(autoincrement())
+  player_name  String              @db.VarChar(24)
+  accid        Int
+  action       connect_logs_action
+  ip           String              @db.VarChar(16)
+  version      String              @default("0.3.7") @db.VarChar(50)
+  System       String              @default("Apks") @db.VarChar(50)
+  ping         Int                 @default(0)
+  Package_Lost String?             @default("0") @db.VarChar(50)
+  timestamp    DateTime            @default(now()) @db.Timestamp(0)
+  serial       String              @default("Desconhecido - bot") @db.VarChar(522)
+  country      String              @db.VarChar(50)
+}
+
+model emails {
+  id           Int      @id @default(autoincrement())
+  email        String   @default("not set") @db.VarChar(255)
+  data         DateTime @default(now()) @db.Timestamp(0)
+  playername   String   @default("not set") @db.VarChar(25)
+  player_accid Int?
+  verified     Int      @default(0) @db.TinyInt
+  email_code   String   @default("not set") @db.VarChar(20)
+  email_source String   @default("No Servidor") @db.VarChar(30)
+  player       player?  @relation(fields: [player_accid], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "emails_ibfk_1")
+
+  @@index([player_accid], map: "player_accid")
+}
+
+model houses {
+  HOUSE_iD         Int     @id @default(autoincrement())
+  HOUSE_NAME       String  @db.VarChar(255)
+  HOUSE_PRICE      Int     @default(15000)
+  HOUSE_ONWER      String  @db.VarChar(24)
+  HOUSE_ID_TEXT    Int     @default(0)
+  HOUSE_TEXT3D     String  @db.VarChar(34)
+  HOUSE_X          Float   @default(0)
+  HOUSE_Y          Float   @default(0)
+  HOUSE_Z          Float   @default(0)
+  HOUSE_BUY        Boolean @default(false)
+  HOUSE_LEVEL      Int     @default(1)
+  HOUSE_X_I        Float   @default(2496.049804)
+  HOUSE_Y_I        Float   @default(-1695.238159)
+  HOUSE_Z_I        Float   @default(1014.742187)
+  HOUSE_ID_I       Int     @default(3)
+  HOUSE_VW         Int     @default(20)
+  HOUSE_ACID_ONWER Int     @default(0)
+  HOUSE_VENDA      Boolean @default(true)
+  HOUSE_RATE       Int     @default(150)
+}
+
+model ip_ban_logs {
+  id         Int                @id @default(autoincrement())
+  action     ip_ban_logs_action
+  admin_id   Int
+  admin_name String             @db.VarChar(24)
+  banned_ip  String             @db.VarChar(16)
+  reason     String             @db.Text
+  timestamp  DateTime           @default(now()) @db.Timestamp(0)
+}
+
+model ipban {
+  idp        Int      @id @default(autoincrement())
+  IP         String   @db.VarChar(30)
+  Reason     String   @db.VarChar(24)
+  Admind     String   @db.VarChar(24)
+  date       DateTime @default(now()) @db.Timestamp(0)
+  ban        Int?     @default(0)
+  desban     Int?     @default(0)
+  system     String   @default("not recognized") @db.VarChar(50)
+  playername String   @default("By /banirip") @db.VarChar(50)
+}
+
+model keys {
+  KEY_ID    Int    @id @default(autoincrement())
+  KEY_NAME  String @default("NotKey") @db.VarChar(255)
+  KEY_VIP   Int    @default(0)
+  KEY_ADMIN Int    @default(0)
+  TIME_SET  Int    @default(0)
+  KEY_WHEN  String @default("Nobody") @db.VarChar(25)
+}
+
+model kits {
+  kit_id    Int       @id @default(autoincrement())
+  kit_name  String    @default("Sem Nome") @db.VarChar(24)
+  descricao String?   @default("Kit para walk") @db.VarChar(69)
+  player_id Int
+  data      DateTime  @default(now()) @db.Timestamp(0)
+  weapons   weapons[]
+}
+
+model map {
+  id        Int      @id @default(autoincrement())
+  name      String   @default("Mapa-sem-nome") @db.VarChar(222)
+  dono      String   @default("server") @db.VarChar(25)
+  accid     Int
+  data      DateTime @default(now()) @db.Timestamp(0)
+  x         Float?   @default(0)
+  y         Float?   @default(0)
+  z         Float?   @default(0)
+  descricao String?  @default("Sem descricao") @db.VarChar(222)
+  status    Int?     @default(1)
+}
+
+model members {
+  M_ID         Int     @id @default(autoincrement())
+  M_NAME       String  @db.VarChar(39)
+  M_LEVEL      Int     @default(0)
+  M_ACCID      Int
+  M_CLAN       String  @default("Nenhum") @db.VarChar(25)
+  M_CLAN_ONWER Boolean @default(false)
+  M_CLANID     Int
+  M_TITLE      String  @default("Membro") @db.VarChar(25)
+  player       player  @relation(fields: [M_ACCID], references: [id], onUpdate: Restrict, map: "Members_ibfk_1")
+
+  @@index([M_ACCID], map: "M_ACCID")
+}
+
+model mutados {
+  ID      Int    @id @default(autoincrement())
+  Nome    String @db.VarChar(24)
+  accid   Int
+  IP      String @db.VarChar(25)
+  GPCI    String @db.VarChar(120)
+  Motivo  String @db.VarChar(255)
+  Data    String @db.VarChar(75)
+  Admin   String @db.VarChar(24)
+  Tempo   Int    @default(0)
+  System  String @default("Not in game") @db.VarChar(24)
+  Adminid Int    @default(0)
+}
+
+model nick_history {
+  id          Int     @id @default(autoincrement())
+  nick        String? @db.VarChar(40)
+  jogador_id  Int?
+  nick_antigo String? @db.VarChar(255)
+  data        String? @db.VarChar(75)
+}
+
+model objects {
+  id        Int    @id @default(autoincrement())
+  modelid   Int    @default(7899)
+  x         Float? @default(0) @db.Float
+  y         Float? @default(0) @db.Float
+  z         Float? @default(0) @db.Float
+  rx        Float? @default(0) @db.Float
+  ry        Float? @default(0) @db.Float
+  rz        Float? @default(0) @db.Float
+  distance  Float? @default(0) @db.Float
+  player_id Int
+  map_id    Int
+  virtualw  Int
+  inter     Int
+  status    Int?   @default(1)
+}
+
+model player {
+  id                Int         @id @default(autoincrement())
+  Nome              String      @unique(map: "unique_name") @db.VarChar(24)
+  Email             String      @default("Nao Definido") @db.VarChar(50)
+  Ip                String      @db.VarChar(20)
+  Admin             Int?        @default(0)
+  Score             Int?        @default(230)
+  Skin              Int?        @default(296)
+  Matou             Int?        @default(2)
+  Morreu            Int?        @default(3)
+  Vida              Float?      @default(100)
+  Colete            Float?      @default(100)
+  Registred         Int         @default(0)
+  Gpci              String      @default("1") @db.VarChar(255)
+  Dinheiro          BigInt      @default(3000)
+  HeadShots         Int         @default(1)
+  pPosX             Float?      @default(-2240.9197)
+  pPosY             Float?      @default(252.0263)
+  pPosZ             Float?      @default(35.3203)
+  pPosA             Float?      @default(91.2125)
+  SPAWN_L           Int         @default(0)
+  Salt              String      @default("0") @db.VarChar(255)
+  Spree             Int         @default(0)
+  LasTimer          Int?        @default(0)
+  Online            Boolean?    @default(false)
+  Clan              String      @default("Nenhum") @db.VarChar(24)
+  PLAYER_CLAN       Boolean     @default(false)
+  IS_VIP            Int         @default(0)
+  BUGED1            Int         @default(0)
+  BUGED2            Int         @default(0)
+  BUGED3            Int         @default(0)
+  Procurado         Int         @default(0)
+  BANNED            Int         @default(0)
+  H_PROP            Int         @default(0)
+  T_PROP            Int         @default(0)
+  SPAWN_LAST        Int         @default(0)
+  Warnings          Int         @default(0)
+  MUTED             Boolean     @default(false)
+  KitRun            Boolean     @default(false)
+  KitWalk           Boolean     @default(true)
+  Version           String      @default("3.0.1") @db.VarChar(24)
+  Device            String      @default("Nao Verificado") @db.VarChar(24)
+  Tag               String      @default("Grauzinho") @db.VarChar(255)
+  Tag_Color         String      @default("00FF00") @db.VarChar(255)
+  Tag_Color_hexa    String      @default("0x00FF00") @db.VarChar(255)
+  Tag_Inuse         Boolean     @default(true)
+  YouTuber          Boolean     @default(false)
+  PLYAERHASTAG      Boolean     @default(true)
+  TimerOnServer     Int         @default(1)
+  MODO_MATA         Boolean     @default(true)
+  Email_confirmed   Boolean     @default(false)
+  spawn_colete      Boolean     @default(false)
+  discord_id        String      @default("nenhum") @db.VarChar(255)
+  discord_codsync   String      @default("nenhum") @db.VarChar(255)
+  original_nickname String      @default("Sem set") @db.VarChar(255)
+  pais              String      @default("Nao Definido") @db.VarChar(255)
+  cidade            String      @default("Nao Definido") @db.VarChar(255)
+  regiao            String      @default("Nao Definido") @db.VarChar(255)
+  cep               String      @default("Nao Definido") @db.VarChar(255)
+  organizacao       String      @default("Nao Definido") @db.VarChar(255)
+  fuso_horario      String      @default("Nao Definido") @db.VarChar(255)
+  isp               String      @default("Nao Definido") @db.VarChar(255)
+  vpn               String      @default("Privado") @db.VarChar(255)
+  coordenadas       String      @default("Nao definido") @db.VarChar(255)
+  StoragedNick      Boolean     @default(false)
+  grupo             String      @default("semgrupo") @db.VarChar(100)
+  has_group         Boolean     @default(false)
+  admhide           Boolean     @default(false)
+  NickChange        Int         @default(0)
+  horas_jogadas     Int         @default(0)
+  Hud_stats_1       Boolean     @default(true)
+  Hud_stats_2       Boolean     @default(false)
+  Preso             Boolean     @default(false)
+  ADMIN_TEMP        Int         @default(0)
+  acessories        Int         @default(0)
+  has_accesories    Boolean     @default(false)
+  Arena_kills       Int         @default(0)
+  Arena_deaths      Int         @default(0)
+  Arena_scores      Int         @default(0)
+  Hud_players       Boolean     @default(true)
+  blockban          Boolean     @default(false)
+  Mapper            Boolean     @default(false)
+  isVpn             Boolean     @default(false)
+  banreason         String?     @default("Jogador nao banido") @db.VarChar(255)
+  Color             String?     @default("FFFFFF") @db.VarChar(10)
+  HasEmail          Boolean     @default(false)
+  EmailVerified     Boolean     @default(false)
+  EmailChangeTime   Int         @default(0)
+  Senha             String      @db.VarChar(255)
+  user_register     DateTime    @default(now()) @db.Timestamp(0)
+  profile           String      @default("default-profile.png") @db.VarChar(255)
+  admintemp         admintemp[]
+  ban               ban[]
+  bantemp           bantemp[]
+  cnr               cnr[]
+  emails            emails[]
+  members           members[]
+  vips              vips[]
+}
+
+model pm_logs {
+  id              Int             @id @default(autoincrement())
+  sender_accid    Int
+  sender_name     String          @db.VarChar(24)
+  sender_ip       String          @db.VarChar(16)
+  sender_serial   String          @db.VarChar(64)
+  receiver_accid  Int
+  receiver_name   String          @db.VarChar(24)
+  receiver_ip     String          @db.VarChar(16)
+  receiver_serial String          @db.VarChar(64)
+  message         String          @db.Text
+  command         pm_logs_command
+  timestamp       DateTime        @default(now()) @db.Timestamp(0)
+}
+
+model presos {
+  ID       Int    @id @default(autoincrement())
+  Nome     String @db.VarChar(24)
+  accid    Int
+  IP       String @db.VarChar(25)
+  GPCI     String @db.VarChar(120)
+  Motivo   String @db.VarChar(255)
+  Data     String @db.VarChar(75)
+  Admin    String @db.VarChar(24)
+  Tempo    Int    @default(0)
+  System   String @default("Not in game") @db.VarChar(24)
+  Adminid  Int    @default(0)
+  TimeLeft Int    @default(0)
+}
+
+model report_logs {
+  id              Int      @id @default(autoincrement())
+  accid           Int
+  player_name     String   @db.VarChar(24)
+  reported_player String   @db.VarChar(24)
+  ip              String   @db.VarChar(16)
+  version         String   @db.VarChar(32)
+  ping            Int
+  package_lost    String   @db.VarChar(16)
+  system          String   @db.VarChar(32)
+  serial          String   @db.VarChar(64)
+  country         String   @db.VarChar(32)
+  message         String   @db.Text
+  timestamp       DateTime @default(now()) @db.Timestamp(0)
+}
+
+model vip_logs {
+  id                Int      @id @default(autoincrement())
+  admin_id          Int
+  admin_name        String   @db.VarChar(24)
+  admin_ip          String   @db.VarChar(16)
+  admin_serial      String   @db.VarChar(64)
+  player_id         Int
+  player_name       String   @db.VarChar(24)
+  player_ip         String   @db.VarChar(16)
+  player_serial     String   @db.VarChar(64)
+  vip_days          Int
+  vip_timestamp_end Int
+  action_time       DateTime @default(now()) @db.Timestamp(0)
+}
+
+model vips {
+  VIP_ID         Int       @id @default(autoincrement())
+  VIP_NAME       String    @db.VarChar(24)
+  date           DateTime? @default(now()) @db.Timestamp(0)
+  VIP_IP         String    @db.VarChar(24)
+  VIP_LEVEL      Int       @default(0)
+  VIP_WHEN       Int
+  VIP_END        Int
+  ACCID_PLAYER   Int
+  VIP_PLAYER     Boolean   @default(false)
+  VIP_GADMIN     String    @default("Key_Acved") @db.VarChar(26)
+  VIP_COLOR      String    @default("00FFFF") @db.VarChar(23)
+  VIP_CHAT_COLOR String    @default("00FF00") @db.VarChar(23)
+  player         player    @relation(fields: [ACCID_PLAYER], references: [id], onUpdate: Restrict, map: "Vips_ibfk_1")
+
+  @@index([ACCID_PLAYER], map: "ACCID_PLAYER")
+}
+
+model warning_logs {
+  id            Int      @id @default(autoincrement())
+  admin_accid   Int
+  admin_name    String   @db.VarChar(24)
+  admin_ip      String   @db.VarChar(16)
+  admin_serial  String   @db.VarChar(64)
+  target_accid  Int
+  target_name   String   @db.VarChar(24)
+  target_ip     String   @db.VarChar(16)
+  target_serial String   @db.VarChar(64)
+  reason        String   @db.Text
+  timestamp     DateTime @default(now()) @db.Timestamp(0)
+}
+
+model weapons {
+  id          Int      @id @default(autoincrement())
+  weapon_id   Int
+  weapon_ammu Int      @default(7876)
+  data        DateTime @default(now()) @db.Timestamp(0)
+  kits        kits     @relation(fields: [weapon_id], references: [kit_id], onDelete: Cascade, onUpdate: Restrict, map: "weapons_ibfk_1")
+
+  @@index([weapon_id], map: "weapon_id")
+}
+
+enum ban_logs_action {
+  ban
+  unban
+}
+
+enum ip_ban_logs_action {
+  ban
+  unban
+}
+
+enum connect_logs_action {
+  CONNECT
+  DISCONNECT
+}
+
+enum anticheat_logs_detection_type {
+  teleport
+  speed_hack
+  weapon_hack
+  air_brake
+  money_cheat
+  vehicle_mod
+  invalid_opcode
+  fly
+  macro
+  sprint_hook
+  aimbot
+  wallhack
+  ac_handling
+  auto_cbug
+  rapid_fire
+  free_kill
+}
+
+enum admin_set_logs_action {
+  set
+  unset
+}
+
+enum pm_logs_command {
+  pm
+  r
+}
