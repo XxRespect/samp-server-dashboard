@@ -2,6 +2,7 @@
 import react from 'react';
 import Link from 'next/link';
 import { Moon } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 const NavBar = () => {
@@ -20,7 +21,7 @@ const NavBar = () => {
 
                     <Avatar>
                         <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallbackallback>CN</AvatarFallbackallback>
                     </Avatar>
 
                 </div>
