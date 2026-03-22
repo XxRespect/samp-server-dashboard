@@ -3,11 +3,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { MdAdminPanelSettings, MdBlock, MdComputer, MdSupportAgent } from "react-icons/md";
-import { FaCloudMoon, FaFlag, FaHome, FaShoppingBag } from 'react-icons/fa';
-import { IoIosPeople } from 'react-icons/io';
+import { 
+    FaCloudMoon, 
+    FaFlag, 
+    FaHome,
+     FaShoppingBag,
+      FaRegObjectGroup,
+      FaMap
+}from 'react-icons/fa';
 
 import { PiMicrosoftTeamsLogoLight } from "react-icons/pi";
-
 
 import {
     Sidebar,
@@ -35,23 +40,29 @@ import {
     SettingsIcon,
     UserIcon,
     ServerCrash,
-    ChevronDown, 
-    ChevronUp, 
-    Moon, 
-    Plus, 
-    Shield, 
-    SquareMenu, 
-    Sun, 
-    User2
+    ChevronDown,
+    ChevronUp,
+    Moon,
+    Plus,
+    Shield,
+    SquareMenu,
+    Sun,
+    User2,
+    Waypoints
 } from 'lucide-react';
-import { FaUsersCog } from "react-icons/fa";
+import {
+    FaUsersCog,
+    FaHouseDamage
+} from "react-icons/fa";
 
 import {
     MdOutlineMarkUnreadChatAlt,
     MdOutlineDeveloperBoard
 } from "react-icons/md";
 
-import { RiAdminFill } from "react-icons/ri";
+import { IoIosPeople } from 'react-icons/io';
+import { RiAdminFill, } from "react-icons/ri";
+import { SiRockstargames } from "react-icons/si";
 import { LuLogs } from "react-icons/lu";
 import { Button } from "@/components/ui/button"
 import {
@@ -180,6 +191,30 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
+                                        <Link href='/dashboard/properties'>
+                                            <FaHouseDamage className='w-4 h-4' />
+                                            <span>Properties</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link href='/dashboard/tops'>
+                                            <Waypoints className='w-4 h-4' />
+                                            <span>Ranking</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link href='/dashboard/modes'>
+                                            <SiRockstargames className='w-4 h-4' />
+                                            <span>Modes </span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
                                         <Link href='/dashboard/zones'>
                                             <FaShoppingBag className='w-4 h-4' />
                                             <span>Shop</span>
@@ -278,6 +313,7 @@ const SideBar = () => {
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
+
                             </SidebarMenu>
                         </SidebarGroupContent>
 
@@ -310,8 +346,32 @@ const SideBar = () => {
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
                                         <Link href='dashboard/security'>
-                                            <AiOutlineSecurityScan  />
+                                            <AiOutlineSecurityScan />
                                             <span>Security</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link href='dashboard/objects'>
+                                            <FaRegObjectGroup className='w-4 h-4' />
+                                            <span>Objects</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link href='dashboard/serials'>
+                                            <MdBlock className='w-4 h-4' />
+                                            <span>Serial Banneds</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <Link href='dashboard/serials'>
+                                            <FaMap className='w-4 h-4' />
+                                            <span>Maps</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
