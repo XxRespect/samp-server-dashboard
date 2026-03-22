@@ -14,40 +14,47 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import {
+import { BsLayoutSidebarInset } from "react-icons/bs";
+import { useSidebar } from './ui/sidebar';
 
+import {
     LogOutIcon,
     SettingsIcon,
     UserIcon,
 } from "lucide-react"
 
-
 import { MdComputer, MdSupportAgent } from "react-icons/md";
-import { FaHome } from 'react-icons/fa';
+import { FaCloudMoon, FaHome } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io';
-
-
 import { useTheme } from 'next-themes';
+import { SidebarTrigger } from './ui/sidebar';
 
 const NavBar = () => {
 
     const { setTheme } = useTheme()
-
+    const {toggleSidebar} = useSidebar()
     return (
         <>
             <nav className='flex w-full items-center justify-between border-b px-4 py-4'>
                 {/**Left */}
 
-                colls
+                {/*<SidebarTrigger className='cursor-pointer p-4 ' variant='outline'/>*/}
+
+                <Button variant='outline' className='cursor-pointer p-4 ' size="icon" aria-label="Open sidebar" onClick={toggleSidebar}>
+                    <BsLayoutSidebarInset className='w-7 h-7' />
+                </Button>
+               
 
                 {/**Right */}
                 <div className='flex items-center gap-4'>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/dashboard" className='font-bold text-shadow-blue-50 border-b-1 hover:transition-all hover:scale-120'>Dashboard</Link>
 
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Moon className='cursor-pointer' />
+                            <Button variant="outline" className='cursor-pointer p-4 ' size="icon" aria-label="Alterar tema">
+                                <FaCloudMoon />
+                            </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuLabel>Theme</DropdownMenuLabel>
@@ -69,11 +76,12 @@ const NavBar = () => {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost">
-                                <Avatar className='cursor-pointer'>
+                            <Button variant="outline" className='cursor-pointer' size="icon" aria-label="Abrir menu">
+                                <Avatar>
                                     <AvatarImage src="https://github.com/shadcn.png" />
                                     <AvatarFallback>CN</AvatarFallback>
-                                </Avatar></Button>
+                                </Avatar>
+                            </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuItem>
@@ -99,7 +107,9 @@ const NavBar = () => {
                 
                     <DropdownMenu>
                         <DropdownMenuTrigger  asChild>
-                            <SquareMenu className='cursor-pointer w-10' />
+                            <Button variant="outline" size="xs" aria-label="Abrir menu" className='cursor-pointer p-4'>
+                                <SquareMenu className='w-15 h-3'   />
+                            </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             <DropdownMenuGroup>
