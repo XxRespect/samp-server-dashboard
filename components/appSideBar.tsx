@@ -1,16 +1,14 @@
-import react from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
-import { MdAdminPanelSettings, MdBlock, MdComputer, MdSupportAgent } from "react-icons/md";
-import { 
-    FaCloudMoon, 
-    FaFlag, 
+import { MdAdminPanelSettings, MdBlock, MdSupportAgent } from "react-icons/md";
+import {
+    FaCloudMoon,
+    FaFlag,
     FaHome,
-     FaShoppingBag,
-      FaRegObjectGroup,
-      FaMap
-}from 'react-icons/fa';
+    FaShoppingBag,
+    FaRegObjectGroup,
+    FaMap
+} from 'react-icons/fa';
 
 import { PiMicrosoftTeamsLogoLight } from "react-icons/pi";
 
@@ -31,6 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
+
 import {
     MessageCircleX,
     Columns4,
@@ -40,12 +39,10 @@ import {
     SettingsIcon,
     UserIcon,
     ServerCrash,
-    ChevronDown,
     ChevronUp,
     Moon,
     Plus,
     Shield,
-    SquareMenu,
     Sun,
     User2,
     Waypoints
@@ -57,7 +54,8 @@ import {
 
 import {
     MdOutlineMarkUnreadChatAlt,
-    MdOutlineDeveloperBoard
+    MdOutlineDeveloperBoard,
+    MdManageHistory 
 } from "react-icons/md";
 
 import { IoIosPeople } from 'react-icons/io';
@@ -83,6 +81,7 @@ import {
 import { SiGeneralelectric, SiPlayerdotme } from "react-icons/si";
 import { TbMessageCircleX } from 'react-icons/tb';
 import { AiOutlineSecurityScan } from "react-icons/ai";
+
 
 const Items = [
     {
@@ -205,6 +204,7 @@ const SideBar = () => {
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
+    
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
                                         <Link href='/dashboard/modes'>
@@ -283,6 +283,14 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
+                                        <Link href='dashboard/auditorium'>
+                                            <MdManageHistory  className='w-4 h-4' />
+                                            <span>Auditorium</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
                                         <Link href='dashboard/Logs'>
                                             <LuLogs className='w-4 h-4' />
                                             <span>Logs</span>
@@ -343,14 +351,7 @@ const SideBar = () => {
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='dashboard/security'>
-                                            <AiOutlineSecurityScan />
-                                            <span>Security</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
                                         <Link href='dashboard/objects'>

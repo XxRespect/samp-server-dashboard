@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "dashboard",
   description: "This website is a dashboard for the SAMP game server, built with Next.js and Tailwind CSS.",
   icons: {
-    icon: "",
+    icon: "/favicon.ico",
   }
 };
 

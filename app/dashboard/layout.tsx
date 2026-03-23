@@ -1,16 +1,23 @@
-"use client"
 
 import { Inter } from "next/font/google";
 import NavBar from '@/components/NavBar';
 import SideBar from '@/components/appSideBar';
 
 import { SidebarProvider } from "@/components/ui/sidebar"
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 const dashboardFont = Inter({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const metadata: Metadata = {
+  title: "Brasil RP - Home",
+  description: "This website is a dashboard for the SAMP game server, built with Next.js and Tailwind CSS.",
+  icons: {
+    icon: "/favicon.ico",
+  }
+};
 
 
 
