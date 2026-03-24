@@ -166,7 +166,7 @@ const SideBar = () => {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/players'>
+                                        <Link href='/dashboard/users'>
                                             <IoIosPeople className='w-4 h-4' />
                                             <span>Players</span>
                                         </Link>
