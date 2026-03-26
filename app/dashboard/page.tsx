@@ -1,28 +1,65 @@
+'use client'
+
+
+import { useState, useEffect } from 'react'
+import { api } from '@/lib/axios'
+
+
 import { PlayersChart } from "@/components/appBarChat";
 import { ServerActivityChart } from "@/components/AppAreaChart"
 import ChartPieDonutText from "@/components/AppPieChart";
-import  CardList  from "@/components/CardList"
+import CardList from "@/components/CardList"
 import ServerCards from "@/components/ServerCards";
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 export function DashboardPage() {
+
+    const [users, SetUsers] = useState([])
+
+    useEffect(() => {
+        
+    },[])
 
     return (
         <>
             <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4'>
-                <div className="flex w-full justify-center bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-4"> 
+                <div className="flex w-full justify-center bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-4">
 
                     <ServerCards />
                     <ServerCards />
                     <ServerCards />
                 </div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-2"><PlayersChart /> </div>
+           <div className="bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-2"><PlayersChart /> </div>
                 <div className="bg-primary-foreground p-4 rounded-lg m-3"><ChartPieDonutText /></div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3"><CardList title="Raking"/></div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3">teste</div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-2 xl:col-span-1 2xl:col-span-2"><ServerActivityChart /></div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3"><CardList title="High Score"/></div>
+                <div className="bg-primary-foreground p-4 rounded-lg m-3"><CardList title="Raking" /></div>
+                <div className="bg-primary-foreground p-4 rounded-lg m-3 lg:col-span-2 xl:col-span-1 2xl:col-span-2"><ServerActivityChart />
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>
+                                <h1>Popular Players</h1>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardDescription>
+                            <Avatar>
+
+                            </Avatar>
+                        </CardDescription>
+                    </Card>
+
+                </div>
+                <div className="bg-primary-foreground p-4 rounded-lg m-3"><CardList title="High Score" /></div>
             </div>
+
         </>
     )
 }

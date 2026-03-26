@@ -154,7 +154,7 @@ const SideBar = () => {
                         </SidebarGroupContent>
                     </SidebarGroup>
 
-
+                    <SidebarSeparator className='w-45' />               
                     {/**User Area */}
                     <SidebarGroup>
                         <SidebarGroupLabel> General </SidebarGroupLabel>
