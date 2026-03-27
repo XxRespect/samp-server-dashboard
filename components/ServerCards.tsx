@@ -16,6 +16,9 @@ type CardProps = {
     header: string
 }
 
+
+import { FaUsers } from 'react-icons/fa'
+
 const ServerCards = () => {
 
     return (
@@ -27,7 +30,7 @@ const ServerCards = () => {
                         <CardAction><Badge variant="secondary">Up to 2 <ChartNoAxesCombined /></Badge></CardAction>
                     </CardHeader>
                     <CardContent>
-                        <p>1.456.144</p>
+                        <p><FaUsers />1.456.144</p>
                     </CardContent>
                     <CardFooter>
                         <p>Brasil RP</p>

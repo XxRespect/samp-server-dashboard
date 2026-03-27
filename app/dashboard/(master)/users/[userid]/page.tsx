@@ -1,5 +1,4 @@
 'use client'
-
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -23,18 +22,39 @@ import { FaArrowAltCircleDown } from "react-icons/fa";
 import { ChartLineDefault } from "@/components/KillsBarChart"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
+import { Spinner } from "@/components/ui/spinner"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
-interface UsernameProps {
-    params: Promise<{ userid: string }>
-}
+/*backend data */
+import { useQuery } from '@tanstack/react-query'
+import { getUser } from "@/app/modules/user/user.api"
+import { useParams } from "next/navigation"
 
 
 
-const UserPage = async ({ params }: UsernameProps) => {
-    const { userid } = await params
+
+
+
+const UserPage = () => {
+    const params = useParams<{ userid: string }>()
+    const userId = Number(params.userid)
+
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["user", userId],
+        queryFn: () => getUser(userId),
+        enabled: Number.isFinite(userId),
+        retry: false,
+    })
+
+    const kills = Number(data?.user?.Matou ?? 0)
+    const deaths = Number(data?.user?.Morreu ?? 0)
+    const kdValue = deaths > 0 ? kills / deaths : kills
+    const kdText = Number.isFinite(kdValue) ? kdValue.toFixed(2) : "0.00"
+
+
     return (
         <>
 
@@ -51,7 +71,7 @@ const UserPage = async ({ params }: UsernameProps) => {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Katarina</BreadcrumbPage>
+                            <BreadcrumbPage> {isLoading ? <Spinner className="size-4"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -94,30 +114,32 @@ const UserPage = async ({ params }: UsernameProps) => {
                         </div>
                         <div className="bg-primary-foreground p-4 rounded-lg">
                             <h1 className="text-xl font-semibold">Player Information</h1>
-                            <h2 className="text-xl text-muted-foreground">Katrina</h2>
-                            <span><Badge variant='destructive'>Banido</Badge></span>
+                            <h2 className="text-xl text-muted-foreground">
+                                {isLoading ? <Spinner className="size-6"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}
+                            </h2>
+                            <span><Badge className={!data?.user.BANNED && data?.user.Admin ? "Admin" : "Jogador" } variant={data?.user.BANNED ? "destructive" : "outline"}>{data?.user.BANNED ? "banido" : "Jogador"}</Badge></span>
                             <div className="space-y-4 mt-4">
                                 <div className="flex flex-col gap-2 mb-8">
                                     <p className="text-sm text-muted-foreground">Player in game info</p>
                                     <Field className="w-full max-w-sm">
                                         <FieldLabel htmlFor="progress-upload">
                                             <span>Player K/D</span>
-                                            <span className="ml-auto"><Badge variant="secondary"><p className="text-shadow-2xs">66% - Accuracy</p></Badge></span>
+                                            <span className="ml-auto"><Badge variant="secondary"><p className="text-shadow-2xs">{}% - Accuracy</p></Badge></span>
                                         </FieldLabel>
-                                        <Progress value={66} id="progress-upload" />
+                                        <Progress value={Math.min(100, kdValue * 10)} id="progress-upload" />
 
                                     </Field>
                                     <div className="flex items-center gap-4 ">
                                         <span className="font-bold">ID: </span>
-                                        <span>1</span>
+                                        <span>{data?.user.id}</span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Nick: </span>
-                                        <span><p  className="text-muted-foreground font-bold">Katrina</p></span>
+                                        <span><p className="text-muted-foreground font-bold">{data?.user?.Nome ?? "-"}</p></span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Joined: </span>
-                                        <span>12/01/2024 - 13:45</span>
+                                        <span>{isLoading ? <Skeleton className="h-4 w-2/3"> </Skeleton> : isError ? "Faild to load user" : data?.user.user_register ?? "Couldnt load"}</span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="font-bold">logoff: </span>
@@ -125,28 +147,30 @@ const UserPage = async ({ params }: UsernameProps) => {
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Cash: </span>
-                                        <span><Badge variant='outline'> R$ 345.432.445</Badge></span>
+                                        <span><Badge variant='outline'> R$ { }</Badge></span>
                                     </div>
 
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Score: </span>
-                                        <span>56.432</span>
+                                        <span>{data?.user.Score}</span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Kills/Deaths: </span>
-                                        <span>345/233</span>
+                                        <span>{kills}/{deaths}</span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">K/D: </span>
-                                        <span>3.34</span>
+                                        <span>{kdText}</span>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Skin: </span>
-                                        <span>212</span>
+                                        <span>{data?.user.Skin}</span>
                                     </div>
                                     <div className="flex items-center gap-5">
                                         <span className="font-bold">Role: </span>
-                                        <span><Badge variant="outline">Admin</Badge></span>
+                                        <span><Badge variant="outline">{
+                                            data?.user.Admin ? "Admin" : "Player"
+                                        } - {data?.user.Admin}</Badge></span>
                                     </div>
                                     <div className="flex items-center gap-8">
                                         <span className="font-bold">VIP: </span>
@@ -159,7 +183,7 @@ const UserPage = async ({ params }: UsernameProps) => {
                                     <hr />
                                     <div className="flex items-center gap-6">
                                         <span className="font-bold">Freeroam: </span>
-                                        <span>12.345</span>
+                                        <span>{data?.user.MODO_MATA}</span>
                                     </div>
                                     <div className="flex items-center gap-7">
                                         <span className="font-bold">CnR: </span>
@@ -193,14 +217,14 @@ const UserPage = async ({ params }: UsernameProps) => {
                                     <AvatarImage sizes="12" src="https://github.com/shadcn.png" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <h1 className='font-bold text-xl'>Katrina</h1>
+                                <h1 className='font-bold text-xl'>{data?.user.Nome}</h1>
                             </div>
                             <h1 className="text-lg text-muted-foreground p-4"><Badge variant='outline'>Admin Panel</Badge></h1>
                             <hr />
                             <div className="mt-4">
                                 <div className="flex items-center gap-7 mt-5">
                                     <span className="font-bold ">Serial : </span>
-                                    <span>EEAA40FED9A895CC40AFC909D4008E595805488C </span><Button className="cursor-pointer hover:transition-all" variant='outline'>
+                                    <span>{data?.user.Gpci} </span><Button className="cursor-pointer hover:transition-all" variant='outline'>
                                         <Search size={34} className="mr-auto" /></Button>
 
                                 </div>
@@ -212,17 +236,25 @@ const UserPage = async ({ params }: UsernameProps) => {
                                 </div>
                                 <div className="flex items-center gap-6 ">
                                     <span className="font-bold ">Location: : </span>
-                                    <span>China -Linda- Ireland</span>
+                                    <span>{data?.user.cidade}- {data?.user.regiao} - {data?.user.pais}</span>
                                 </div>
                                 <div className="flex items-center gap-7 ">
                                     <span className="font-bold ">Provider: : </span>
-                                    <span>Eircom Limited</span>
+                                    <span>{data?.user.isp}</span>
+                                </div>
+                                <div className="flex items-center gap-17 ">
+                                    <span className="font-bold ">Org: </span>
+                                    <span>{data?.user.organizacao}</span>
                                 </div>
                                 <div className="flex items-center gap-16 ">
-                                    <span className="font-bold ">Org: : </span>
-                                    <span>Eir Tele IE</span>
+                                    <span className="font-bold ">CEP: </span>
+                                    <span>{data?.user.cep}</span>
                                 </div>
-                                <div className="flex items-center gap-13 mb-3">
+                                <div className="flex items-center gap-11 ">
+                                    <span className="font-bold ">Device: </span>
+                                    <span>{data?.user.Device}</span>
+                                </div>
+                                <div className="flex items-center gap-14 mb-3">
                                     <span className="font-bold ">VPN: : </span>
                                     <span><Badge variant='outline'>No</Badge></span>
                                 </div>

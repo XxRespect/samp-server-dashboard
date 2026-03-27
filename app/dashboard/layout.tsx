@@ -2,6 +2,8 @@
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import DashboardShell from "@/components/dashboard-shell";
+import QueryProvider from "@/app/providers/QueryProvider";
+
 
 const dashboardFont = Inter({
   subsets: ["latin"],
@@ -24,7 +26,7 @@ export default function DashboardLayout({
 }: { children: React.ReactNode }) {
   return (
     <DashboardShell fontClassName={dashboardFont.className}>
-      {children}
+      <QueryProvider>{children}</QueryProvider>
     </DashboardShell>
   );
 }
