@@ -1,4 +1,10 @@
-import { UserResponse } from '@/app/modules/user/user.type'
+import { api } from '@/lib/axios'
+import { UserResponse, UsersListResponse } from '@/app/modules/user/user.type'
+
+export async function getUsers(): Promise<UsersListResponse> {
+    const { data } = await api.get<UsersListResponse>('/ucp/users')
+    return data
+}
 
 export async function getUser(userId: number) {
     const response = await fetch(`/api/ucp/users/${userId}`, {

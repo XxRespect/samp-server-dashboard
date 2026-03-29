@@ -35,7 +35,7 @@ const NavBar = () => {
     const {toggleSidebar} = useSidebar()
     return (
         <>
-            <nav className='flex w-full items-center justify-between border-b px-4 py-4'>
+            <nav className='flex w-full items-center justify-between border-b px-4 py-4 sticky'>
                 {/**Left */}
 
                 {/*<SidebarTrigger className='cursor-pointer p-4 ' variant='outline'/>*/}

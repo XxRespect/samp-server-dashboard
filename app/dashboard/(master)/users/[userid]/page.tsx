@@ -25,14 +25,25 @@ import { Progress } from "@/components/ui/progress"
 import { Spinner } from "@/components/ui/spinner"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
 /*backend data */
 import { useQuery } from '@tanstack/react-query'
 import { getUser } from "@/app/modules/user/user.api"
 import { useParams } from "next/navigation"
+import Link from "next/link"
 
+
+
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardContent,
+    CardFooter,
+    CardDescription
+} from '@/components/ui/card'
 
 
 
@@ -47,13 +58,16 @@ const UserPage = () => {
         queryFn: () => getUser(userId),
         enabled: Number.isFinite(userId),
         retry: false,
-    })
+
+    });
+
 
     const kills = Number(data?.user?.Matou ?? 0)
     const deaths = Number(data?.user?.Morreu ?? 0)
     const kdValue = deaths > 0 ? kills / deaths : kills
     const kdText = Number.isFinite(kdValue) ? kdValue.toFixed(2) : "0.00"
 
+    if (isLoading) return <p className="text-bold flex">Loading <Spinner className="ml-14 size-5"></Spinner></p>
 
     return (
         <>
@@ -117,14 +131,14 @@ const UserPage = () => {
                             <h2 className="text-xl text-muted-foreground">
                                 {isLoading ? <Spinner className="size-6"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}
                             </h2>
-                            <span><Badge className={!data?.user.BANNED && data?.user.Admin ? "Admin" : "Jogador" } variant={data?.user.BANNED ? "destructive" : "outline"}>{data?.user.BANNED ? "banido" : "Jogador"}</Badge></span>
+                            <span><Badge className={!data?.user.BANNED && data?.user.Admin ? "Admin" : "Jogador"} variant={data?.user.BANNED ? "destructive" : "outline"}>{data?.user.BANNED ? "banido" : "Jogador"}</Badge></span>
                             <div className="space-y-4 mt-4">
                                 <div className="flex flex-col gap-2 mb-8">
                                     <p className="text-sm text-muted-foreground">Player in game info</p>
                                     <Field className="w-full max-w-sm">
                                         <FieldLabel htmlFor="progress-upload">
                                             <span>Player K/D</span>
-                                            <span className="ml-auto"><Badge variant="secondary"><p className="text-shadow-2xs">{}% - Accuracy</p></Badge></span>
+                                            <span className="ml-auto"><Badge variant="secondary"><p className="text-shadow-2xs">{kills}/{deaths}% - Average</p></Badge></span>
                                         </FieldLabel>
                                         <Progress value={Math.min(100, kdValue * 10)} id="progress-upload" />
 
@@ -147,7 +161,7 @@ const UserPage = () => {
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold">Cash: </span>
-                                        <span><Badge variant='outline'> R$ { }</Badge></span>
+                                        <span><Badge variant='outline'> R$ {data?.user.Dinheiro}</Badge></span>
                                     </div>
 
                                     <div className="flex items-center gap-4">
@@ -207,15 +221,30 @@ const UserPage = () => {
                         <div className="bg-primary-foreground p-4 rounded-lg">
                             <CardList title='Popular Contents' />
                         </div>
+                        <div className="bg-primary-foreground col-span-1 space-y-3 ">
+                            <Card size="sm">
+                                <CardHeader>
+                                    <CardTitle>
+                                        Chat log: last messages
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="overflow-y-scroll h-50">
+                                    {data?.userChatLog.map((account) => (
+                                        <span>[{account.timestamp}]: {account.message}<br /></span>
+                                    ))}
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                     {/**RIGHT */}
                     <div className="w-full xl:w-2/3 space-y-6">
                         <div className="bg-primary-foreground p-4 rounded-lg">
                             <div className="flex items-center gap-2 w-full">
 
-                                <Avatar>
-                                    <AvatarImage sizes="12" src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                <Avatar size='lg'>
+                                    <AvatarImage src={data?.user.profile} />
+                                    <AvatarFallback>{data?.user.Nome}</AvatarFallback>
+                                    <AvatarBadge className={data?.user.Online ? "bg-green-600" : "bg-red-500"} />
                                 </Avatar>
                                 <h1 className='font-bold text-xl'>{data?.user.Nome}</h1>
                             </div>
@@ -232,7 +261,7 @@ const UserPage = () => {
                                 <hr />
                                 <div className="flex items-center gap-20 mt-4">
                                     <span className="font-bold ">IP: : </span>
-                                    <span>183.345.32</span>
+                                    <span>{data?.user.Ip}</span>
                                 </div>
                                 <div className="flex items-center gap-6 ">
                                     <span className="font-bold ">Location: : </span>
@@ -267,9 +296,62 @@ const UserPage = () => {
                             <ChartLineDefault />
                         </div>
                         <div className="bg-primary-foreground p-4 rounded-lg">
-                            <h1>Anti Cheat tracker</h1>
+                            <h1 className="text-muted-foreground font-bold mt-6">Accounts on this IP: {data?.user.Ip}</h1>
+                            <div className="bg-primary-foreground col-span-2 space-y-3">
+                                <Card size='sm'>
+                                    <CardContent className="overflow-y-scroll h-40">
+                                        {data?.usersWithSameIp?.length ? (
+                                            <div className="space-y-1">
+                                                {data.usersWithSameIp.map((account) => (
+                                                    <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
+                                                        <span>{account.Nome}<br /></span>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p>No accounts found</p>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </div>
+                            <h1 className="text-muted-foreground font-bold mt-6">Accounts on this Serial: {data?.user.Gpci}</h1>
+                            <div className="bg-primary-foreground col-span-2 space-y-6 shadow-amber-50">
+                                <Card size='sm'>
+
+                                    <CardContent className="overflow-y-scroll h-40">
+                                        {data?.usersWithSameSerial?.length ? (
+                                            <div className="space-y-1">
+                                                {data.usersWithSameSerial.map((account) => (
+                                                    <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
+                                                        <span>{account.Nome}<br /></span>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p>No accounts found</p>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </div>
                         </div>
+
                     </div>
+
+                </div>
+                <div className="grid col-span-1 bg-primary-foreground  mt-7">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>
+                            Anti Cheat system
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+
+                    </CardContent>
+                    <CardFooter>
+                        logs
+                    </CardFooter>
+                </Card>
                 </div>
             </div>
         </>
