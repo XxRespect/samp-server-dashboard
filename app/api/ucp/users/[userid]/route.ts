@@ -1,3 +1,4 @@
+import { getGeoLocation } from '@/app/services/geo/geo.service'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -40,6 +41,8 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 regiao:true,
                 Skin: true,
                 cep:true,
+                Clan: true,
+                Preso: true,
                 organizacao:true,
                 fuso_horario:true,
                 isp:true,
@@ -53,6 +56,9 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 MODO_MATA: true,
                 Ip: true,
                 profile: true,
+                HeadShots: true,
+                Email: true,
+                HasEmail: true,
 
             },
 
@@ -72,7 +78,7 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 data: true,
                 desban: true,
                 adminid: true,
-                motivo: true
+                motivo: true,
             }
         })
 
@@ -93,7 +99,7 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 timestamp: true,
                 
             },
-            take: 20
+            take: 60
         })
 
         const usersWithSameIp = await prisma.player.findMany({
@@ -128,6 +134,30 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 BANNED: true,
             },
         })
+
+        const geoLocation = await getGeoLocation(user.Ip)
+
+        const userLoginLogs = await prisma.connect_logs.findMany({
+            where: {
+                accid: user.id
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 60
+            
+        })
+
+        const nicksChangeLogs = await prisma.nick_history.findMany({
+            where: {
+                jogador_id: user.id
+            },
+            orderBy: {
+                id: "desc"
+            }
+
+        })
+
         const safeUser = serializeBigInt(user)
         return NextResponse.json({message: `User ${user.Nome} fetched successfully`, 
             user: safeUser, 
@@ -135,7 +165,10 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
             usersWithSameSerial,
             user_ac,
             userChatLog,
-            userBanInfo
+            userBanInfo,
+            geoLocation,
+            userLoginLogs,
+            nicksChangeLogs
         }, {status: 200})
     }catch(error) {
         console.error('Error fetching UCP data:', error);

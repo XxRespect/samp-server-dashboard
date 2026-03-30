@@ -1,3 +1,5 @@
+import { GeoLocation } from "@/app/types/geo/geo.type"
+
 export type UserType = {
     Nome: string,
     id: string,
@@ -24,7 +26,12 @@ export type UserType = {
     Online: boolean | null,
     MODO_MATA: boolean,
     Ip: string,
+    Clan:string,
+    Preso: number | null,
     profile: string
+    HeadShots: number | null,
+    Email: string | null,
+    HasEmail: boolean
 }
 
 export interface AccountsSameIp {
@@ -43,25 +50,58 @@ export interface AccountsSameSerial {
 }
 
 
-export interface userChatLogInter {
+export interface userLoginLogsInter {
+    id: number,
     player_name: string,
-    accid: number,
-    message: string,
+    ip: string,
     timestamp: string,
+    action: "CONNECT" | "DISCONNECT"
+    system: string,
+    accid: number,
 }
 
 
-export type UserGeoTypes = {
-    country: string
+
+
+export interface userChatLogInter {
+    id: number
+    player_name: string
+    message: string
+    timestamp: string
 }
+
+
+/** Um registro de ban — GET usa `findFirst`, então é objeto único ou null, não array */
+export type userBanInfoInter = {
+    Nick: string
+    adm: string
+    desban: number | null
+    adminid: number
+    motivo: string,
+    data?: string | null,
+}
+
+export interface userNicksInter {
+    id: number,
+    player_name: string,
+    timestamp: string,
+    nick_antigo: string,
+    nick: string,
+    data: string,
+}
+
 
 export type UserResponse = {
-    message: string
-    user: UserType
-    usersWithSameIp: AccountsSameIp[]
-    usersWithSameSerial: AccountsSameSerial[]
+    message: string,
+    user: UserType,
+    usersWithSameIp: AccountsSameIp[],
+    usersWithSameSerial: AccountsSameSerial[],
     user_ac: unknown[],
-    userChatLog: userChatLogInter[]
+    userChatLog: userChatLogInter[],
+    userBanInfo: userBanInfoInter | null,
+    geoLocation: GeoLocation,
+    userLoginLogs: userLoginLogsInter[],
+    nicksChangeLogs: userNicksInter[]
 }
 
 /** Resposta de GET /api/ucp/users — lista de jogadores do banco */

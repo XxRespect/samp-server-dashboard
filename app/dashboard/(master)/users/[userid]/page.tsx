@@ -16,7 +16,7 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { BadgeCheck, Search, ShieldUser } from "lucide-react"
+import { BadgeCheck, Search, ShieldUser, InfoIcon, Ban } from "lucide-react"
 import { GiEdgedShield } from "react-icons/gi"
 import { FaArrowAltCircleDown } from "react-icons/fa";
 import { ChartLineDefault } from "@/components/KillsBarChart"
@@ -24,6 +24,13 @@ import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 import { Spinner } from "@/components/ui/spinner"
 import { Skeleton } from "@/components/ui/skeleton"
+
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle
+
+} from '@/components/ui/alert'
 
 import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -33,6 +40,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getUser } from "@/app/modules/user/user.api"
 import { useParams } from "next/navigation"
 import Link from "next/link"
+import { formatPlayerNumber } from "@/app/utils/number/number.formater"
 
 
 
@@ -42,18 +50,18 @@ import {
     CardTitle,
     CardContent,
     CardFooter,
-    CardDescription
 } from '@/components/ui/card'
 
+import { formatTime } from "@/app/utils/datatime/datetime.formater"
 
-
-
+const dashboardCardClass =
+    "rounded-xl border border-white/10 bg-[#171717] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_10px_30px_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.04)] backdrop-blur-sm"
 
 const UserPage = () => {
     const params = useParams<{ userid: string }>()
     const userId = Number(params.userid)
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: ["user", userId],
         queryFn: () => getUser(userId),
         enabled: Number.isFinite(userId),
@@ -66,8 +74,39 @@ const UserPage = () => {
     const deaths = Number(data?.user?.Morreu ?? 0)
     const kdValue = deaths > 0 ? kills / deaths : kills
     const kdText = Number.isFinite(kdValue) ? kdValue.toFixed(2) : "0.00"
+    const isBanned = Boolean(data?.user?.BANNED)
+    const isTempAdmin = Number(data?.user?.ADMIN_TEMP ?? 0) > 0
+    const isAdmin = Number(data?.user?.Admin ?? 0) > 0
+
+    const playerStatus = isBanned
+        ? { label: "Banido", variant: "destructive" as const }
+        : isTempAdmin
+            ? { label: "Admin Temp", variant: "secondary" as const }
+            : isAdmin
+                ? { label: "Admin", variant: "outline" as const }
+                : { label: "Jogador", variant: "outline" as const }
+
+    const playerRole = isTempAdmin
+        ? { label: "Admin Temp", variant: "secondary" as const }
+        : isAdmin
+            ? { label: "Admin", variant: "outline" as const }
+            : { label: "Jogador", variant: "outline" as const }
 
     if (isLoading) return <p className="text-bold flex">Loading <Spinner className="ml-14 size-5"></Spinner></p>
+    if (isError) return (
+        <div className="w-full abosolute flex items-center justify-center">
+            <Alert className="m-4 max-w-md" variant='destructive'>
+                <InfoIcon />
+                <AlertTitle>
+                    Account not found
+                </AlertTitle>
+                <AlertDescription>
+                    This Account id {userId} doesn't exists in our database<br />
+                    {error.message}
+                </AlertDescription>
+            </Alert>
+        </div>
+    )
 
     return (
         <>
@@ -94,7 +133,7 @@ const UserPage = () => {
                 <div className="mt-5 flex flex-col xl:flex-row gap-8">
                     {/**LEFT */}
                     <div className="w-full xl:w-1/3 space-y-6">
-                        <div className="bg-primary-foreground p-4 rounded-lg">
+                        <div className={`${dashboardCardClass} p-4`}>
                             <h1 className="text-xl font-semibold">Player Awards and Tags</h1>
                             <div className="flex gap-4 mt-4">
                                 <HoverCard>
@@ -126,111 +165,133 @@ const UserPage = () => {
                                 </HoverCard>
                             </div>
                         </div>
-                        <div className="bg-primary-foreground p-4 rounded-lg">
+                        <div className={`${dashboardCardClass} p-4`}>
                             <h1 className="text-xl font-semibold">Player Information</h1>
                             <h2 className="text-xl text-muted-foreground">
-                                {isLoading ? <Spinner className="size-6"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}
+                                <div className="flex flex-row items-center">
+                                    <Avatar size='lg' className="m-1">
+                                        <AvatarImage src={data?.user.profile} />
+                                        <AvatarFallback>{data?.user.Nome}</AvatarFallback>
+                                        <AvatarBadge className={data?.user.Online ? "bg-green-600" : "bg-red-500"} />
+                                    </Avatar>
+                                    {isLoading ? <Spinner className="size-6"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}
+                                </div>
+
                             </h2>
-                            <span><Badge className={!data?.user.BANNED && data?.user.Admin ? "Admin" : "Jogador"} variant={data?.user.BANNED ? "destructive" : "outline"}>{data?.user.BANNED ? "banido" : "Jogador"}</Badge></span>
-                            <div className="space-y-4 mt-4">
-                                <div className="flex flex-col gap-2 mb-8">
-                                    <p className="text-sm text-muted-foreground">Player in game info</p>
-                                    <Field className="w-full max-w-sm">
+
+                            <div className="mt-4 space-y-5">
+                                <div className="flex items-center justify-between rounded-lg border border-white/8 bg-white/2 px-3 py-2">
+                                    <span className="text-sm text-muted-foreground">Player status</span>
+                                    <Badge variant={playerStatus.variant}>
+                                        {playerStatus.label}
+                                    </Badge>
+                                </div>
+
+                                <div className="rounded-lg border border-white/8 bg-white/2 p-4">
+                                    <div className="mb-4">
+                                        <p className="text-sm font-medium">Player overview</p>
+                                        <p className="text-sm text-muted-foreground">Core account details and progression</p>
+                                    </div>
+
+                                    <Field className="w-full">
                                         <FieldLabel htmlFor="progress-upload">
                                             <span>Player K/D</span>
-                                            <span className="ml-auto"><Badge variant="secondary"><p className="text-shadow-2xs">{kills}/{deaths}% - Average</p></Badge></span>
+                                            <span className="ml-auto">
+                                                <Badge variant="secondary">
+                                                    <p className="text-shadow-2xs">{kills}/{deaths} - Average</p>
+                                                </Badge>
+                                            </span>
                                         </FieldLabel>
                                         <Progress value={Math.min(100, kdValue * 10)} id="progress-upload" />
-
                                     </Field>
-                                    <div className="flex items-center gap-4 ">
-                                        <span className="font-bold">ID: </span>
+
+                                    <div className="mt-5 grid grid-cols-2 gap-y-3">
+                                        <span className="text-muted-foreground">ID:</span>
                                         <span>{data?.user.id}</span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Nick: </span>
-                                        <span><p className="text-muted-foreground font-bold">{data?.user?.Nome ?? "-"}</p></span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Joined: </span>
-                                        <span>{isLoading ? <Skeleton className="h-4 w-2/3"> </Skeleton> : isError ? "Faild to load user" : data?.user.user_register ?? "Couldnt load"}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-bold">logoff: </span>
+
+                                        <span className="text-muted-foreground">Nick:</span>
+                                        <span className="font-medium">{data?.user?.Nome ?? "-"}</span>
+
+                                        <span className="text-muted-foreground">Email:</span>
+                                        <span className="font-medium">{data?.user?.Email ?? "-"}</span>
+
+                                        <span className="text-muted-foreground">Joined:</span>
+                                        <span>{formatTime(data?.user?.user_register)}</span>
+                                        <span className="text-muted-foreground">Logoff:</span>
                                         <span>24/03/2026 - 14:34</span>
+                                        <span className="text-muted-foreground">Clan:</span>
+                                        <span className="border-b-2 w-40">{data?.user?.Clan ?? "-"}</span>
+
+                                        <span className="text-muted-foreground">Cash:</span>
+                                        <span><Badge variant='outline'>R$ {formatPlayerNumber(data?.user.Dinheiro)}</Badge></span>
+
+                                        <span className="text-muted-foreground">Score:</span>
+                                        <span>{formatPlayerNumber(data?.user.Score)}</span>
+
+                                        <span className="text-muted-foreground">Kills/Deaths:</span>
+                                        <span>{kills}/{deaths}</span>
+                                        <span className="text-muted-foreground">Headshots:</span>
+                                        <span>{data?.user.HeadShots}</span>
+
+                                        <span className="text-muted-foreground">K/D:</span>
+                                        <span>{kdText}</span>
+
+                                        <span className="text-muted-foreground">Skin:</span>
+                                        <span>{data?.user.Skin}</span>
+
+                                        <span className="text-muted-foreground">Role:</span>
+                                        <span>
+                                            <Badge variant={playerRole.variant}>
+                                                {playerRole.label}
+                                            </Badge>
+                                        </span>
+
+                                        <span className="text-muted-foreground">VIP:</span>
+                                        <span><Badge variant={data?.user.IS_VIP ? "default" : "outline"}>{data?.user.IS_VIP ? "Yes" : "No"}</Badge></span>
+
+                                        <span className="text-muted-foreground">Jailed:</span>
+                                        <span><Badge variant="destructive">{Number(data?.user.Preso) ? "Yes" : "No"}</Badge></span>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Cash: </span>
-                                        <span><Badge variant='outline'> R$ {data?.user.Dinheiro}</Badge></span>
+                                </div>
+
+                                <div className="rounded-lg border border-white/8 bg-white/2 p-4">
+                                    <div className="mb-4">
+                                        <p className="text-sm font-medium">Game modes</p>
+                                        <p className="text-sm text-muted-foreground">Mode stats and activity split</p>
                                     </div>
 
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Score: </span>
-                                        <span>{data?.user.Score}</span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Kills/Deaths: </span>
-                                        <span>{kills}/{deaths}</span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">K/D: </span>
-                                        <span>{kdText}</span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Skin: </span>
-                                        <span>{data?.user.Skin}</span>
-                                    </div>
-                                    <div className="flex items-center gap-5">
-                                        <span className="font-bold">Role: </span>
-                                        <span><Badge variant="outline">{
-                                            data?.user.Admin ? "Admin" : "Player"
-                                        } - {data?.user.Admin}</Badge></span>
-                                    </div>
-                                    <div className="flex items-center gap-8">
-                                        <span className="font-bold">VIP: </span>
-                                        <span><Badge variant="default">Yes</Badge></span>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-bold">Preso: </span>
-                                        <span><Badge variant="destructive">Yes</Badge></span>
-                                    </div>
-                                    <hr />
-                                    <div className="flex items-center gap-6">
-                                        <span className="font-bold">Freeroam: </span>
+                                    <div className="grid grid-cols-2 gap-y-3">
+                                        <span className="text-muted-foreground">Freeroam:</span>
                                         <span>{data?.user.MODO_MATA}</span>
-                                    </div>
-                                    <div className="flex items-center gap-7">
-                                        <span className="font-bold">CnR: </span>
-                                        <span>234</span>
-                                    </div>
-                                    <div className="flex items-center gap-7">
-                                        <span className="font-bold">Derby: </span>
+
+                                        <span className="text-muted-foreground">CnR:</span>
+                                        <span>{data?.user.Score}</span>
+
+                                        <span className="text-muted-foreground">Derby:</span>
                                         <span>0</span>
-                                    </div>
-                                    <div className="flex items-center gap-7">
-                                        <span className="font-bold">Call of Duty: </span>
+
+                                        <span className="text-muted-foreground">Call of Duty:</span>
                                         <span>345</span>
-                                    </div>
-                                    <div className="flex items-center gap-7">
-                                        <span className="font-bold">P-T-P: </span>
+
+                                        <span className="text-muted-foreground">P-T-P:</span>
                                         <span>345</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-primary-foreground p-4 rounded-lg">
+                        <div className={`${dashboardCardClass} p-4`}>
                             <CardList title='Popular Contents' />
                         </div>
-                        <div className="bg-primary-foreground col-span-1 space-y-3 ">
-                            <Card size="sm">
+                        <div className="col-span-1 space-y-3">
+                            <Card size="sm" className={`${dashboardCardClass} h-full`}>
                                 <CardHeader>
                                     <CardTitle>
                                         Chat log: last messages
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="overflow-y-scroll h-50">
+                                <CardContent className="overflow-y-scroll h-95">
                                     {data?.userChatLog.map((account) => (
-                                        <span>[{account.timestamp}]: {account.message}<br /></span>
+                                        <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
                                     ))}
                                 </CardContent>
                             </Card>
@@ -238,7 +299,7 @@ const UserPage = () => {
                     </div>
                     {/**RIGHT */}
                     <div className="w-full xl:w-2/3 space-y-6">
-                        <div className="bg-primary-foreground p-4 rounded-lg">
+                        <div className={`${dashboardCardClass} p-4`}>
                             <div className="flex items-center gap-2 w-full">
 
                                 <Avatar size='lg'>
@@ -257,48 +318,99 @@ const UserPage = () => {
                                         <Search size={34} className="mr-auto" /></Button>
 
                                 </div>
-                                <h1 className="font-bold text-xl border-b-blue">Geo Info</h1>
+
+                                <h1 className="font-bold text-xl border-b-blue">Geo Information</h1>
                                 <hr />
-                                <div className="flex items-center gap-20 mt-4">
-                                    <span className="font-bold ">IP: : </span>
-                                    <span>{data?.user.Ip}</span>
-                                </div>
-                                <div className="flex items-center gap-6 ">
-                                    <span className="font-bold ">Location: : </span>
-                                    <span>{data?.user.cidade}- {data?.user.regiao} - {data?.user.pais}</span>
-                                </div>
-                                <div className="flex items-center gap-7 ">
-                                    <span className="font-bold ">Provider: : </span>
-                                    <span>{data?.user.isp}</span>
-                                </div>
-                                <div className="flex items-center gap-17 ">
-                                    <span className="font-bold ">Org: </span>
-                                    <span>{data?.user.organizacao}</span>
-                                </div>
-                                <div className="flex items-center gap-16 ">
-                                    <span className="font-bold ">CEP: </span>
-                                    <span>{data?.user.cep}</span>
-                                </div>
-                                <div className="flex items-center gap-11 ">
-                                    <span className="font-bold ">Device: </span>
+                                <div className="grid grid-cols-2 gap-y-2 mt-4 mb-3 w-full max-w-2xl">
+                                    <span className="text-muted-foreground">IP:</span>
+                                    <span>{data?.geoLocation.query}</span>
+
+                                    <span className="text-muted-foreground">Location:</span>
+                                    <span>{data?.geoLocation.city} - {data?.geoLocation.region} - {data?.geoLocation.regionName} - {data?.geoLocation.country}</span>
+
+                                    <span className="text-muted-foreground">Time Zone:</span>
+                                    <span>{data?.geoLocation.timezone}</span>
+
+                                    <span className="text-muted-foreground">ISP:</span>
+                                    <span>{data?.geoLocation.isp}</span>
+
+                                    <span className="text-muted-foreground">Org:</span>
+                                    <span>{data?.geoLocation.org}</span>
+
+                                    <span className="text-muted-foreground">CEP:</span>
+                                    <span>{data?.geoLocation.zip}</span>
+
+                                    <span className="text-muted-foreground">Country code:</span>
+                                    <span>{data?.geoLocation.countryCode}</span>
+
+                                    <span className="text-muted-foreground">Device:</span>
                                     <span>{data?.user.Device}</span>
-                                </div>
-                                <div className="flex items-center gap-14 mb-3">
-                                    <span className="font-bold ">VPN: : </span>
-                                    <span><Badge variant='outline'>No</Badge></span>
+
+                                    <span className="text-muted-foreground">VPN:</span>
+                                    <span><Badge variant='outline'>{data?.geoLocation.proxy ? 'Sim' : 'Não'}</Badge></span>
+
                                 </div>
                                 <hr />
                                 <Button className="hover:cursor-pointer hover:p-4 mt-4 hover:transition-all hover:shadow-2xl ml-3" variant='secondary'>Ban, Chat Log and Etc scroll down<FaArrowAltCircleDown /> </Button>
                                 <Button className="hover:cursor-pointer hover:p-4 mt-4 hover:transition-all hover:shadow-2xl ml-3" variant='secondary'>Search Player AC<Search /> </Button>
                             </div>
                         </div>
-                        <div className="bg-primary-foreground p-4 rounded-lg">
+                        <div className={`${dashboardCardClass} p-4`}>
                             <ChartLineDefault />
                         </div>
-                        <div className="bg-primary-foreground p-4 rounded-lg">
-                            <h1 className="text-muted-foreground font-bold mt-6">Accounts on this IP: {data?.user.Ip}</h1>
-                            <div className="bg-primary-foreground col-span-2 space-y-3">
-                                <Card size='sm'>
+                        {data?.user.BANNED ? <div className={`${dashboardCardClass} p-4`}>
+                            <Card className={dashboardCardClass}>
+                                <CardHeader>
+                                    <CardTitle className="flex"><Ban size={20} /> <span className="ml-3">Ban information</span></CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <CardContent>
+                                        <div className="grid grid-cols-2 gap-y-2 w-80">
+
+                                            <span className="text-muted-foreground">Adm:</span>
+                                            <span>{data?.userBanInfo?.adm ?? "--"}</span>
+
+                                            <span className="text-muted-foreground">Reason:</span>
+                                            <span>{data?.userBanInfo?.motivo ?? "--"}</span>
+
+                                            <span className="text-muted-foreground">Date:</span>
+                                            <span>
+                                                {data?.userBanInfo?.data
+                                                    ? formatTime(data.userBanInfo.data)
+                                                    : "--"}
+                                            </span>
+
+                                            <span className="text-muted-foreground">Type:</span>
+                                            <span>{Number(data?.userBanInfo?.desban ?? 0) > 0 ? "Temporária" : "Permanente"}</span>
+
+                                        </div>
+                                    </CardContent>
+                                </CardContent>
+                            </Card>
+                        </div> : <div className="hidden"></div>}
+                        <div className={`${dashboardCardClass} p-4`}>
+                            <div className="col-span-2 space-y-3">
+                                <Card size='sm' className={`${dashboardCardClass} `}>
+                                    <CardTitle className="border-b p-1"><span className="text-1lg">Login/Logout</span></CardTitle>
+                                    <CardContent className="overflow-y-scroll h-40">
+                                        {data?.userLoginLogs.map((log) => (
+                                            <span className="text-muted-foreground text-shadow-2xs font-medium" key={log.id}>[{formatTime(log.timestamp)}] {log.action == "CONNECT" ? "Logou no servidor" : "Saiu do servidor"} {log.system} <br /></span>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardTitle className="border-b p-1"><span className="text-1lg">Nicknames history</span></CardTitle>
+                                    <CardContent className="overflow-y-scroll h-40">
+                                        {data?.nicksChangeLogs.map((log, _) => (
+                                            <span className="text-muted-foreground text-shadow-2xs font-medium" key={log.id}>[{log.data}] {log.nick_antigo} → {log.nick} <br /></span>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+
+                                {/** IPs card */}
+                                <Card size='sm' className={dashboardCardClass}>
+                                    <CardTitle className="border-b p-1"><span className="text-1lg">Accounts on this IP: {data?.user.Ip}</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
                                         {data?.usersWithSameIp?.length ? (
                                             <div className="space-y-1">
@@ -314,10 +426,9 @@ const UserPage = () => {
                                     </CardContent>
                                 </Card>
                             </div>
-                            <h1 className="text-muted-foreground font-bold mt-6">Accounts on this Serial: {data?.user.Gpci}</h1>
-                            <div className="bg-primary-foreground col-span-2 space-y-6 shadow-amber-50">
-                                <Card size='sm'>
-
+                            <div className="col-span-2 space-y-6 mt-4 shadow-amber-50">
+                                <Card size='sm' className={dashboardCardClass}>
+                                    <CardTitle className="border-b p-1"><span className="text-1lg">Accounts with same Serial: {data?.user.Gpci}</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
                                         {data?.usersWithSameSerial?.length ? (
                                             <div className="space-y-1">
@@ -338,24 +449,26 @@ const UserPage = () => {
                     </div>
 
                 </div>
-                <div className="grid col-span-1 bg-primary-foreground  mt-7">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>
-                            Anti Cheat system
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                <div className="grid col-span-1 mt-7">
+                    <Card className={dashboardCardClass}>
+                        <CardHeader>
+                            <CardTitle>
+                                Anti Cheat system
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
 
-                    </CardContent>
-                    <CardFooter>
-                        logs
-                    </CardFooter>
-                </Card>
+                        </CardContent>
+                        <CardFooter>
+                            logs
+                        </CardFooter>
+                    </Card>
                 </div>
-            </div>
+            </div >
         </>
     )
 }
 
 export default UserPage
+
+
