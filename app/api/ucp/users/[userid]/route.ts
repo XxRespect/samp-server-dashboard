@@ -10,13 +10,13 @@ const serializeBigInt = <T>(data: T): T =>
     )
 
 
-export async function GET(req: NextRequest, {params}: {params: Promise<{userid: string}>}) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ userid: string }> }) {
     try {
         const { userid } = await params
         const parsedUserId = Number(userid)
         if (!Number.isInteger(parsedUserId)) {
 
-            return NextResponse.json({message: `Invalid accound Id`},{status:400})
+            return NextResponse.json({ message: `Invalid accound Id` }, { status: 400 })
         }
 
 
@@ -28,30 +28,30 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 Nome: true,
                 id: true,
                 Admin: true,
-                ADMIN_TEMP:true,
+                ADMIN_TEMP: true,
                 Score: true,
                 Gpci: true,
                 BANNED: true,
                 banreason: true,
-                Device:true,
-                pais:true,
-                cidade:true,
+                Device: true,
+                pais: true,
+                cidade: true,
                 Dinheiro: true,
                 Online: true,
-                regiao:true,
+                regiao: true,
                 Skin: true,
-                cep:true,
+                cep: true,
                 Clan: true,
                 Preso: true,
-                organizacao:true,
-                fuso_horario:true,
-                isp:true,
+                organizacao: true,
+                fuso_horario: true,
+                isp: true,
                 Matou: true,
-                Morreu:true,
-                vpn:true,
+                Morreu: true,
+                vpn: true,
                 IS_VIP: true,
-                coordenadas:true,
-                original_nickname:true,
+                coordenadas: true,
+                original_nickname: true,
                 user_register: true,
                 MODO_MATA: true,
                 Ip: true,
@@ -64,8 +64,8 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
 
         })
 
-        if(!user) {
-            return NextResponse.json({message: `User not found`}, {status: 404})
+        if (!user) {
+            return NextResponse.json({ message: `User not found` }, { status: 404 })
         }
 
         const userBanInfo = await prisma.ban.findFirst({
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 player_name: true,
                 message: true,
                 timestamp: true,
-                
+
             },
             take: 60
         })
@@ -105,9 +105,9 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
         const usersWithSameIp = await prisma.player.findMany({
             where: {
                 Ip: user.Ip,
-                NOT: {
-                    id: user.id,
-                },
+                id: {
+                    not: user.id
+                }
             },
             select: {
                 id: true,
@@ -122,9 +122,9 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
         const usersWithSameSerial = await prisma.player.findMany({
             where: {
                 Gpci: user.Gpci,
-                NOT: {
-                    id: user.id,
-                },
+                id: {
+                    not: user.id
+                }
             },
             select: {
                 id: true,
@@ -145,7 +145,7 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
                 id: "desc"
             },
             take: 60
-            
+
         })
 
         const nicksChangeLogs = await prisma.nick_history.findMany({
@@ -159,8 +159,9 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
         })
 
         const safeUser = serializeBigInt(user)
-        return NextResponse.json({message: `User ${user.Nome} fetched successfully`, 
-            user: safeUser, 
+        return NextResponse.json({
+            message: `User ${user.Nome} fetched successfully`,
+            user: safeUser,
             usersWithSameIp,
             usersWithSameSerial,
             user_ac,
@@ -169,8 +170,8 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{userid: 
             geoLocation,
             userLoginLogs,
             nicksChangeLogs
-        }, {status: 200})
-    }catch(error) {
+        }, { status: 200 })
+    } catch (error) {
         console.error('Error fetching UCP data:', error);
         return NextResponse.json({ error: 'Failed to fetch UCP data' }, { status: 500 });
     }
