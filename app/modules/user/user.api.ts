@@ -2,7 +2,7 @@ import { api } from '@/lib/axios'
 import { UserResponse, UsersListResponse } from '@/app/modules/user/user.type'
 
 export async function getUsers(): Promise<UsersListResponse> {
-    const { data } = await api.get<UsersListResponse>('/ucp/users')
+    const { data } = await api.get<UsersListResponse>('ucp/users')
     return data
 }
 
@@ -18,4 +18,3 @@ export async function getUser(userId: number) {
 
     return (await response.json()) as UserResponse
 }
-

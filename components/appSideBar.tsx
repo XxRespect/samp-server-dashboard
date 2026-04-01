@@ -1,3 +1,6 @@
+"use client";
+
+import { useSyncExternalStore } from 'react';
 import Link from 'next/link';
 
 import { MdAdminPanelSettings, MdBlock, MdSupportAgent } from "react-icons/md";
@@ -92,7 +95,7 @@ const Items = [
     {
         title: "Profile",
         icon: UserIcon,
-        link: "/dashboard"
+        link: "/dashboard/profile"
     },
     {
         title: "Support",
@@ -113,6 +116,12 @@ const Items = [
 
 
 const SideBar = () => {
+    const mounted = useSyncExternalStore(
+        () => () => {},
+        () => true,
+        () => false,
+    );
+
     return (
         <>
             <Sidebar collapsible='icon'>
@@ -235,7 +244,7 @@ const SideBar = () => {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/Tickets'>
+                                        <Link href='dashboard/tickets'>
                                             <MdSupportAgent className='w-4 h-4' />
                                             <span>Tickets</span>
                                         </Link>
@@ -251,7 +260,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/banneds'>
+                                        <Link href='dashboard/ipbanneds'>
                                             <MdBlock className='w-4 h-4' />
                                             <span>Ip Banneds</span>
                                         </Link>
@@ -291,7 +300,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/Logs'>
+                                        <Link href='dashboard/logs'>
                                             <LuLogs className='w-4 h-4' />
                                             <span>Logs</span>
                                         </Link>
@@ -299,7 +308,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/Logs'>
+                                        <Link href='dashboard/logs'>
                                             <MdOutlineMarkUnreadChatAlt className='w-4 h-4' />
                                             <span>Chat Logs</span>
                                         </Link>
@@ -315,7 +324,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/purchases'>
+                                        <Link href='dashboard/server'>
                                             <ServerCrash className='w-4 h-4' />
                                             <span>Server</span>
                                         </Link>
@@ -387,20 +396,26 @@ const SideBar = () => {
                 <SidebarFooter>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <SidebarMenuButton>
-                                        <User2 />Jan Karlos <ChevronUp className="ml-auto" />
-                                    </SidebarMenuButton>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className='flex flex-col' align="end">
-                                    <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Account</DropdownMenuItem>
-                                    <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Profile</DropdownMenuItem>
-                                    <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Settings</DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Sign Out</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            {mounted ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <SidebarMenuButton>
+                                            <User2 />Jan Karlos <ChevronUp className="ml-auto" />
+                                        </SidebarMenuButton>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className='flex flex-col' align="end">
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Account</DropdownMenuItem>
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Profile</DropdownMenuItem>
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Settings</DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Sign Out</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : (
+                                <SidebarMenuButton>
+                                    <User2 />Jan Karlos <ChevronUp className="ml-auto" />
+                                </SidebarMenuButton>
+                            )}
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarFooter>

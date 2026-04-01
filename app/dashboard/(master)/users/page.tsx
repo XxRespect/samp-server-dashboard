@@ -26,10 +26,32 @@ import {
     TableRow,
   } from "@/components/ui/table"
 
+  import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from '@/components/ui/card'
+
+import { Spinner } from '@/components/ui/spinner'
+
+import { getPlayers } from '@/app/modules/users/users.api'
+
 
 import { FaSearch } from "react-icons/fa";
+import PlayersDaTable from './columns'
 function Page() {
 
+    const {data, isLoading,error} = useQuery({
+        queryKey: ["players"],
+        queryFn: getPlayers,
+        retry: false,
+    })
+
+
+    if(isLoading) return <Spinner />
 
 
     return (
@@ -48,10 +70,19 @@ function Page() {
             </Breadcrumb>
         </div>
         <div className='space-y-6 grid grid-cols-1'>
-           
-            h1
-
-       
+        <Card size='sm' className='shadow-indigo-200 m-6' >
+            <CardHeader className='border-b'>
+                <CardTitle>Players</CardTitle>
+            </CardHeader>
+            <CardDescription>
+                <p>Manage and view all players in the system.</p>
+            </CardDescription>
+            <CardContent>
+             <PlayersDaTable players={data?.users || []} />
+            </CardContent>
+        </Card>
+        
+     
         </div>
         </>
     )

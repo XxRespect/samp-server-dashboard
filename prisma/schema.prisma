@@ -496,7 +496,7 @@ model player {
   EmailChangeTime   Int         @default(0)
   Senha             String      @db.VarChar(255)
   user_register     DateTime    @default(now()) @db.DateTime(0)
-  profile           String      @default("default-profile.png") @db.VarChar(255)
+  profile           String      @default("https://res.cloudinary.com/dcun12csz/image/upload/v1774628141/profile_cfxxfi.webp") @db.VarChar(100)
   timestamp         DateTime    @default(now()) @db.Timestamp(0)
   admintemp         admintemp[]
   ban               ban[]

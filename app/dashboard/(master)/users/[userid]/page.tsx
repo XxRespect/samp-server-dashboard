@@ -326,7 +326,7 @@ const UserPage = () => {
                                     <span>{data?.geoLocation.query}</span>
 
                                     <span className="text-muted-foreground">Location:</span>
-                                    <span>{data?.geoLocation.city} - {data?.geoLocation.region} - {data?.geoLocation.regionName} - {data?.geoLocation.country}</span>
+                                    <span>{data?.geoLocation.city} - {data?.geoLocation.regionName} - {data?.geoLocation.country}</span>
 
                                     <span className="text-muted-foreground">Time Zone:</span>
                                     <span>{data?.geoLocation.timezone}</span>

@@ -6,4 +6,4 @@ function ChatLogs() {
   )
 }
 
-export default page
+export default ChatLogs

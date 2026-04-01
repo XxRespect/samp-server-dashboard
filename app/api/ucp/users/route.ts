@@ -10,11 +10,20 @@ export async function GET(req: NextRequest) {
     try {
         const users = await prisma.player.findMany({
       
-                orderBy: {
-                    id: 'desc'
+                select: {
+                    id: true,
+                    Nome: true,
+                    profile: true,
+                    Admin: true,
+                    ADMIN_TEMP: true,
+                    BANNED: true,
+                    Online: true,
+                    Score: true,
+                    user_register: true,
+                    timestamp: true,
                 },
-                where: {
-                    BANNED: 1
+                orderBy: {
+                    Online: 'desc'
                 },
                 take: 20
             
