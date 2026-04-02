@@ -41,38 +41,6 @@ async function getGeoLocationIpApi(ip: string): Promise<GeoLocation | null> {
     }
 }
 
-async function getGeoLocationIpWhois(ip: string): Promise<GeoLocation | null> {
-    try {
-        const response = await axios.get(`https://ipwhois.app/json/${ip}`)
-        const data = response.data
-        if (!data || data.success === false) {
-            console.warn(`ipwhois.app fail for ${ip}; message=${data?.message}`)
-            return null
-        }
-
-        return {
-            city: data.city || "Unknown",
-            region: data.region || data.region_code || "Unknown",
-            country: data.country || "Unknown",
-            isp: data.isp || "Unknown",
-            org: data.org || "Unknown",
-            zip: data.postal || "Unknown",
-            proxy: Boolean(data.proxy),
-            timezone: data.timezone?.id || "UTC",
-            query: data.ip || ip || "",
-            regionName: data.region || "Unknown",
-            as: data.as || "",
-            countryCode: data.country_code || "",
-            dns: {
-                ip: data.ip || "",
-            },
-        } as GeoLocation
-    } catch (error) {
-        console.warn(`ipwhois.app request error for ${ip}`, error)
-        return null
-    }
-}
-
 export async function getGeoLocation(ip: string): Promise<GeoLocation> {
     if (!ip) {
         console.warn("Geo lookup called with empty IP; returning fallback.")
@@ -86,9 +54,6 @@ export async function getGeoLocation(ip: string): Promise<GeoLocation> {
 
     const geoFromIpApi = await getGeoLocationIpApi(ip)
     if (geoFromIpApi) return geoFromIpApi
-
-    const geoFromIpWhois = await getGeoLocationIpWhois(ip)
-    if (geoFromIpWhois) return geoFromIpWhois
 
     return getFallbackGeoLocation(ip, "Geo service unavailable")
 }
