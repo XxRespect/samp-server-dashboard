@@ -1,3 +1,4 @@
+
 'use client'
 import {
     Breadcrumb,
@@ -54,6 +55,8 @@ import {
 
 import { formatTime } from "@/app/utils/datatime/datetime.formater"
 
+import { convertTimestampToDate } from "@/app/utils/datatime/timestamp.converter"
+
 const dashboardCardClass =
     "rounded-xl border border-white/10 bg-[#171717] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_10px_30px_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.04)] backdrop-blur-sm"
 
@@ -101,7 +104,6 @@ const UserPage = () => {
                     Account not found
                 </AlertTitle>
                 <AlertDescription>
-                    This Account id {userId} doesn't exists in our database<br />
                     {error.message}
                 </AlertDescription>
             </Alert>
@@ -212,13 +214,35 @@ const UserPage = () => {
                                         <span className="text-muted-foreground">Nick:</span>
                                         <span className="font-medium">{data?.user?.Nome ?? "-"}</span>
 
-                                        <span className="text-muted-foreground">Email:</span>
-                                        <span className="font-medium">{data?.user?.Email ?? "-"}</span>
+
+
+
+                                        <span className="text-muted-foreground">Role:</span>
+                                        <span>
+                                            <Badge variant={playerRole.variant}>
+                                                {playerRole.label}
+                                            </Badge>
+                                        </span>
+                                        {data?.user?.Admin ? (
+                                            <>
+                                                <span className="text-muted-foreground">Admin:</span>
+                                                <span className="font-medium">{data?.user?.Admin}</span>
+                                            </>
+                                        ) : null}
+
+                                        {data?.user?.Email ? (
+                                            <>
+                                                <span className="text-muted-foreground">Email:</span>
+                                                <span className="font-medium">{data?.user?.Email ?? "-"}</span>
+                                            </>
+                                        ) : null}
+
 
                                         <span className="text-muted-foreground">Joined:</span>
                                         <span>{formatTime(data?.user?.user_register)}</span>
                                         <span className="text-muted-foreground">Logoff:</span>
-                                        <span>24/03/2026 - 14:34</span>
+                                        <span>{convertTimestampToDate(data?.user?.LasTimer, -3)}</span>
+
                                         <span className="text-muted-foreground">Clan:</span>
                                         <span className="border-b-2 w-40">{data?.user?.Clan ?? "-"}</span>
 
@@ -230,6 +254,7 @@ const UserPage = () => {
 
                                         <span className="text-muted-foreground">Kills/Deaths:</span>
                                         <span>{kills}/{deaths}</span>
+
                                         <span className="text-muted-foreground">Headshots:</span>
                                         <span>{data?.user.HeadShots}</span>
 
@@ -239,12 +264,7 @@ const UserPage = () => {
                                         <span className="text-muted-foreground">Skin:</span>
                                         <span>{data?.user.Skin}</span>
 
-                                        <span className="text-muted-foreground">Role:</span>
-                                        <span>
-                                            <Badge variant={playerRole.variant}>
-                                                {playerRole.label}
-                                            </Badge>
-                                        </span>
+
 
                                         <span className="text-muted-foreground">VIP:</span>
                                         <span><Badge variant={data?.user.IS_VIP ? "default" : "outline"}>{data?.user.IS_VIP ? "Yes" : "No"}</Badge></span>
@@ -298,7 +318,7 @@ const UserPage = () => {
                         </div>
                     </div>
                     {/**RIGHT */}
-                    <div className="w-full xl:w-2/3 space-y-6">
+                    <div className="w-full xl:w-2/3 space-y-6 ">
                         <div className={`${dashboardCardClass} p-4`}>
                             <div className="flex items-center gap-2 w-full">
 
@@ -314,8 +334,8 @@ const UserPage = () => {
                             <div className="mt-4">
                                 <div className="flex items-center gap-7 mt-5">
                                     <span className="font-bold ">Serial : </span>
-                                    <span>{data?.user.Gpci} </span><Button className="cursor-pointer hover:transition-all" variant='outline'>
-                                        <Search size={34} className="mr-auto" /></Button>
+                                    <span>{data?.user.Gpci} </span><Button className="cursor-pointer hover:transition-all" variant='outline' asChild>
+                                        <Link href='/dashboard/users'><Search size={34} className="mr-auto" /></Link></Button>
 
                                 </div>
 
@@ -347,7 +367,7 @@ const UserPage = () => {
                                     <span>{data?.user.Device}</span>
 
                                     <span className="text-muted-foreground">VPN:</span>
-                                    <span><Badge variant='outline'>{data?.geoLocation.proxy ? 'Sim' : 'Não'}</Badge></span>
+                                    <span><Badge variant='outline'>{data?.geoLocation.proxy ? 'Yes' : 'No'}</Badge></span>
 
                                 </div>
                                 <hr />

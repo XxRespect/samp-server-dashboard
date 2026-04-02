@@ -5,7 +5,7 @@ export default function AppFooter() {
         <>
         <div className="w-full border-t p-4 flex items-center justify-center">
             <span className="text-sm text-muted-foreground">
-                &copy; 2026 SAMP Dashboard. All rights reserved.
+                &copy; 2026 Brasil RP. All rights reserved.
             </span>
         </div>
         </>

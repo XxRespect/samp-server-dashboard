@@ -8,7 +8,8 @@ export interface Players {
     Online: number,
     Score: number,
     user_register: string,
-    timestamp: string,
+    timestamp: string | number,
+    LasTimer: string | number
 }
 
 

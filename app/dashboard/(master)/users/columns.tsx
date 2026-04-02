@@ -5,39 +5,64 @@ import Link from 'next/link'
 import { formatTime } from '@/app/utils/datatime/datetime.formater'
 import { DataTable } from './data-table'
 import { Badge } from '@/components/ui/badge'
+import { convertTimestampToDate } from '@/app/utils/datatime/timestamp.converter'
+import { Button } from '@/components/ui/button'
+import { ArrowUpDown } from 'lucide-react'
 
 
 const getValidImageUrl = (url: string | null | undefined): string => {
     if (!url) return '/default-avatar.png'
-    
+
     // Se já é URL absoluta, retorna
     if (url.startsWith('http://') || url.startsWith('https://')) {
         return url
     }
-    
+
     // Se é caminho relativo sem slash, adiciona
     if (!url.startsWith('/')) {
         return `/${url}`
     }
-    
+
     return url
 }
 
 
 
- const columns: ColumnDef<Players>[] = [
+const columns: ColumnDef<Players>[] = [
+    
+    {
+
+        
+        accessorKey: "id",
+        id: "id",
+            header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    ID
+                    <ArrowUpDown  />
+                </Button>
+            )
+        },
+            cell: ({ row }) => {
+            return <div>{row.getValue('id')}</div>
+        }
+    },
     {
         accessorKey: "profile",
         header: "",
-        cell: ({row}) => {
+        cell: ({ row }) => {
             const imageUrl = getValidImageUrl(row.getValue('profile'))
             return (
-                <Image 
-                    src={imageUrl} 
-                    alt={row.original.Nome} 
-                    width={50} 
-                    height={50} 
-                    className='rounded-full '
+                <Image
+                    src={imageUrl}
+                    alt={row.original.Nome}
+                    width={50}
+                    height={50}
+                    className="rounded-full object-cover w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16"
                     onError={(e) => {
                         e.currentTarget.src = '/default-avatar.png'
                     }}
@@ -47,8 +72,20 @@ const getValidImageUrl = (url: string | null | undefined): string => {
     },
     {
         accessorKey: "Nome",
-        header: "Name",
-        cell: ({row}) => {
+        id: "Nome",
+        header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
             const isBanned = row.original.BANNED > 0;
             const isAdminTemp = row.original.ADMIN_TEMP > 0;
             const isAdmin = row.original.Admin > 0;
@@ -68,12 +105,12 @@ const getValidImageUrl = (url: string | null | undefined): string => {
             }
 
             return (
-                <div className="grid grid-cols-1">
+                <div className="grid grid-cols-1  className='shadow-lg shadow-gray-300/6'">
                     <Link href={`/dashboard/users/${row.original.id}`}>
                         {row.getValue('Nome')}
                     </Link>
                     <span className="text-xs text-muted-foreground">
-                        <Badge className=' ' variant={badgeVariant}><p>{statusText}</p></Badge>
+                        <Badge className='shadow-lg shadow-gray-300/7' variant={badgeVariant}><p className={statusText == "Banido" ? "text-white": ""}>{statusText}</p></Badge>
                     </span>
                 </div>
             )
@@ -81,30 +118,75 @@ const getValidImageUrl = (url: string | null | undefined): string => {
     },
     {
         accessorKey: "Score",
-        header: "Score",
-         cell: ({row}) => {
+        id: "Score",
+         header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Score
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
             return <div>{row.getValue('Score')}</div>
         }
     },
     {
         accessorKey: "user_register",
-        header: "Joined",
-        cell: ({row}) => {
+         header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Joined
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
             return <div>{formatTime(row.getValue('user_register'))}</div>
         }
 
     },
     {
-        accessorKey: "timestamp",
-        header: "last login",
-         cell: ({row}) => {
-            return <div>{formatTime(row.getValue('timestamp'))}</div>
+        accessorKey: "LasTimer",
+         header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Logoff
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            return <div>{convertTimestampToDate(row.getValue('LasTimer'), -3)}</div>
         }
     },
     {
         accessorKey: "Online",
-        header: "status",
-         cell: ({row}) => {
+         header: ({ column }) => {
+            return (
+                <Button
+                className='shadow-lg shadow-gray-300/6'
+                    variant="outline"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
             return <div><Badge className={row.getValue('Online') ? "bg-green-500 text-white" : "bg-gray-500 text-white"} variant={row.getValue('Online') ? "outline" : "ghost"}>
                 {row.getValue('Online') ? 'Online' : 'Offline'}
             </Badge></div>
@@ -115,8 +197,23 @@ const getValidImageUrl = (url: string | null | undefined): string => {
 
 interface Props {
     players: Players[]
+    search: string
+    onSearch: (value: string) => void
+    page: number
+    onPageChange: (page: number) => void
+    hasNextPage: boolean
 }
 
-export default function PlayersDaTable({ players }: Props) {
-    return <DataTable columns={columns} data={players} />
+export default function PlayersDaTable({ players, search, onSearch, page, onPageChange, hasNextPage }: Props) {
+    return (
+      <DataTable
+        columns={columns}
+        data={players}
+        search={search}
+        onSearch={onSearch}
+        page={page}
+        onPageChange={onPageChange}
+        hasNextPage={hasNextPage}
+      />
+    )
 }

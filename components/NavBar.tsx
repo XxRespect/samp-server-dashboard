@@ -119,14 +119,14 @@ const NavBar = () => {
                                     <span><FaHome /></span><Link href="/dashboard">Home</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <span><UserIcon /></span><Link href="/me">Account</Link>
+                                    <span><UserIcon /></span><Link href="/dashboard/profile">Account</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <span><MdSupportAgent /></span><Link href="/dashboard/support">Support</Link>
                                 </DropdownMenuItem>
                                 
                                 <DropdownMenuItem>
-                                    <span><IoIosPeople /></span><Link href="/dashboard/players">Players</Link>
+                                    <span><IoIosPeople /></span><Link href="/dashboard/users">Players</Link>
                                 </DropdownMenuItem>
                                 
                             </DropdownMenuGroup>

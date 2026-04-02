@@ -28,6 +28,7 @@ export type UserType = {
     Ip: string,
     Clan:string,
     Preso: number | null,
+    LasTimer: string | number
     profile: string
     HeadShots: number | null,
     Email: string | null,

@@ -124,7 +124,7 @@ const SideBar = () => {
 
     return (
         <>
-            <Sidebar collapsible='icon'>
+            <Sidebar collapsible='icon'  className='shadow-lg shadow-gray-300/6 overflow-x-hidden' >
                 <SidebarHeader className='py-4'>
                     <SidebarMenu>
                         <SidebarMenuItem>
@@ -134,13 +134,13 @@ const SideBar = () => {
                                         <AvatarImage src="https://github.com/evilrabbit.png" />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
-                                    <span className="text-lg font-bold">Game Panel</span>
+                                    <span className="text-lg font-bold "><p className="text-shadow-lg/50">Game Panel</p></span>
                                 </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarHeader>
-                <SidebarSeparator className='w-45' />
+                <SidebarSeparator className='w-45 mt-1 shadow-lg shadow-gray-500/20' />
                 <SidebarContent>
                     <SidebarGroup>
                         <SidebarGroupLabel>
@@ -244,7 +244,7 @@ const SideBar = () => {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/tickets'>
+                                        <Link href='/dashboard/tickets'>
                                             <MdSupportAgent className='w-4 h-4' />
                                             <span>Tickets</span>
                                         </Link>
@@ -252,7 +252,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/banneds'>
+                                        <Link href='/dashboard/banneds'>
                                             <MdBlock className='w-4 h-4' />
                                             <span>Banneds</span>
                                         </Link>
@@ -260,7 +260,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/ipbanneds'>
+                                        <Link href='/dashboard/ipbanneds'>
                                             <MdBlock className='w-4 h-4' />
                                             <span>Ip Banneds</span>
                                         </Link>
@@ -268,7 +268,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/muteds'>
+                                        <Link href='/dashboard/muted'>
                                             <TbMessageCircleX className='w-4 h-4' />
                                             <span>Muted</span>
                                         </Link>
@@ -276,7 +276,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/jailed'>
+                                        <Link href='/dashboard/jail'>
                                             <Columns4 className='w-4 h-4' />
                                             <span>Jail</span>
                                         </Link>
@@ -284,7 +284,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/jailed'>
+                                        <Link href='/dashboard/admins'>
                                             <RiAdminFill className='w-4 h-4' />
                                             <span>Admins</span>
                                         </Link>
@@ -292,7 +292,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/auditorium'>
+                                        <Link href='/dashboard/auditorium'>
                                             <MdManageHistory  className='w-4 h-4' />
                                             <span>Auditorium</span>
                                         </Link>
@@ -300,7 +300,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/logs'>
+                                        <Link href='/dashboard/logs'>
                                             <LuLogs className='w-4 h-4' />
                                             <span>Logs</span>
                                         </Link>
@@ -308,7 +308,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/logs'>
+                                        <Link href='/dashboard/chatlogs'>
                                             <MdOutlineMarkUnreadChatAlt className='w-4 h-4' />
                                             <span>Chat Logs</span>
                                         </Link>
@@ -316,7 +316,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/purchases'>
+                                        <Link href='/dashboard/purchases'>
                                             <CreditCard className='w-4 h-4' />
                                             <span>Purchases</span>
                                         </Link>
@@ -324,7 +324,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/server'>
+                                        <Link href='/dashboard/server'>
                                             <ServerCrash className='w-4 h-4' />
                                             <span>Server</span>
                                         </Link>
@@ -346,7 +346,7 @@ const SideBar = () => {
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/accounts'>
+                                        <Link href='/dashboard/accounts'>
                                             <FaUsersCog />
                                             <span>Accounts</span>
                                         </Link>
@@ -354,7 +354,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/acsettings'>
+                                        <Link href='/dashboard/anticheat'>
                                             <MonitorCog />
                                             <span>Anti Cheat</span>
                                         </Link>
@@ -363,7 +363,7 @@ const SideBar = () => {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/objects'>
+                                        <Link href='/dashboard/objects'>
                                             <FaRegObjectGroup className='w-4 h-4' />
                                             <span>Objects</span>
                                         </Link>
@@ -371,7 +371,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/serials'>
+                                        <Link href='/dashboard/serials'>
                                             <MdBlock className='w-4 h-4' />
                                             <span>Serial Banneds</span>
                                         </Link>
@@ -379,7 +379,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='dashboard/serials'>
+                                        <Link href='/dashboard/maps'>
                                             <FaMap className='w-4 h-4' />
                                             <span>Maps</span>
                                         </Link>

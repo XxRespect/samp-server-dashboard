@@ -14,9 +14,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
     try {
         const { userid } = await params
         const parsedUserId = Number(userid)
-        if (!Number.isInteger(parsedUserId)) {
+        console.log(`[API GET USER] Requesting user with ID: ${userid}, Parsed ID: ${parsedUserId}`)
 
-            return NextResponse.json({ message: `Invalid accound Id` }, { status: 400 })
+        if (!Number.isInteger(parsedUserId)) {
+            console.log(`[API GET USER] Invalid user ID: ${userid}`)
+            return NextResponse.json({ message: `Invalid Account Id` }, { status: 400 })
         }
 
 
@@ -38,6 +40,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
                 cidade: true,
                 Dinheiro: true,
                 Online: true,
+                LasTimer: true,
                 regiao: true,
                 Skin: true,
                 cep: true,
@@ -65,8 +68,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
         })
 
         if (!user) {
+            console.log(`[API GET USER] User not found in database for ID: ${parsedUserId}`)
             return NextResponse.json({ message: `User not found` }, { status: 404 })
         }
+
+        console.log(`[API GET USER] User found: ${user.Nome} (ID: ${user.id})`)
 
         const userBanInfo = await prisma.ban.findFirst({
             where: {
@@ -135,7 +141,29 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
             },
         })
 
-        const geoLocation = await getGeoLocation(user.Ip)
+        let geoLocation
+        try {
+            geoLocation = await getGeoLocation(user.Ip)
+        } catch (geoError) {
+            console.warn(`Geo lookup for user ${user.id} failed, using fallback geo data.`, geoError)
+            geoLocation = {
+                city: "Unknown",
+                region: "Unknown",
+                country: "Unknown",
+                isp: "Unknown",
+                org: "Unknown",
+                zip: "Unknown",
+                proxy: false,
+                timezone: "UTC",
+                query: user.Ip || "",
+                regionName: "Unknown",
+                as: "",
+                countryCode: "",
+                dns: {
+                    ip: "",
+                },
+            }
+        }
 
         const userLoginLogs = await prisma.connect_logs.findMany({
             where: {

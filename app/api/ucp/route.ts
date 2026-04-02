@@ -1,29 +1,5 @@
-export { NextResponse } from 'next/server';
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import {  NextResponse} from 'next/server'
+export async function GET(req: Request) {
+    return NextResponse.json({message: 'Hello World'}, {status: 200})
 
-
-export async function GET(req: NextRequest) {
-    try {
-        const users = await prisma.player.findMany({
-            select: {
-                Nome: true,
-                id: true,
-                banreason: true,
-            },
-                orderBy: {
-                    id: 'desc'
-                },
-                where: {
-                    BANNED: 1
-                }
-            
-        });
-         return NextResponse.json({ message: 'UCP data fetched successfully', users },{status: 200});
-    }
-    catch (error) {
-        console.error('Error fetching UCP data:', error);
-        return NextResponse.json({ error: 'Failed to fetch UCP data' }, { status: 500 });
-    }
 }
-

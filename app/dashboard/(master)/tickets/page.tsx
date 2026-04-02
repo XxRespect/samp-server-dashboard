@@ -13,7 +13,7 @@ function page() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Jaileds</BreadcrumbPage>
+              <BreadcrumbPage>Tickets</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
