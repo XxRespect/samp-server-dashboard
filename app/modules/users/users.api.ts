@@ -36,3 +36,5 @@ export const getPlayers = async (params:{
         throw new Error('Failed to fetch players')
     }
 }
+
+

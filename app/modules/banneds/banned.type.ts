@@ -1,11 +1,12 @@
 export interface BannedsProps {
     Nick: string,
-    banid: number,
+    banid: number | string | null,
     motivo: string,
     adm: string,
     desban: number,
     data: number | string,
     adminid: number,
+    accid: number | null,
     ban: number
 }
 

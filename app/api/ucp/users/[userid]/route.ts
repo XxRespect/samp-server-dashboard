@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
         const parsedUserId = Number(userid)
         console.log(`[API GET USER] Requesting user with ID: ${userid}, Parsed ID: ${parsedUserId}`)
 
-        if (!Number.isInteger(parsedUserId)) {
+        if (!Number?.isInteger(parsedUserId)) {
             console.log(`[API GET USER] Invalid user ID: ${userid}`)
             return NextResponse.json({ message: `Invalid Account Id` }, { status: 400 })
         }

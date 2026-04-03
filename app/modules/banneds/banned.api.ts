@@ -3,6 +3,6 @@ import { bannedsResponse } from './banned.type'
 
 
 export default async function getBanneds(): Promise<bannedsResponse> {
-    const { data } = api.get<bannedsResponse>('api/banneds')
+    const { data } = await api.get<bannedsResponse>('ucp/banneds')
     return data
 }

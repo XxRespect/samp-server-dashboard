@@ -6,13 +6,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest){
 
     const { searchParams } = new URL(req.url)
-    const limit = Number(searchParams.get("limit") || "20")
+    const limit = Number(searchParams.get("limit") || "30")
     const page = Number(searchParams.get("page") || "1")
     const search =  searchParams.get("search") || ""
 
     try {
         const banneds = await prisma.ban.findMany({
-            take: limit,
             skip: (page - 1) * limit,
             where: {
                 Nick: {
@@ -25,9 +24,11 @@ export async function GET(req: NextRequest){
                 motivo: true,        
                 adm: true,
                 desban: true,
+                accid: true,
                 data: true,
                 adminid: true,
                 ban: true
+            
 
             }
         })
