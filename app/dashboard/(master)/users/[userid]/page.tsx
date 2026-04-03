@@ -134,8 +134,8 @@ const UserPage = () => {
                 {/**CONTAINER */}
                 <div className="mt-5 flex flex-col xl:flex-row gap-8">
                     {/**LEFT */}
-                    <div className="w-full xl:w-1/3 space-y-6">
-                        <div className={`${dashboardCardClass} p-4`}>
+                    <div className="w-full xl:w-1/3 space-y-6 ">
+                        <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <h1 className="text-xl font-semibold">Player Awards and Tags</h1>
                             <div className="flex gap-4 mt-4">
                                 <HoverCard>
@@ -167,29 +167,29 @@ const UserPage = () => {
                                 </HoverCard>
                             </div>
                         </div>
-                        <div className={`${dashboardCardClass} p-4`}>
+                        <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/13`}>
                             <h1 className="text-xl font-semibold">Player Information</h1>
                             <h2 className="text-xl text-muted-foreground">
                                 <div className="flex flex-row items-center">
                                     <Avatar size='lg' className="m-1">
                                         <AvatarImage src={data?.user.profile} />
-                                        <AvatarFallback>{data?.user.Nome}</AvatarFallback>
+                                        <AvatarFallback><p className="text-shadow-lg/30 ">{data?.user.Nome}</p></AvatarFallback>
                                         <AvatarBadge className={data?.user.Online ? "bg-green-600" : "bg-red-500"} />
                                     </Avatar>
-                                    {isLoading ? <Spinner className="size-6"></Spinner> : isError ? "Failed to load user" : data?.user?.Nome ?? "Unknown user"}
+                                    <p className="text-shadow-lg/60">{data?.user.Nome}</p>
                                 </div>
 
                             </h2>
 
                             <div className="mt-4 space-y-5">
-                                <div className="flex items-center justify-between rounded-lg border border-white/8 bg-white/2 px-3 py-2">
+                                <div className="flex items-center justify-between rounded-lg border border-white/8 bg-white/2 px-3 py-2 shadow-lg shadow-gray-600/13">
                                     <span className="text-sm text-muted-foreground">Player status</span>
                                     <Badge variant={playerStatus.variant}>
-                                        {playerStatus.label}
+                                        <p className="text-shadow-lg/60">{playerStatus.label}</p>
                                     </Badge>
                                 </div>
 
-                                <div className="rounded-lg border border-white/8 bg-white/2 p-4">
+                                <div className="rounded-lg border border-white/8 bg-white/2 p-4 shadow-lg shadow-gray-600/13 ">
                                     <div className="mb-4">
                                         <p className="text-sm font-medium">Player overview</p>
                                         <p className="text-sm text-muted-foreground">Core account details and progression</p>
@@ -302,7 +302,7 @@ const UserPage = () => {
                         <div className={`${dashboardCardClass} p-4`}>
                             <CardList title='Popular Contents' />
                         </div>
-                        <div className="col-span-1 space-y-3">
+                        <div className="col-span-1 space-y-3 shadow-lg shadow-gray-600/16">
                             <Card size="sm" className={`${dashboardCardClass} h-full`}>
                                 <CardHeader>
                                     <CardTitle>
@@ -318,8 +318,8 @@ const UserPage = () => {
                         </div>
                     </div>
                     {/**RIGHT */}
-                    <div className="w-full xl:w-2/3 space-y-6 ">
-                        <div className={`${dashboardCardClass} p-4`}>
+                    <div className="w-full xl:w-2/3 space-y-6  ">
+                        <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <div className="flex items-center gap-2 w-full">
 
                                 <Avatar size='lg'>
@@ -331,7 +331,7 @@ const UserPage = () => {
                             </div>
                             <h1 className="text-lg text-muted-foreground p-4"><Badge variant='outline'>Admin Panel</Badge></h1>
                             <hr />
-                            <div className="mt-4">
+                            <div className="mt-4 ">
                                 <div className="flex items-center gap-7 mt-5">
                                     <span className="font-bold ">Serial : </span>
                                     <span>{data?.user.Gpci} </span><Button className="cursor-pointer hover:transition-all" variant='outline' asChild>
@@ -341,7 +341,7 @@ const UserPage = () => {
 
                                 <h1 className="font-bold text-xl border-b-blue">Geo Information</h1>
                                 <hr />
-                                <div className="grid grid-cols-2 gap-y-2 mt-4 mb-3 w-full max-w-2xl">
+                                <div className="grid grid-cols-2 gap-y-2 mt-4 mb-3 w-full max-w-2xl ">
                                     <span className="text-muted-foreground">IP:</span>
                                     <span>{data?.geoLocation.query}</span>
 
@@ -375,10 +375,10 @@ const UserPage = () => {
                                 <Button className="hover:cursor-pointer hover:p-4 mt-4 hover:transition-all hover:shadow-2xl ml-3" variant='secondary'>Search Player AC<Search /> </Button>
                             </div>
                         </div>
-                        <div className={`${dashboardCardClass} p-4`}>
+                        <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <ChartLineDefault />
                         </div>
-                        {data?.user.BANNED ? <div className={`${dashboardCardClass} p-4`}>
+                        {data?.user.BANNED ? <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <Card className={dashboardCardClass}>
                                 <CardHeader>
                                     <CardTitle className="flex"><Ban size={20} /> <span className="ml-3">Ban information</span></CardTitle>
@@ -408,7 +408,7 @@ const UserPage = () => {
                                 </CardContent>
                             </Card>
                         </div> : <div className="hidden"></div>}
-                        <div className={`${dashboardCardClass} p-4`}>
+                        <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <div className="col-span-2 space-y-3">
                                 <Card size='sm' className={`${dashboardCardClass} `}>
                                     <CardTitle className="border-b p-1"><span className="text-1lg">Login/Logout</span></CardTitle>
@@ -446,7 +446,7 @@ const UserPage = () => {
                                     </CardContent>
                                 </Card>
                             </div>
-                            <div className="col-span-2 space-y-6 mt-4 shadow-amber-50">
+                            <div className="col-span-2 space-y-6 mt-4  shadow-lg shadow-gray-600/16">
                                 <Card size='sm' className={dashboardCardClass}>
                                     <CardTitle className="border-b p-1"><span className="text-1lg">Accounts with same Serial: {data?.user.Gpci}</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
