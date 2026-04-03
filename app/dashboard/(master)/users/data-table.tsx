@@ -125,6 +125,22 @@ export function DataTable<TData, TValue>({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+          <div className='ml-3'>
+            <DropdownMenu  >
+              <DropdownMenuTrigger  asChild>
+                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">20 rows</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel ><p>Filters</p></DropdownMenuLabel>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all grid grid-cols-1'><p><Button className='w-full' onClick={() => setOrderBy("Online")}  variant='link'>Status</Button></p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p>Banneds</p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p>Last Login</p></DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <Table >
