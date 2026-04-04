@@ -38,7 +38,7 @@ function UsersPageContent() {
         page,
         limit: 20,
         search,
-        sortBy: "Online",
+        sortBy: "id",
         order: "desc"
     })
 

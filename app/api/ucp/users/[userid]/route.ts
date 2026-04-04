@@ -172,7 +172,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
             orderBy: {
                 id: "desc"
             },
-            take: 60
+            take: 80
 
         })
 

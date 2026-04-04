@@ -5,7 +5,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
 } from "@tanstack/react-table"
 
 import {
@@ -26,12 +25,22 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+  page,
+  limit,
+  setPage,
+  totalPages,
+  total,
+}: DataTableProps<TData, TValue> & { 
+  page: number; 
+  limit: number; 
+  setPage: (value: string) => void;
+  totalPages: number;
+  total: number;
+}) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   })
 
   return (
@@ -72,29 +81,37 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {data.length === 0 ? "Loading....." : "Loading..."}
+                {data.length === 0 ? "No Results" : "Loading..."}
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="text-sm text-muted-foreground">
+          Mostrando {((page - 1) * limit) + 1} a {Math.min(page * limit, total)} de {total} resultados
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage(String(page - 1))}
+            disabled={page <= 1}
+          >
+            Previous
+          </Button>
+          <span className="text-sm">
+            Página {page} de {totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage(String(page + 1))}
+            disabled={page >= totalPages}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   )

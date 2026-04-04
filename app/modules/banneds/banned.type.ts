@@ -13,4 +13,7 @@ export interface BannedsProps {
 
 export interface bannedsResponse {
     banneds: BannedsProps[]
+    total: number
+    totalPages: number
+    currentPage: number
 }

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const page = Number(searchParams.get("page") || 1)
     const limit = Number(searchParams.get("limit") || 20)
     const search = (searchParams.get("search") || "")
-    const sortBy = searchParams.get("sortBy") || "Online" || "BANNED"
+    const orderBy = searchParams.get("orderBy") || "id"
     const order = searchParams.get("order") || "desc"
     const skip = (page - 1) * limit
 
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
             take: limit,
             where,
             orderBy: {
-                [sortBy]: order
+                [orderBy]: order
             },
             select: {
                 id: true,
