@@ -64,6 +64,7 @@ export async function GET(req: NextRequest,
                 HeadShots: true,
                 Email: true,
                 HasEmail: true,
+                PLAYER_CLAN: true
 
             },
 
@@ -143,6 +144,14 @@ export async function GET(req: NextRequest,
             },
         })
 
+
+
+
+        const getclanId = await prisma.members.findFirst({
+            where: {
+                M_ACCID: user.id
+            }
+        })
         let geoLocation
         try {
             geoLocation = await getGeoLocation(user.Ip)
@@ -199,7 +208,8 @@ export async function GET(req: NextRequest,
             userBanInfo,
             geoLocation,
             userLoginLogs,
-            nicksChangeLogs
+            nicksChangeLogs,
+            getclanId
         }, { status: 200 })
     } catch (error) {
         console.error('Error fetching UCP data:', error);

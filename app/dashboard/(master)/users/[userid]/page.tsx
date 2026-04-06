@@ -244,7 +244,11 @@ const UserPage = () => {
                                         <span>{convertTimestampToDate(data?.user?.LasTimer, -3)}</span>
 
                                         <span className="text-muted-foreground">Clan:</span>
-                                        <span className="border-b-2 w-40">{data?.user?.Clan ?? "-"}</span>
+                                        <span className="border-b-2 w-40">
+                                            <Link href={`/dashboard/clans/${data?.getclanId?.M_CLANID}`}>
+                                                {data?.user.Clan}
+                                            </Link>
+                                        </span>
 
                                         <span className="text-muted-foreground">Cash:</span>
                                         <span><Badge variant='outline'>R$ {formatPlayerNumber(data?.user.Dinheiro)}</Badge></span>

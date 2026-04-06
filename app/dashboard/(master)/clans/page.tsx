@@ -9,9 +9,18 @@ import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
-import { Card,CardHeader,CardTitle,CardContent,CardDescription,CardFooter} 
-from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
+  from '@/components/ui/card'
 import { Suspense } from 'react'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+} from '@/components/ui/pagination'
 
 function ClansPage() {
   const [search, setSearch] = useQueryState('search', {
@@ -40,6 +49,9 @@ function ClansPage() {
     }
   }
 
+  const currentPage = Number(page) || 1
+  
+
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["search", "page", "limit", search, page, limit],
@@ -49,6 +61,14 @@ function ClansPage() {
       limit: limit
     })
   })
+  const totalPages = data?.totalPages || 1
+
+  const handlePageChange = (nextPage: number) => {
+    if (nextPage < 1 || nextPage > totalPages) return
+    setPage(String(nextPage))
+  }
+
+  const limitUnfiltered = data?.limit || 25
 
   return (
     <>
@@ -86,6 +106,44 @@ function ClansPage() {
           </div>
 
           <DataTable data={data?.clans || []} columns={columns} />
+          <CardFooter className='grid grid-cols-3'>
+            <div className='grid col-span-2'>
+              <p className='text-sm text-shadow-lg text-shadow-grey'>Showing {Number(page) < 1 ? 25 : Number(page) * limitUnfiltered}  of {data?.total} Clans</p>
+            </div>
+            {totalPages > 1 && (
+              <Pagination className="py-4">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handlePageChange(currentPage - 1)
+                      }}
+                      className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <span className="px-4 text-sm">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                  </PaginationItem>
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handlePageChange(currentPage + 1)
+                      }}
+                      className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
+          </CardFooter>
         </Card>
 
       </div>
@@ -95,8 +153,13 @@ function ClansPage() {
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ClansPage />
-    </Suspense>
+    <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <ClansPage />
+
+
+
+      </Suspense>
+    </>
   )
 }

@@ -7,6 +7,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+
+
 import {
   Table,
   TableBody,
@@ -14,6 +16,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableFooter
 } from "@/components/ui/table"
 
 interface DataTableProps<TData, TValue> {
@@ -43,9 +46,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 )
               })}
@@ -74,7 +77,12 @@ export function DataTable<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
+        <TableFooter>
+ 
+        </TableFooter>
       </Table>
+
+
     </div>
   )
 }

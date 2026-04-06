@@ -32,7 +32,9 @@ export type UserType = {
     profile: string
     HeadShots: number | null,
     Email: string | null,
-    HasEmail: boolean
+    HasEmail: boolean,
+    PLAYER_CLAN: boolean
+    getclanId: number
 }
 
 export interface AccountsSameIp {
@@ -102,7 +104,10 @@ export type UserResponse = {
     userBanInfo: userBanInfoInter | null,
     geoLocation: GeoLocation,
     userLoginLogs: userLoginLogsInter[],
-    nicksChangeLogs: userNicksInter[]
+    nicksChangeLogs: userNicksInter[],
+    getclanId?: {
+        M_CLANID: number
+    } | null
 }
 
 /** Resposta de GET /api/ucp/users — lista de jogadores do banco */

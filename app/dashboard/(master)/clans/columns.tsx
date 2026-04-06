@@ -38,8 +38,11 @@ export const columns: ColumnDef<ClansInterface>[] = [
     header: "Points",
   },
   {
-    accessorKey: "CLAN_MEMBROS",
+    accessorKey: "clanMembers",
     header: "Members",
+    cell: ({row}) => {
+      return (<div>{row.original.clanMembers}</div>)
+    }
   },
   
 ]
