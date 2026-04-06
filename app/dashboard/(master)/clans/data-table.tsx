@@ -15,8 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Card } from '@/components/ui/card'
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -25,18 +24,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  page,
-  limit,
-  setPage,
-  totalPages,
-  total,
-}: DataTableProps<TData, TValue> & { 
-  page: number; 
-  limit: number; 
-  setPage: (value: string) => void;
-  totalPages: number;
-  total: number;
-}) {
+}: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
@@ -44,8 +32,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <Card>
-    <div className="overflow-hidden rounded-md border m-5">
+    <div className="overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -82,41 +69,12 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                {data.length === 0 ? "No Results" : "Loading..."}
+                No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="text-sm text-muted-foreground">
-          Mostrando {((page - 1) * limit) + 1} a {Math.min(page * limit, total)} de {total} resultados
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage(String(page - 1))}
-            disabled={page <= 1}
-          >
-            Previous
-          </Button>
-          <span className="text-sm">
-            Página {page} de {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPage(String(page + 1))}
-            disabled={page >= totalPages}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
     </div>
-    </Card>
   )
 }

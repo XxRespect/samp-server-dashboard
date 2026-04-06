@@ -12,9 +12,10 @@ import { columns } from './columns'
 import getBanneds from '@/app/modules/banneds/banned.api'
 import {Card } from '@/components/ui/card'
 import { useQueryState } from 'nuqs'
+import { Suspense } from 'react'
 
 
-function Page() {
+function BannedsPage() {
   const [search, setSearch] = useQueryState('search', {
     defaultValue: ''
   })
@@ -72,7 +73,7 @@ function Page() {
         </Breadcrumb>
       </div>
       <div className="m-5 shadow-lg shadow-grey-300/50">
-        <Card >
+        <Card className='bg-primary-background'>
           <div className="p-4 h-full">
             <div className="flex gap-2 max-w-sm">
               <Input
@@ -103,4 +104,10 @@ function Page() {
   )
 }
 
-export default Page
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BannedsPage />
+    </Suspense>
+  )
+}

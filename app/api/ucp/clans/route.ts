@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
+    const page = Number(searchParams.get("page") || 1)
+    const search = searchParams.get("search") || ""
+    const limit = Number(searchParams.get("limit") || 20)
     let where = {}
 
     if (!Number(searchParams.get("search"))) {
@@ -18,12 +21,13 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-
-        const search = searchParams.get("search") || ""
-
-
         if (!Number(search)) {
-
+            where = {
+                ...where,
+                CLAN_NAME: {
+                    contains: search
+                }
+            }
         }
 
         const clans = await prisma.clan.findMany({
@@ -32,7 +36,7 @@ export async function GET(req: NextRequest) {
 
 
 
-        let clanMembers;
+        let clanMembers
 
         try {
             clanMembers = await prisma.members.count({

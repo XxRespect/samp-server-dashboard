@@ -10,7 +10,9 @@ const serializeBigInt = <T>(data: T): T =>
     )
 
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ userid: string }> }) {
+export async function GET(req: NextRequest, 
+    { params }: 
+    { params: Promise<{ userid: string }> }) {
     try {
         const { userid } = await params
         const parsedUserId = Number(userid)
