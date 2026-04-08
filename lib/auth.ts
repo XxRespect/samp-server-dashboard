@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/schemas/login.schema";
 
 export const authConfig = {
+  trustHost: true,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -14,9 +15,19 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("[AUTH] authorize called", {
+          Nome: credentials?.Nome,
+          hasPassword: Boolean(credentials?.password),
+          passwordLength:
+            typeof credentials?.password === "string"
+              ? credentials.password.length
+              : 0,
+        });
+
         const parsed = LoginSchema.safeParse(credentials);
 
         if (!parsed.success) {
+          console.log("[AUTH] schema validation failed", parsed.error.flatten());
           return null;
         }
 
@@ -28,21 +39,39 @@ export const authConfig = {
             id: true,
             Nome: true,
             Senha: true,
+            Salt: true,
             Admin: true,
             role: true,
           },
         });
 
         if (!user) {
+          console.log("[AUTH] user not found", { Nome });
           return null;
         }
+
+        console.log("[AUTH] user found", {
+          id: user.id,
+          Nome: user.Nome,
+          role: user.role,
+          admin: user.Admin,
+          hashPrefix: user.Senha.slice(0, 4),
+          hasSalt: Boolean(user.Salt && user.Salt !== "0"),
+        });
 
         const normalizedHash = user.Senha.replace(/^\$2y\$/, "$2b$");
         const isValidPassword = await bcrypt.compare(password, normalizedHash);
 
         if (!isValidPassword) {
+          console.log("[AUTH] password compare failed", {
+            Nome,
+            hashPrefix: normalizedHash.slice(0, 4),
+            hasSalt: Boolean(user.Salt && user.Salt !== "0"),
+          });
           return null;
         }
+
+        console.log("[AUTH] login success", { id: user.id, Nome: user.Nome });
 
         const role = user.role ?? "user";
 
