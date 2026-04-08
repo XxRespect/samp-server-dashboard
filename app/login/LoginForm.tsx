@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert"
 
 
+import {useSession} from 'next-auth/react'
+
 
 
 import Form from 'next/form'
@@ -33,7 +35,15 @@ import { redirect } from 'next/navigation'
 
 function LoginForm() {
 
+    const { data: session } = useSession();
+
+    if(session) {
+        redirect('/dashboard')
+    }
+    
     const [state, formAction, isPending] = useActionState(LoginAction, null)
+
+
 
     return (
         <>

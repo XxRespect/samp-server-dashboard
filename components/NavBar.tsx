@@ -51,7 +51,7 @@ const NavBar = () => {
 
                 {/**Right */}
                 <div className='flex items-center gap-4'>
-                    <Link href="/dashboard" className='font-bold text-shadow-blue-50 border-b-1 hover:transition-all hover:scale-120'>{session?.user?.Nome}</Link>
+                    <Link href="/dashboard" className='font-bold text-shadow-blue-50 border-b-1 hover:transition-all'>{session?.user?.Nome}</Link>
 
 
                     <DropdownMenu>
