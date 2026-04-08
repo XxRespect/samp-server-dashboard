@@ -498,6 +498,7 @@ model player {
   user_register     DateTime    @default(now()) @db.DateTime(0)
   profile           String      @default("https://res.cloudinary.com/dcun12csz/image/upload/v1774628141/profile_cfxxfi.webp") @db.VarChar(100)
   timestamp         DateTime    @default(now()) @db.Timestamp(0)
+  role              String?     @default("user") @db.VarChar(14)
   admintemp         admintemp[]
   ban               ban[]
   bantemp           bantemp[]

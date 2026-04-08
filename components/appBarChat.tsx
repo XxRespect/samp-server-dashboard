@@ -27,7 +27,7 @@ export function PlayersChart() {
   return (
     <>
     <h1 className='textt-lg font-medium mb-5'>Players statistc</h1>
-    <ChartContainer config={chartConfig} className="min-h-50 w-full">
+    <ChartContainer id="players-chart" config={chartConfig} className="min-h-50 w-full">
       <BarChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false}/>
         <XAxis 

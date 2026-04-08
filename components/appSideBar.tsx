@@ -85,6 +85,7 @@ import { SiGeneralelectric, SiPlayerdotme } from "react-icons/si";
 import { TbMessageCircleX } from 'react-icons/tb';
 import { AiOutlineSecurityScan } from "react-icons/ai";
 
+import {useSession} from 'next-auth/react'
 
 const Items = [
     {
@@ -121,6 +122,8 @@ const SideBar = () => {
         () => true,
         () => false,
     );
+
+        const {data:session} = useSession()
 
     return (
         <>
@@ -234,7 +237,10 @@ const SideBar = () => {
                         </SidebarGroupContent>
                     </SidebarGroup>
                     <SidebarSeparator className='w-45' />
-                    <SidebarGroup>
+                    {session?.user?.role === "user" ?
+                    null
+                 :  
+                 <SidebarGroup>
                         <SidebarGroupLabel>Administration</SidebarGroupLabel>
                         <SidebarGroupAction>
                             <MdAdminPanelSettings className='w-5 h-4' />
@@ -335,6 +341,8 @@ const SideBar = () => {
                         </SidebarGroupContent>
 
                     </SidebarGroup>
+                 }
+                    
                     <SidebarSeparator />
                     <SidebarGroup>
                         <SidebarGroupLabel>Owner</SidebarGroupLabel>
@@ -400,7 +408,7 @@ const SideBar = () => {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <SidebarMenuButton>
-                                            <User2 />Jan Karlos <ChevronUp className="ml-auto" />
+                                            <User2 />{session?.user?.Nome} <ChevronUp className="ml-auto" />
                                         </SidebarMenuButton>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className='flex flex-col' align="end">

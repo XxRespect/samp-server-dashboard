@@ -15,6 +15,8 @@ import {
   PaintBucket,
   AlertCircleIcon
 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button' 
 import {
   Card,
   CardHeader,
@@ -25,7 +27,7 @@ import {
 } from "@/components/ui/card"
 import { Spinner } from '@/components/ui/spinner'
 import { ChartTooltipIcons } from './clan-charts'
-
+import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -99,6 +101,20 @@ function ClanPage() {
                 <span>Tag:</span>
                 <span ><Badge variant="secondary">{data?.CLAN_TAG}</Badge></span>
 
+                
+                <span>Clan Owner:</span>
+                <span>
+                  {data?.ownerId !== null && data?.ownerId !== undefined ? (
+                    <>
+                    <Button variant='link'>
+                      <Link href={`/dashboard/users/${data.ownerId}`}>{data.CLAN_ONWER}</Link>
+                    </Button>
+                    </>
+                  ) : (
+                    data?.CLAN_ONWER
+                  )}
+                </span>
+
                 <span>Clan Color:</span>
                 <span><PaintBucket style={{ backgroundColor: `#${data?.CLAN_COLOR}`, borderRadius: '50%', padding: `4px` }} /></span>
 
@@ -106,11 +122,16 @@ function ClanPage() {
                 <span>{data?.CLAN_ZONES}</span>
 
 
+
                 <span>Clan Members:</span>
                 <span>{data?.clanMembers}</span>
 
                 <span>Clan Level:</span>
                 <span>{data?.CLAN_LEVEL ?? 0}</span>
+
+                <span>Clan MOD:</span>
+                <span>{data?.CLAN_MOD}</span>
+
 
 
               </CardContent>

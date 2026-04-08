@@ -17,7 +17,7 @@ export const columns: ColumnDef<ClansInterface>[] = [
           <span>
             <Button variant='link' asChild>
               <Link href={`/dashboard/clans/${row.original.CLAN_ID}`}>
-                {row.original.CLAN_NAME}
+                <p style={{color: `#${row.original.CLAN_COLOR}`}}>{row.original.CLAN_NAME}</p>
               </Link>
             </Button>
           </span>

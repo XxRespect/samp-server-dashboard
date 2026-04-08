@@ -11,8 +11,17 @@ export interface ClanMembersInterace {
 
 }
 
+export interface ClanOwnerInterface {
+    id: number
+}
+
+export interface ClanDetail extends ClansInterface {
+    ownerId: number | null
+}
+
 export interface ClanResponse {
     message: string
     clan: ClansInterface,
-    clanMembers: ClanMembersInterace[]
+    clanMembers: ClanMembersInterace[],
+    clanOwner: ClanOwnerInterface | null
 }

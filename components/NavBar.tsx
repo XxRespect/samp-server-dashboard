@@ -29,7 +29,11 @@ import { IoIosPeople } from 'react-icons/io';
 import { useTheme } from 'next-themes';
 import { SidebarTrigger } from './ui/sidebar';
 
+import {useSession} from 'next-auth/react'
+
 const NavBar = () => {
+
+    const {data: session} = useSession();
 
     const { setTheme } = useTheme()
     const {toggleSidebar} = useSidebar()
@@ -47,7 +51,7 @@ const NavBar = () => {
 
                 {/**Right */}
                 <div className='flex items-center gap-4'>
-                    <Link href="/dashboard" className='font-bold text-shadow-blue-50 border-b-1 hover:transition-all hover:scale-120'>Dashboard</Link>
+                    <Link href="/dashboard" className='font-bold text-shadow-blue-50 border-b-1 hover:transition-all hover:scale-120'>{session?.user?.Nome}</Link>
 
 
                     <DropdownMenu>

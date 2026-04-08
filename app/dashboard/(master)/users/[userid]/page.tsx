@@ -8,7 +8,13 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardContent,
+    CardFooter,
+} from '@/components/ui/card'
 
 import CardList from '@/components/CardList'
 import { Badge } from "@/components/ui/badge"
@@ -25,14 +31,12 @@ import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 import { Spinner } from "@/components/ui/spinner"
 import { Skeleton } from "@/components/ui/skeleton"
-
 import {
     Alert,
     AlertDescription,
     AlertTitle
 
 } from '@/components/ui/alert'
-
 import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
@@ -42,19 +46,7 @@ import { getUser } from "@/app/modules/user/user.api"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import { formatPlayerNumber } from "@/app/utils/number/number.formater"
-
-
-
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardContent,
-    CardFooter,
-} from '@/components/ui/card'
-
 import { formatTime } from "@/app/utils/datatime/datetime.formater"
-
 import { convertTimestampToDate } from "@/app/utils/datatime/timestamp.converter"
 
 const dashboardCardClass =

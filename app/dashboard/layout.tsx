@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import DashboardShell from "@/components/dashboard-shell";
 import QueryProvider from "@/app/providers/QueryProvider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Providers } from '@/app/providers/authProvider';
 
 const dashboardFont = Inter({
   subsets: ["latin"],
@@ -25,12 +26,14 @@ export default function DashboardLayout({
   children,
 }: { children: React.ReactNode }) {
   return (
-    <DashboardShell fontClassName={dashboardFont.className}>
-      <NuqsAdapter>
-      <QueryProvider>  
-          {children} 
-      </QueryProvider>
-      </NuqsAdapter>
-    </DashboardShell>
+    <Providers>
+      <DashboardShell fontClassName={dashboardFont.className}>
+        <NuqsAdapter>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </NuqsAdapter>
+      </DashboardShell>
+    </Providers>
   );
 }

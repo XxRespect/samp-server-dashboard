@@ -8,6 +8,7 @@ export interface ClansInterface {
     CLAN_MEMBROS: number
     CLAN_COLOR: string
     CLAN_LEVEL: number
+    CLAN_MOD: string,
     clanMembers: number
 }
 

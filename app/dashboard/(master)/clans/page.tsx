@@ -50,11 +50,13 @@ function ClansPage() {
   }
 
   const currentPage = Number(page) || 1
-  
+
 
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["search", "page", "limit", search, page, limit],
+    queryKey: ["search",
+      "page",
+      "limit", search, page, limit],
     queryFn: () => getClans({
       search: search || "",
       page: page,

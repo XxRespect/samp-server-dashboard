@@ -30,7 +30,7 @@ export function ServerActivityChart() {
     return (
         <>
             <h1 className='textt-lg font-medium mb-5'>Server Activity</h1>
-            <ChartContainer config={chartConfig} className="min-h-50 w-full">
+            <ChartContainer id="server-activity-chart" config={chartConfig} className="min-h-50 w-full">
                 <AreaChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis

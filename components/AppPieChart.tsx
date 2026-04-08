@@ -68,6 +68,7 @@ const chartConfig = {
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
+          id="recently-joined-chart"
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >

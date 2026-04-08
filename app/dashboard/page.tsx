@@ -1,9 +1,6 @@
-'use client'
 
 
-import { useState, useEffect } from 'react'
 import { api } from '@/lib/axios'
-
 
 import { PlayersChart } from "@/components/appBarChat";
 import { ServerActivityChart } from "@/components/AppAreaChart"
@@ -22,13 +19,8 @@ import {
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
-export function DashboardPage() {
+export async function DashboardPage() {
 
-    const [users, SetUsers] = useState([])
-
-    useEffect(() => {
-        
-    },[])
 
     return (
         <>

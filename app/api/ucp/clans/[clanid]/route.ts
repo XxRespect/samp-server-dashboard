@@ -27,11 +27,22 @@ export async function GET(req: NextRequest, {params}: {params: Promise<{clanid: 
             )
         }
 
+
+        const clanOwner = await prisma.player.findFirst({
+            where: {
+                Clan: clan.CLAN_NAME
+            },
+            select: {
+                id: true
+            }
+        })
+
         return NextResponse.json(
             {
                 message: 'Clan fetched successfully',
                 clan,
-                clanMembers
+                clanMembers,
+                clanOwner
             },
             {status: 200}
         )
