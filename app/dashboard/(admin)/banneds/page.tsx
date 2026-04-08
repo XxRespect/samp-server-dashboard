@@ -1,10 +1,23 @@
 'use client'
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import { Breadcrumb,
+   BreadcrumbItem, 
+   BreadcrumbLink, 
+   BreadcrumbList,
+    BreadcrumbPage, 
+    BreadcrumbSeparator
+  } from '@/components/ui/breadcrumb'
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription
+} from '@/components/ui/alert'
+
+
 
 import { DataTable } from './data-table'
 import { useQuery } from '@tanstack/react-query'
@@ -13,6 +26,10 @@ import getBanneds from '@/app/modules/banneds/banned.api'
 import {Card } from '@/components/ui/card'
 import { useQueryState } from 'nuqs'
 import { Suspense } from 'react'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
+
+
 
 
 function BannedsPage() {
@@ -55,6 +72,22 @@ function BannedsPage() {
         limit: limit ? Number(limit) : undefined 
       }),
   })
+
+  const {data: session}  = useSession()
+
+  if(!session || session?.user?.Admin <= 0) {
+    redirect('/dashboard')
+    return (
+      <>
+        <Alert>
+          <AlertTitle>Acceso denied</AlertTitle>
+          <AlertDescription>
+            You do not have permission to access this Page
+          </AlertDescription>
+        </Alert>
+      </>
+    )
+  }
 
   return (
     <>

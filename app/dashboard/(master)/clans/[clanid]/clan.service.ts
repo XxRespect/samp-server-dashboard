@@ -17,3 +17,4 @@ export async function getClan(clanid: number): Promise<ClanDetail> {
     }
 }
 
+

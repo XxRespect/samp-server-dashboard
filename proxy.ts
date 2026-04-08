@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
@@ -12,6 +12,7 @@ export async function middleware(req: NextRequest) {
 
   const isDashboardRoute = pathname.startsWith("/dashboard");
   const isLoginRoute = pathname === "/login";
+
 
   if (!isAuthenticated && isDashboardRoute) {
     const loginUrl = new URL("/login", req.url);

@@ -63,6 +63,10 @@ function ClanPage() {
     <AlertTitle>Error</AlertTitle>
   </Alert></>
 
+
+
+  
+
   return (
     <>
       <div>
@@ -106,7 +110,7 @@ function ClanPage() {
                 <span>
                   {data?.ownerId !== null && data?.ownerId !== undefined ? (
                     <>
-                    <Button variant='link'>
+                    <Button variant='link' asChild>
                       <Link href={`/dashboard/users/${data.ownerId}`}>{data.CLAN_ONWER}</Link>
                     </Button>
                     </>
@@ -146,8 +150,8 @@ function ClanPage() {
         <div className="w-full">
           <ChartTooltipIcons />
         </div>
-        <div className='xl:col-span-2 bg-primary-foreground'>
-
+        <div className='xl:col-span-3 bg-primary-foreground mt-5 p-4 rounded-lg'>
+            <h2>clan Members</h2>
         </div>
       </div>
     </>
