@@ -34,7 +34,7 @@ export const columns: ColumnDef<IpBannedInterface>[] = [
     },
     {
         id: "actions",
-        header: "",
+        header: "actions",
 
         cell: ({ row }) => {
             return (

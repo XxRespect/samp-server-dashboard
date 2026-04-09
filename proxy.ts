@@ -6,10 +6,10 @@ import { auth } from "@/lib/auth";
 const ROUTE_PERMISSIONS: Record<string, string[]> ={
   "/dashboard": ["USER", "ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
   "/dashboard/banneds": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
-  "/dashboard/tickets": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
+  "/dashboard/tickets": ["ADMIN","DEV","SUPERVISOR","OWNER"],
   "/dashboard/ipbanneds": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
   "/dashboard/admins": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
-  "/dashboard/chatlogs": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
+  "/dashboard/chatlogs": ["ADMIN","DEV","SUPERVISOR","OWNER"],
   "/dashboard/jail": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],
   "/dashboard/logs": ["ADMIN","DEV","SUPERVISOR","OWNER"],
   "/dashboard/muted": ["ADMIN","MODERATOR","DEV","SUPERVISOR","OWNER"],

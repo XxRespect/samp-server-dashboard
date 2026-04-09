@@ -1,0 +1,5 @@
+$kind: http-request
+name: users
+url: localhost:3000/api/ucp/users
+method: GET
+order: 1775768432803

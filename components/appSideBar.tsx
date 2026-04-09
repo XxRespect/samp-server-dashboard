@@ -123,7 +123,7 @@ const SideBar = () => {
         () => false,
     );
 
-        const {data:session} = useSession()
+        const {data:session, status} = useSession()
 
     return (
         <>

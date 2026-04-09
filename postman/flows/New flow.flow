@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "name": "New flow",
+  "description": "",
+  "flow": {
+    "description": "",
+    "nodes": {
+      "sRFhcNSc": {
+        "type": "ev/endpoint@3",
+        "pos": {
+          "x": 0,
+          "y": 0
+        },
+        "config": {
+          "inputs": [
+            {
+              "id": "c1GWuEho",
+              "type": "value/reference@2",
+              "kind": "reference",
+              "value": "",
+              "key": "Input 1",
+              "__noIn": true
+            }
+          ],
+          "data": "",
+          "language": "json",
+          "allowAnyType": false
+        },
+        "ui": {
+          "data": {
+            "triggerType": "ev/endpoint@3"
+          },
+          "namedInputsExpanded": true
+        }
+      }
+    },
+    "connections": {
+      "YsGlDdKx": {
+        "source": "cLt2r62N",
+        "sourcePort": "@",
+        "target": "sRFhcNSc",
+        "targetPort": "inputs|c1GWuEho"
+      }
+    },
+    "annotations": {},
+    "groups": {},
+    "webhook": {
+      "payloadContent": "body-only",
+      "responseType": "default"
+    },
+    "forms": {},
+    "modules": {},
+    "io": {
+      "cLt2r62N": {
+        "type": "input",
+        "name": "Input 1",
+        "typeDef": {
+          "type": "string"
+        }
+      }
+    },
+    "ports": {},
+    "meta": {},
+    "scenes": {},
+    "scenarios": {
+      "OXsDOLAn": {
+        "name": "Start Trigger",
+        "type": "scenario@2",
+        "createdOn": 1775769132238,
+        "updatedOn": 1775769132238,
+        "data": {
+          "cLt2r62N": {
+            "id": "cLt2r62N",
+            "key": "Input 1",
+            "value": "",
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "config": {
+      "definitions": {},
+      "constants": {}
+    }
+  },
+  "lockbox": {},
+  "info": {
+    "_postman_id": "2bbffa87-435e-4fec-879b-4665bc54c965"
+  },
+  "_postman_exported_at": "2026-04-09T21:12:13.268Z",
+  "_postman_exported_using": "Postman/Local Mode"
+}
