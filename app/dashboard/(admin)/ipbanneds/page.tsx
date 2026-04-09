@@ -51,6 +51,7 @@ function IpBannedsPage() {
     }
   }
 
+
   return (
     <>
       <div>
@@ -84,6 +85,24 @@ function IpBannedsPage() {
         </div>
         <DataTable data={data?.banned || []}
           columns={columns} />
+          <div className='flex items-center justify-end space-x-2 py-4'>
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setPage(String(Number(page) - 1))}
+              disabled={Number(page) === 1}
+            >
+              Previous
+            </Button>
+            <Button
+              variant='outline'
+              size='sm'
+            onClick={() => setPage(String(Number(page) + 1))}
+              disabled={!data?.hasNextPage}
+            >
+            Next
+            </Button>
+          </div>
       </div>
     </>
   )

@@ -27,7 +27,9 @@ export async function GET(req: NextRequest) {
             where = {}
         }
 
-        const totalbannedIps = await prisma.ipban.count()
+        const totalbannedIps = await prisma.ipban.count({
+            where
+        })
 
         const banned = await prisma.ipban.findMany({
             where,
@@ -35,14 +37,22 @@ export async function GET(req: NextRequest) {
             skip: (page - 1) * limit
         })
 
+        const totalPages = Math.ceil(totalbannedIps / limit)
+        const hasNextPage = page < totalPages
+
         return NextResponse.json({ 
+            status: true,
+            message: 'IP banneds fetched successfully',
             banned, 
             totalbannedIps,
-            total
+            total,
+            totalPages,
+            currentPage: page,
+            hasNextPage
          }, { status: 200 })
 
 
     } catch (error) {
-        return NextResponse.json({ message: `Database connection failed` }, { status: 500 });
+        return NextResponse.json({ status: false, message: `Database connection failed` }, { status: 500 });
     }
 }

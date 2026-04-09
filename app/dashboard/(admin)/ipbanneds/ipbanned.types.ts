@@ -14,4 +14,8 @@ export interface IpBannedResponse {
     message: string | null
     status: boolean
     banned?: IpBannedInterface[] | null
+    total: number
+    totalPages: number
+    currentPage: number
+    hasNextPage: boolean
 }
