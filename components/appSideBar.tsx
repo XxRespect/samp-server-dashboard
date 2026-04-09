@@ -237,165 +237,163 @@ const SideBar = () => {
                         </SidebarGroupContent>
                     </SidebarGroup>
                     <SidebarSeparator className='w-45' />
-                    {session?.user?.role === "user" ?
-                    null
-                 :  
-                 <SidebarGroup>
-                        <SidebarGroupLabel>Administration</SidebarGroupLabel>
-                        <SidebarGroupAction>
-                            <MdAdminPanelSettings className='w-5 h-4' />
-                            <span className='sr-only'>Administration</span>
-                        </SidebarGroupAction>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/tickets'>
-                                            <MdSupportAgent className='w-4 h-4' />
-                                            <span>Tickets</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/banneds'>
-                                            <MdBlock className='w-4 h-4' />
-                                            <span>Banneds</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/ipbanneds'>
-                                            <MdBlock className='w-4 h-4' />
-                                            <span>Ip Banneds</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/muted'>
-                                            <TbMessageCircleX className='w-4 h-4' />
-                                            <span>Muted</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/jail'>
-                                            <Columns4 className='w-4 h-4' />
-                                            <span>Jail</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/admins'>
-                                            <RiAdminFill className='w-4 h-4' />
-                                            <span>Admins</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/auditorium'>
-                                            <MdManageHistory  className='w-4 h-4' />
-                                            <span>Auditorium</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/logs'>
-                                            <LuLogs className='w-4 h-4' />
-                                            <span>Logs</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/chatlogs'>
-                                            <MdOutlineMarkUnreadChatAlt className='w-4 h-4' />
-                                            <span>Chat Logs</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/purchases'>
-                                            <CreditCard className='w-4 h-4' />
-                                            <span>Purchases</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/server'>
-                                            <ServerCrash className='w-4 h-4' />
-                                            <span>Server</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-
-                    </SidebarGroup>
-                 }
+                    {session?.user?.role === "USER" ? null : (
+                        <>
+                            <SidebarGroup>
+                                <SidebarGroupLabel>Administration</SidebarGroupLabel>
+                                <SidebarGroupAction>
+                                    <MdAdminPanelSettings className='w-5 h-4' />
+                                    <span className='sr-only'>Administration</span>
+                                </SidebarGroupAction>
+                                <SidebarGroupContent>
+                                    <SidebarMenu>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/tickets'>
+                                                    <MdSupportAgent className='w-4 h-4' />
+                                                    <span>Tickets</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/banneds'>
+                                                    <MdBlock className='w-4 h-4' />
+                                                    <span>Banneds</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/ipbanneds'>
+                                                    <MdBlock className='w-4 h-4' />
+                                                    <span>Ip Banneds</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/muted'>
+                                                    <TbMessageCircleX className='w-4 h-4' />
+                                                    <span>Muted</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/jail'>
+                                                    <Columns4 className='w-4 h-4' />
+                                                    <span>Jail</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/admins'>
+                                                    <RiAdminFill className='w-4 h-4' />
+                                                    <span>Admins</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/auditorium'>
+                                                    <MdManageHistory className='w-4 h-4' />
+                                                    <span>Auditorium</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/logs'>
+                                                    <LuLogs className='w-4 h-4' />
+                                                    <span>Logs</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/chatlogs'>
+                                                    <MdOutlineMarkUnreadChatAlt className='w-4 h-4' />
+                                                    <span>Chat Logs</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/purchases'>
+                                                    <CreditCard className='w-4 h-4' />
+                                                    <span>Purchases</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/server'>
+                                                    <ServerCrash className='w-4 h-4' />
+                                                    <span>Server</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    </SidebarMenu>
+                                </SidebarGroupContent>
+                            </SidebarGroup>
+                            <SidebarSeparator />
+                            <SidebarGroup>
+                                <SidebarGroupLabel>Owner</SidebarGroupLabel>
+                                <SidebarGroupAction>
+                                    <MdOutlineDeveloperBoard className='w-5 h-4' />
+                                    <span className='sr-only'>Owner</span>
+                                </SidebarGroupAction>
+                                <SidebarGroupContent>
+                                    <SidebarMenu>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/accounts'>
+                                                    <FaUsersCog />
+                                                    <span>Accounts</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/anticheat'>
+                                                    <MonitorCog />
+                                                    <span>Anti Cheat</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/objects'>
+                                                    <FaRegObjectGroup className='w-4 h-4' />
+                                                    <span>Objects</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/serials'>
+                                                    <MdBlock className='w-4 h-4' />
+                                                    <span>Serial Banneds</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild>
+                                                <Link href='/dashboard/maps'>
+                                                    <FaMap className='w-4 h-4' />
+                                                    <span>Maps</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    </SidebarMenu>
+                                </SidebarGroupContent>
+                            </SidebarGroup>
+                        </>
+                    )}
                     
-                    <SidebarSeparator />
-                    <SidebarGroup>
-                        <SidebarGroupLabel>Owner</SidebarGroupLabel>
-                        <SidebarGroupAction>
-                            <MdOutlineDeveloperBoard className='w-5 h-4' />
-                            <span className='sr-only'>Owner</span>
-                        </SidebarGroupAction>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/accounts'>
-                                            <FaUsersCog />
-                                            <span>Accounts</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/anticheat'>
-                                            <MonitorCog />
-                                            <span>Anti Cheat</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/objects'>
-                                            <FaRegObjectGroup className='w-4 h-4' />
-                                            <span>Objects</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/serials'>
-                                            <MdBlock className='w-4 h-4' />
-                                            <span>Serial Banneds</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/maps'>
-                                            <FaMap className='w-4 h-4' />
-                                            <span>Maps</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
+                   
                 </SidebarContent>
 
 
@@ -413,15 +411,15 @@ const SideBar = () => {
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className='flex flex-col' align="end">
                                         <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Account</DropdownMenuItem>
-                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Profile</DropdownMenuItem>
-                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Settings</DropdownMenuItem>
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'><Link href='/dashboard/profile'>Profile</Link></DropdownMenuItem>
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'><Link href='/dashboard/profile'>Settings</Link></DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Sign Out</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             ) : (
                                 <SidebarMenuButton>
-                                    <User2 />Jan Karlos <ChevronUp className="ml-auto" />
+                                    <User2 />{session?.user?.Nome} <ChevronUp className="ml-auto" />
                                 </SidebarMenuButton>
                             )}
                         </SidebarMenuItem>

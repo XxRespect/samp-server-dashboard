@@ -498,7 +498,7 @@ model player {
   user_register     DateTime    @default(now()) @db.DateTime(0)
   profile           String      @default("https://res.cloudinary.com/dcun12csz/image/upload/v1774628141/profile_cfxxfi.webp") @db.VarChar(100)
   timestamp         DateTime    @default(now()) @db.Timestamp(0)
-  role              String?     @default("user") @db.VarChar(14)
+  role              player_role @default(USER)
   admintemp         admintemp[]
   ban               ban[]
   bantemp           bantemp[]
@@ -653,4 +653,13 @@ enum admin_set_logs_action {
 enum pm_logs_command {
   pm
   r
+}
+
+enum player_role {
+  USER
+  ADMIN
+  MODERATOR
+  SUPERVISOR
+  OWNER
+  DEV
 }

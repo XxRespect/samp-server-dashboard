@@ -1,13 +1,8 @@
 import { getGeoLocation } from '@/app/services/geo/geo.service'
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
+import { serializeBigInt } from '@/app/utils/api/serializer'
 
-const serializeBigInt = <T>(data: T): T =>
-    JSON.parse(
-        JSON.stringify(data, (_, value) =>
-            typeof value === 'bigint' ? value.toString() : value
-        )
-    )
 
 
 export async function GET(req: NextRequest, 

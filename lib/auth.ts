@@ -73,7 +73,7 @@ export const authConfig = {
 
         console.log("[AUTH] login success", { id: user.id, Nome: user.Nome });
 
-        const role = user.role ?? "user";
+        const role = user.role ?? "USER";
 
         return {
           id: String(user.id),

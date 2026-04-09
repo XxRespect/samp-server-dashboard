@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { convertTimestampToDate } from '@/app/utils/datatime/timestamp.converter'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
-
+import { cn } from '@/lib/utils'
 
 const getValidImageUrl = (url: string | null | undefined): string => {
     if (!url) return '/default-avatar.png'
@@ -76,7 +76,7 @@ const columns: ColumnDef<Players>[] = [
         header: ({ column }) => {
             return (
                 <Button
-                className='shadow-lg shadow-gray-300/6'
+                className=''
                     variant="outline"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
