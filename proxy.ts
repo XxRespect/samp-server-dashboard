@@ -41,6 +41,10 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/login", req.url))
   }
 
+  if(isLoggedIn && nextUrl.pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/dashboard", req.url))
+  }
+
   // Verifica permissão por role
   const requiredRoles = getRequiredRoles(nextUrl.pathname)
 

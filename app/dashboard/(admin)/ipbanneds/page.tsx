@@ -67,8 +67,8 @@ function IpBannedsPage() {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <h1>Banned IPS</h1>
-      <div className='m-8'>
+  
+      <div className='m-9'>
         <div className='w-120 m-5 grid grid-cols-2'>
           <Input
             type="text"

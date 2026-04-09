@@ -26,14 +26,12 @@ export default function DashboardLayout({
   children,
 }: { children: React.ReactNode }) {
   return (
-    <Providers>
-      <DashboardShell fontClassName={dashboardFont.className}>
-        <NuqsAdapter>
-          <QueryProvider>
-            {children}
-          </QueryProvider>
-        </NuqsAdapter>
-      </DashboardShell>
-    </Providers>
+    <DashboardShell fontClassName={dashboardFont.className}>
+      <NuqsAdapter>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
+      </NuqsAdapter>
+    </DashboardShell>
   );
 }
