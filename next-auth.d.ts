@@ -7,8 +7,9 @@ declare module "next-auth" {
         id: string,
         Nome: string,
         role: string,
-        Admin:number
-    }
+        Admin:number,
+        BANNED: number
+    } 
 
 
     interface Session {
@@ -16,8 +17,9 @@ declare module "next-auth" {
             id: string,
             Nome: string,
             role: string,
-            Admin:number
-        }
+            Admin:number,
+            BANNED: number
+        } & DefaultSession["User"]
     }
 }
 
@@ -27,6 +29,8 @@ declare module "next-auth/jwt" {
         id: string,
         Nome: string,
         role: string,
-        Admin: number
+        Admin: number,
+        BANNED: number,
+        lastRefresh: number;
     }
 }

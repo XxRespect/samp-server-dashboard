@@ -25,7 +25,8 @@ export async function GET(req: NextRequest) {
         const totalOthers = await prisma.player.count({
             where: {
                 Device: 'Nao Verificado'
-            }
+            },
+            take: 1000
         })
         
         return NextResponse.json({

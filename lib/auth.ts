@@ -15,7 +15,7 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        
+
         const parsed = LoginSchema.safeParse(credentials);
 
         if (!parsed.success) {
@@ -34,36 +34,18 @@ export const authConfig = {
             Salt: true,
             Admin: true,
             role: true,
+            BANNED: true
           },
         });
 
-        if (!user) {
-          console.log("[AUTH] user not found", { Nome });
+        if (!user)
           return null;
-        }
 
-        console.log("[AUTH] user found", {
-          id: user.id,
-          Nome: user.Nome,
-          role: user.role,
-          admin: user.Admin,
-          hashPrefix: user.Senha.slice(0, 4),
-          hasSalt: Boolean(user.Salt && user.Salt !== "0"),
-        });
 
         const normalizedHash = user.Senha.replace(/^\$2y\$/, "$2b$");
         const isValidPassword = await bcrypt.compare(password, normalizedHash);
 
-        if (!isValidPassword) {
-          console.log("[AUTH] password compare failed", {
-            Nome,
-            hashPrefix: normalizedHash.slice(0, 4),
-            hasSalt: Boolean(user.Salt && user.Salt !== "0"),
-          });
-          return null;
-        }
-
-        console.log("[AUTH] login success", { id: user.id, Nome: user.Nome });
+        if (!isValidPassword) return null;
 
         const role = user.role ?? "USER";
 
@@ -73,6 +55,7 @@ export const authConfig = {
           Nome: user.Nome,
           Admin: Number(user.Admin ?? 0),
           role,
+          BANNED: Number(user.BANNED ?? 0),
         };
       },
     }),
@@ -84,13 +67,45 @@ export const authConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
         token.Nome = user.Nome;
         token.Admin = user.Admin;
         token.role = user.role;
+        token.BANNED = user.BANNED;
+        token.lastRefresh = Date.now(); // Inicializa no primeiro login
       }
+
+      const REFRESH_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
+      const lastRefresh = token.lastRefresh as number | undefined;
+      const shouldRefresh = !lastRefresh || Date.now() - lastRefresh > REFRESH_INTERVAL
+
+      if (shouldRefresh) {
+        const freshUser = await prisma.player.findUnique({
+          where: { id: Number(token.id) },
+          select: {
+            id: true,
+            Nome: true,
+            Admin: true,
+            role: true,
+            BANNED: true
+          },
+        });
+
+
+        if (!freshUser) {
+          return null;
+        }
+        
+        token.id = String(freshUser.id);
+        token.Nome = freshUser.Nome;
+        token.Admin = freshUser.Admin ?? 0;
+        token.role = freshUser.role ?? "USER";
+        token.BANNED = freshUser.BANNED ?? 0;
+        token.lastRefresh = Date.now();
+      }
+
 
       return token;
     },
@@ -100,6 +115,7 @@ export const authConfig = {
         session.user.Nome = token.Nome as string;
         session.user.Admin = token.Admin as number;
         session.user.role = token.role as string;
+        session.user.BANNED = token.BANNED as number;
       }
 
       return session;
