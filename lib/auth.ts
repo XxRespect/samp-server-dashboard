@@ -15,15 +15,7 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("[AUTH] authorize called", {
-          Nome: credentials?.Nome,
-          hasPassword: Boolean(credentials?.password),
-          passwordLength:
-            typeof credentials?.password === "string"
-              ? credentials.password.length
-              : 0,
-        });
-
+        
         const parsed = LoginSchema.safeParse(credentials);
 
         if (!parsed.success) {

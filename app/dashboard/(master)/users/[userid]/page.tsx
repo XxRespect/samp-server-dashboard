@@ -49,6 +49,9 @@ import { formatPlayerNumber } from "@/app/utils/number/number.formater"
 import { formatTime } from "@/app/utils/datatime/datetime.formater"
 import { convertTimestampToDate } from "@/app/utils/datatime/timestamp.converter"
 
+
+import { useSession } from 'next-auth/react'
+
 const dashboardCardClass =
     "rounded-xl border border-white/10 bg-[#171717] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_10px_30px_rgba(0,0,0,0.35),0_0_24px_rgba(255,255,255,0.04)] backdrop-blur-sm"
 
@@ -61,8 +64,11 @@ const UserPage = () => {
         queryFn: () => getUser(userId),
         enabled: Number.isFinite(userId),
         retry: false,
+        staleTime: 1 * 60 * 1000, // 1 minute
 
     });
+
+    const { data: session, status } = useSession();
 
 
     const kills = Number(data?.user?.Matou ?? 0)
@@ -163,8 +169,8 @@ const UserPage = () => {
                             <h1 className="text-xl font-semibold">Player Information</h1>
                             <h2 className="text-xl text-muted-foreground">
                                 <div className="flex flex-row items-center">
-                                    <Avatar size='lg' className="m-1">
-                                        <AvatarImage src={data?.user.profile} />
+                                    <Avatar size='lg' className="m-1 hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500/30" >
+                                        <AvatarImage src={data?.user.profile} className="rounded-full hover:scale-110 transition-transform duration-200" />
                                         <AvatarFallback><p className="text-shadow-lg/30 ">{data?.user.Nome}</p></AvatarFallback>
                                         <AvatarBadge className={data?.user.Online ? "bg-green-600" : "bg-red-500"} />
                                     </Avatar>
@@ -224,8 +230,17 @@ const UserPage = () => {
 
                                         {data?.user?.Email ? (
                                             <>
-                                                <span className="text-muted-foreground">Email:</span>
-                                                <span className="font-medium">{data?.user?.Email ?? "-"}</span>
+                                                {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ? (
+                                                    <>
+                                                        <span className="text-muted-foreground">Email:</span>
+                                                        <span className="font-medium">{data?.user?.Email ?? "-"}</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="text-muted-foreground">Email:</span>
+                                                        <span className="font-medium">********</span>
+                                                    </>
+                                                )}
                                             </>
                                         ) : null}
 
@@ -306,9 +321,13 @@ const UserPage = () => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="overflow-y-scroll h-95">
-                                    {data?.userChatLog.map((account) => (
-                                        <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
-                                    ))}
+                                    {!session?.user.role || session?.user.role === "USER"  || session?.user.role == "MODERATOR" ? (
+                                        data?.userChatLog.map((account) => (
+                                            <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
+                                        ))
+                                    ) : (
+                                        <span className="text-muted-foreground text-shadow-2xs font-medium">You don't have permission to view this</span>
+                                    )}
                                 </CardContent>
                             </Card>
                         </div>
@@ -339,8 +358,13 @@ const UserPage = () => {
                                 <hr />
                                 <div className="grid grid-cols-2 gap-y-2 mt-4 mb-3 w-full max-w-2xl ">
                                     <span className="text-muted-foreground">IP:</span>
-                                    <span>{data?.geoLocation.query}</span>
+                                    
 
+                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ?(
+                                        <span>{data?.geoLocation.query}</span>
+                                    ) : (
+                                        <span>********</span>
+                                    )}
                                     <span className="text-muted-foreground">Location:</span>
                                     <span>{data?.geoLocation.city} - {data?.geoLocation.regionName} - {data?.geoLocation.country}</span>
 
@@ -353,11 +377,30 @@ const UserPage = () => {
                                     <span className="text-muted-foreground">Org:</span>
                                     <span>{data?.geoLocation.org}</span>
 
-                                    <span className="text-muted-foreground">CEP:</span>
-                                    <span>{data?.geoLocation.zip}</span>
+                                    {session?.user.role === "USER" || session?.user.role === "MODERATOR" ? (
+                                        <>
+                                            <span className="text-muted-foreground">CEP:</span>
+                                            <span>{data?.geoLocation.zip}</span>
+                                        </>
+                                    ): (
+                                        <>
+                                            <span className="text-muted-foreground">CEP:</span>
+                                            <span>**********</span>
+                                        </>
+                                    )}
+                              
 
-                                    <span className="text-muted-foreground">Country code:</span>
-                                    <span>{data?.geoLocation.countryCode}</span>
+                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ?(
+                                        <>
+                                            <span className="text-muted-foreground">Country code:</span>
+                                            <span>{data?.geoLocation.countryCode}</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="text-muted-foreground">Country code:</span>
+                                            <span>********</span>
+                                        </>
+                                    )}
 
                                     <span className="text-muted-foreground">Device:</span>
                                     <span>{data?.user.Device}</span>
@@ -374,7 +417,7 @@ const UserPage = () => {
                         <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
                             <ChartLineDefault />
                         </div>
-                        {data?.user.BANNED ? <div className={`${dashboardCardClass} p-4 shadow-lg shadow-gray-600/16`}>
+                        {data?.user.BANNED ? <div className={`${dashboardCardClass} p-4 shadow-lg shadow-red-500/40`}>
                             <Card className={dashboardCardClass}>
                                 <CardHeader>
                                     <CardTitle className="flex"><Ban size={20} /> <span className="ml-3">Ban information</span></CardTitle>

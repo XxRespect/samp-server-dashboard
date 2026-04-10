@@ -5,7 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from '@/components/theme-provider';
 import { Providers } from '@/app/providers/authProvider';
 
-
+import AppFooter from '@/components/AppFooter'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +19,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "dashboard",
+  fonts: [
+    {
+      name: "Roboto",
+      family: "Roboto",
+      variants: ["100", "300", "400", "500", "700"],
+      subsets: ["latin"],
+    },
+  ],
   description: "This website is a dashboard for the SAMP game server, built with Next.js and Tailwind CSS.",
   icons: {
     icon: "/favicon.ico",
@@ -41,6 +49,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <AppFooter />
         </ThemeProvider>
         </Providers>
       </body>

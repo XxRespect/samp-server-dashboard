@@ -23,6 +23,9 @@ import {
     UserIcon,
 } from "lucide-react"
 
+import { signOut } from 'next-auth/react'
+
+
 import { MdComputer, MdSupportAgent } from "react-icons/md";
 import { FaCloudMoon, FaHome } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io';
@@ -30,7 +33,6 @@ import { useTheme } from 'next-themes';
 import { SidebarTrigger } from './ui/sidebar';
 
 import {useSession} from 'next-auth/react'
-
 const NavBar = () => {
 
     const {data: session} = useSession();
@@ -102,9 +104,9 @@ const NavBar = () => {
                                 Settings
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem variant="destructive">
+                            <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
                                 <LogOutIcon />
-                                Log out
+                                Sign out
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

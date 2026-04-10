@@ -116,6 +116,8 @@ const Items = [
 ]
 
 
+import { signOut } from 'next-auth/react'
+
 const SideBar = () => {
     const mounted = useSyncExternalStore(
         () => () => {},
@@ -414,7 +416,7 @@ const SideBar = () => {
                                         <DropdownMenuItem className='cursor-pointer :hover:bg-muted'><Link href='/dashboard/profile'>Profile</Link></DropdownMenuItem>
                                         <DropdownMenuItem className='cursor-pointer :hover:bg-muted'><Link href='/dashboard/profile'>Settings</Link></DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted'>Sign Out</DropdownMenuItem>
+                                        <DropdownMenuItem className='cursor-pointer :hover:bg-muted' onClick={() => signOut()}>Sign Out</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             ) : (

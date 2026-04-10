@@ -39,7 +39,7 @@ export const columns: ColumnDef<AdminsInterface>[] = [
     },
     {
         accessorKey: "role",
-        header: "Supervisor",
+        header: "Role",
     },
     {
         accessorKey: "LasTimer",

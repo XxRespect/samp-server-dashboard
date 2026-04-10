@@ -26,8 +26,6 @@ export default function CardDemo() {
         <LoginForm />
       </CardContent>
       <CardFooter className="flex-col gap-2">
-
- 
       </CardFooter>
     </Card>
   )
