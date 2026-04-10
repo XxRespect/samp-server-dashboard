@@ -19,14 +19,6 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "dashboard",
-  fonts: [
-    {
-      name: "Roboto",
-      family: "Roboto",
-      variants: ["100", "300", "400", "500", "700"],
-      subsets: ["latin"],
-    },
-  ],
   description: "This website is a dashboard for the SAMP game server, built with Next.js and Tailwind CSS.",
   icons: {
     icon: "/favicon.ico",

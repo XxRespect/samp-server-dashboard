@@ -233,6 +233,8 @@ If you encounter any issues or have questions:
 - [Prisma](https://www.prisma.io/) - Database ORM
 - [NextAuth.js](https://next-auth.js.org/) - Authentication
 - [Lucide](https://lucide.dev/) - Icon Library
+- [MySQL](https://www.mysql.com/) - Database
+- [Pawn/Samp](https://www.open.mp/) - Game Server Language
 
 ---
 
