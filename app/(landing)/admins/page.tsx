@@ -1,9 +1,21 @@
-import React from 'react'
+'use client'
 
-function AdminsPage() {
+
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+
+
+
+export default function AdminsPage() {
+  const { data: session } = useSession()
+  const [admins, setAdmins] = useState([])
+  
   return (
-    <div>AdminsPage</div>
+    <>
+      <main className='h-screen'>
+        <h1>Admins</h1>
+      </main>
+    </>
   )
 }
-
-export default AdminsPage

@@ -6,7 +6,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Providers } from '@/app/providers/authProvider';
 
 import AppFooter from '@/components/AppFooter'
-import HomePageNav from '@/components/HomePageNav'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +40,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <HomePageNav />
           {children}
           <AppFooter />
         </ThemeProvider>

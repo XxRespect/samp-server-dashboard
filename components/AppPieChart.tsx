@@ -20,51 +20,52 @@ import {
 } from "@/components/ui/chart"
 
 export const description = "A donut chart with text"
+import { getData } from '@/app/modules/home/assets/service'
+import { useQuery } from '@tanstack/react-query'
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
 
- function ChartPieDonutText() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+
+
+function ChartPieDonutText() {
+  const { data } = useQuery({
+    queryKey: ['data'],
+    queryFn: () => getData(),
+  })
+
+  const chartData = [
+    { Device: "PC", players: data?.totalPcPlayers || 0, fill: "#3b82f6" },
+    { Device: "Mobile", players: data?.totalMobiles || 0, fill: "#10b981" },
+    { Device: "Outros", players: data?.totalOthers || 0, fill: "#f97316" },
+
+  ]
+
+  const chartConfig = {
+    players: {
+      label: "Players",
+    },
+    PC: {
+      label: "PC",
+      color: "#3b82f6",
+    },
+    Mobile: {
+      label: "Mobile",
+      color: "#10b981",
+    },
+    Outros: {
+      label: "Outros",
+      color: "#f97316",
+    },
+
+  } satisfies ChartConfig
+
+  const totalPlayers = (data?.totalPcPlayers || 0) + (data?.totalMobiles || 0) + (data?.totalOthers || 0)
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Recently joined</CardTitle>
-        <CardDescription>January - June 2026</CardDescription>
+        <CardTitle>Players Device</CardTitle>
+        <CardDescription>Current data</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -79,8 +80,8 @@ const chartConfig = {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="players"
+              nameKey="Device"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -99,14 +100,14 @@ const chartConfig = {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {new Intl.NumberFormat('pt-BR').format(totalPlayers)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Registers
+                          Players
                         </tspan>
                       </text>
                     )
@@ -119,10 +120,10 @@ const chartConfig = {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Showing total players by device <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total new players for the last 6 months
+          Current data
         </div>
       </CardFooter>
     </Card>

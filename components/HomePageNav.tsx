@@ -29,8 +29,8 @@ export default function HomePageNav() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gray-700 rounded-lg border border-gray-600"></div>
+            <Link href="/" className="flex items-center space-x-2 hover:text-grey hover:text-shadow-green-200-lg">
+              
               <span className="text-xl font-bold text-gray-100">BMMSL</span>
             </Link>
           </div>
