@@ -6,7 +6,6 @@ import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/schemas/login.schema";
 
 export const authConfig = {
-  trustHost: true,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -47,7 +46,7 @@ export const authConfig = {
 
         if (!isValidPassword) return null;
 
-        const role = user.role ?? "USER";
+        const role = (user.role && (user.role as string) !== "") ? user.role : "USER";
 
         return {
           id: String(user.id),
@@ -82,28 +81,32 @@ export const authConfig = {
       const shouldRefresh = !lastRefresh || Date.now() - lastRefresh > REFRESH_INTERVAL
 
       if (shouldRefresh) {
-        const freshUser = await prisma.player.findUnique({
-          where: { id: Number(token.id) },
-          select: {
-            id: true,
-            Nome: true,
-            Admin: true,
-            role: true,
-            BANNED: true
-          },
-        });
+        try {
+          const freshUser = await prisma.player.findUnique({
+            where: { id: Number(token.id) },
+            select: {
+              id: true,
+              Nome: true,
+              Admin: true,
+              role: true,
+              BANNED: true
+            },
+          });
 
+          if (!freshUser) {
+            return token;
+          }
 
-        if (!freshUser) {
-          return null;
+          token.id = String(freshUser.id);
+          token.Nome = freshUser.Nome;
+          token.Admin = freshUser.Admin ?? 0;
+          token.role = (freshUser.role && (freshUser.role as string) !== "") ? freshUser.role : "USER";
+          token.BANNED = freshUser.BANNED ?? 0;
+          token.lastRefresh = Date.now();
+        } catch (error) {
+          console.error("[AUTH] Error refreshing token:", error);
+          return token;
         }
-        
-        token.id = String(freshUser.id);
-        token.Nome = freshUser.Nome;
-        token.Admin = freshUser.Admin ?? 0;
-        token.role = freshUser.role ?? "USER";
-        token.BANNED = freshUser.BANNED ?? 0;
-        token.lastRefresh = Date.now();
       }
 
 
