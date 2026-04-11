@@ -3,10 +3,8 @@ import { formatTime } from '@/app/utils/datatime/datetime.formater'
 import { ImBin } from "react-icons/im";
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input'
 
-
-
-/*************  ✨ Windsurf Command 🌟  *************/
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,6 +14,22 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link';
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+    DialogClose,
+
+} from "@/components/ui/dialog"
+
+import Form from 'next/form'
+
+
 
 export const columns: ColumnDef<BannedsProps>[] = [
 
@@ -74,32 +88,33 @@ export const columns: ColumnDef<BannedsProps>[] = [
     {
         accessorKey: "banid",
         id: "actions",
-        header: "",
-        cell: () => {
+        header: "Action",
+        cell: ({ row }) => {
             return (
-                <div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                className='hover:cursor-pointer hover:transition-all hover:scale-120'
-                                variant="destructive"
-                                size="icon"
-                            >
-                                <ImBin />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                            >
-                                Ban actions
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Unban Player</DropdownMenuItem>
-                            <DropdownMenuItem>Unban Ip</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                <Button
+                    className='hover:cursor-pointer hover:transition-all hover:scale-120'
+                    variant="destructive"
+                    size="icon" >
+
+                    <Dialog>
+                        <DialogTrigger className='hover:cursor-pointer hover:transition-all'><ImBin  /></DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Desbanir Jogador</DialogTitle>
+                                <DialogDescription>
+                                    <p className='text-white'>Tem certeza que deseja desbanir este jogador?<br /></p>
+                                   <span className='font-bold'>{row.original.Nick}</span>
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter>
+                                <DialogClose>
+                                    <Button variant="destructive" className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'>Cancelar</Button>
+                                </DialogClose>
+                                <Button variant="secondary" className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'>Desbanir</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                </Button>         
             )
         },
     }

@@ -70,23 +70,10 @@ function BannedsPage() {
         sortBy: sortBy || undefined, 
         limit: limit ? Number(limit) : undefined 
       }),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry:false
   })
 
-  const {data: session}  = useSession()
-
-  if(!session || session?.user?.Admin <= 0) {
-    redirect('/dashboard')
-    return (
-      <>
-        <Alert>
-          <AlertTitle>Acceso denied</AlertTitle>
-          <AlertDescription>
-            You do not have permission to access this Page
-          </AlertDescription>
-        </Alert>
-      </>
-    )
-  }
 
   return (
     <>

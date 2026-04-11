@@ -29,25 +29,19 @@ const getValidImageUrl = (url: string | null | undefined): string => {
 
 
 const columns: ColumnDef<Players>[] = [
-    
-    {
 
-        
+    {
         accessorKey: "id",
         id: "id",
-            header: ({ column }) => {
+        header: ({ column }) => {
             return (
-                <Button
-                className='shadow-lg shadow-gray-300/6'
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    ID
-                    <ArrowUpDown  />
-                </Button>
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>ID</span>
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </div>
             )
         },
-            cell: ({ row }) => {
+        cell: ({ row }) => {
             return <div>{row.getValue('id')}</div>
         }
     },
@@ -75,14 +69,10 @@ const columns: ColumnDef<Players>[] = [
         id: "Nome",
         header: ({ column }) => {
             return (
-                <Button
-                className=''
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Name
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>Name</span>
                     <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -110,7 +100,7 @@ const columns: ColumnDef<Players>[] = [
                         {row.getValue('Nome')}
                     </Link>
                     <span className="text-xs text-muted-foreground">
-                        <Badge className='shadow-lg shadow-gray-300/7' variant={badgeVariant}><p className={statusText == "Banido" ? "text-white": ""}>{statusText}</p></Badge>
+                        <Badge className='shadow-lg shadow-gray-300/7' variant={badgeVariant}><p className={statusText == "Banido" ? "text-white" : ""}>{statusText}</p></Badge>
                     </span>
                 </div>
             )
@@ -119,16 +109,12 @@ const columns: ColumnDef<Players>[] = [
     {
         accessorKey: "Score",
         id: "Score",
-         header: ({ column }) => {
+        header: ({ column }) => {
             return (
-                <Button
-                className='shadow-lg shadow-gray-300/6'
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Score
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>Score</span>
                     <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -137,16 +123,12 @@ const columns: ColumnDef<Players>[] = [
     },
     {
         accessorKey: "user_register",
-         header: ({ column }) => {
+        header: ({ column }) => {
             return (
-                <Button
-                className='shadow-lg shadow-gray-300/6'
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Joined
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>Joined</span>
                     <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -156,16 +138,12 @@ const columns: ColumnDef<Players>[] = [
     },
     {
         accessorKey: "LasTimer",
-         header: ({ column }) => {
+        header: ({ column }) => {
             return (
-                <Button
-                className='shadow-lg shadow-gray-300/6'
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Logoff
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>Logoff</span>
                     <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -174,16 +152,12 @@ const columns: ColumnDef<Players>[] = [
     },
     {
         accessorKey: "Online",
-         header: ({ column }) => {
+        header: ({ column }) => {
             return (
-                <Button
-                className='shadow-lg shadow-gray-300/6'
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Status
+                <div className="flex items-center gap-2">
+                    <span onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>Status</span>
                     <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                </div>
             )
         },
         cell: ({ row }) => {
@@ -206,14 +180,14 @@ interface Props {
 
 export default function PlayersDaTable({ players, search, onSearch, page, onPageChange, hasNextPage }: Props) {
     return (
-      <DataTable
-        columns={columns}
-        data={players}
-        search={search}
-        onSearch={onSearch}
-        page={page}
-        onPageChange={onPageChange}
-        hasNextPage={hasNextPage}
-      />
+        <DataTable
+            columns={columns}
+            data={players}
+            search={search}
+            onSearch={onSearch}
+            page={page}
+            onPageChange={onPageChange}
+            hasNextPage={hasNextPage}
+        />
     )
 }

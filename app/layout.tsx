@@ -41,7 +41,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <AppFooter />
+   
         </ThemeProvider>
         </Providers>
       </body>

@@ -58,6 +58,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = react.useState<SortingState>([])
   const [inputValue, setInputValue] = react.useState<string>(search)
   const [orderBy, setOrderBy] = react.useState<string>("Online")
+  const [currentPageSize, setCurrentPageSize] = react.useState<number>(20)
 
   react.useEffect(() => {
     setInputValue(search)
@@ -128,14 +129,14 @@ export function DataTable<TData, TValue>({
           <div className='ml-3'>
             <DropdownMenu  >
               <DropdownMenuTrigger  asChild>
-                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">20 rows</Button>
+                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">{currentPageSize} rows</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel ><p>Filters</p></DropdownMenuLabel>
-                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all grid grid-cols-1'><p><Button className='w-full' onClick={() => setOrderBy("Online")}  variant='link'>Status</Button></p></DropdownMenuItem>
-                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p>Banneds</p></DropdownMenuItem>
-                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p>Last Login</p></DropdownMenuItem>
+                  <DropdownMenuLabel ><p>Rows per page</p></DropdownMenuLabel>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all grid grid-cols-1'><p><Button className='w-full' onClick={() => setCurrentPageSize(10)}  variant='link'>10 rows</Button></p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p><Button className='w-full' onClick={() => setCurrentPageSize(15)}  variant='link'>15 rows</Button></p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer hover:transition-all'><p><Button className='w-full' onClick={() => setCurrentPageSize(25)}  variant='link'>25 rows</Button></p></DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
               </DropdownMenuContent>
