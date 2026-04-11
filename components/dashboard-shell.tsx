@@ -1,8 +1,10 @@
 "use client"
 
 import type { ReactNode } from "react";
+import dynamic from "next/dynamic";
 
-import NavBar from "@/components/NavBar";
+const NavBar = dynamic(() => import("@/components/NavBar"), { ssr: false });
+
 import SideBar from "@/components/appSideBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import AppFooter from "./AppFooter";
