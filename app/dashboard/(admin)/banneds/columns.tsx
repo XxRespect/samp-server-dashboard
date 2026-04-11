@@ -41,10 +41,11 @@ export const columns: ColumnDef<BannedsProps>[] = [
             return (
                 <>
                     <div>
-                        <Button variant='link'>
-                            <Link href={`/dashboard/users/${row.original.accid}`}><p className='text-shadow-lg/30'>{row.original.Nick}</p></Link>
+                        <Button asChild variant='link'>
+                            <Link href={`/dashboard/users/${row.original.accid}`}>
+                                <p className='text-shadow-lg/30'>{row.original.Nick}</p>
+                            </Link>
                         </Button>
-
                     </div>
                 </>
             )
@@ -58,10 +59,11 @@ export const columns: ColumnDef<BannedsProps>[] = [
             return (
                 <>
                     <div>
-                        <Button variant='link'>
-                            <Link href={`/dashboard/users/${row.original.adminid}`}>{row.original.adm}</Link>
+                        <Button asChild variant='link'>
+                            <Link href={`/dashboard/users/${row.original.adminid}`}>
+                                {row.original.adm}
+                            </Link>
                         </Button>
-
                     </div>
                 </>
             )
@@ -91,30 +93,43 @@ export const columns: ColumnDef<BannedsProps>[] = [
         header: "Action",
         cell: ({ row }) => {
             return (
-                <Button
-                    className='hover:cursor-pointer hover:transition-all hover:scale-120'
-                    variant="destructive"
-                    size="icon" >
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button
+                            className='hover:cursor-pointer hover:transition-all hover:scale-120'
+                            variant="destructive"
+                            size="icon"
+                        >
+                            <ImBin />
+                        </Button>
+                    </DialogTrigger>
 
-                    <Dialog>
-                        <DialogTrigger className='hover:cursor-pointer hover:transition-all'><ImBin  /></DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Desbanir Jogador</DialogTitle>
-                                <DialogDescription>
-                                    <p className='text-white'>Tem certeza que deseja desbanir este jogador?<br /></p>
-                                   <span className='font-bold'>{row.original.Nick}</span>
-                                </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter>
-                                <DialogClose>
-                                    <Button variant="destructive" className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'>Cancelar</Button>
-                                </DialogClose>
-                                <Button variant="secondary" className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'>Desbanir</Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                </Button>         
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Desbanir Jogador</DialogTitle>
+                            <DialogDescription>
+                                <p className='text-white'>Tem certeza que deseja desbanir este jogador?<br /></p>
+                                <span className='font-bold'>{row.original.Nick}</span>
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button
+                                    variant="destructive"
+                                    className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'
+                                >
+                                    Cancelar
+                                </Button>
+                            </DialogClose>
+                            <Button
+                                variant="secondary"
+                                className='hover:cursor-pointer hover:shadow-lg hover:shadow-grey-500/15 hover:transition-all'
+                            >
+                                Desbanir
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             )
         },
     }
