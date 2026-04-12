@@ -84,6 +84,7 @@ export const columns: ColumnDef<BannedsProps>[] = [
         accessorKey: "desban",
         header: "Type",
         cell: ({ row }) => {
+
             return <div>{Number(row.getValue('desban')) > 0 ? 'Temporary' : 'Permanent'}</div>
         },
     },
@@ -108,7 +109,8 @@ export const columns: ColumnDef<BannedsProps>[] = [
                         <DialogHeader>
                             <DialogTitle>Desbanir Jogador</DialogTitle>
                             <DialogDescription>
-                                <p className='text-white'>Tem certeza que deseja desbanir este jogador?<br /></p>
+                                <span className='text-white'>Tem certeza que deseja desbanir este jogador?</span>
+                                <br />
                                 <span className='font-bold'>{row.original.Nick}</span>
                             </DialogDescription>
                         </DialogHeader>

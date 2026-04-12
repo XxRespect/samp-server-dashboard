@@ -33,7 +33,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 m-4'>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 m-3 lg:col-span-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
