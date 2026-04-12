@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+import { UserType } from '@/app/modules/user/user.type'
+
 const getValidImageUrl = (url: string | null | undefined): string => {
     if (!url) return '/default-avatar.png'
 
@@ -28,7 +30,7 @@ const getValidImageUrl = (url: string | null | undefined): string => {
 
 
 
-const columns: ColumnDef<Players>[] = [
+export const columns: ColumnDef<Players>[] = [
 
     {
         accessorKey: "id",
@@ -168,26 +170,3 @@ const columns: ColumnDef<Players>[] = [
     }
 
 ]
-
-interface Props {
-    players: Players[]
-    search: string
-    onSearch: (value: string) => void
-    page: number
-    onPageChange: (page: number) => void
-    hasNextPage: boolean
-}
-
-export default function PlayersDaTable({ players, search, onSearch, page, onPageChange, hasNextPage }: Props) {
-    return (
-        <DataTable
-            columns={columns}
-            data={players}
-            search={search}
-            onSearch={onSearch}
-            page={page}
-            onPageChange={onPageChange}
-            hasNextPage={hasNextPage}
-        />
-    )
-}

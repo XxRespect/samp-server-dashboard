@@ -20,100 +20,103 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 
-import { Spinner } from '@/components/ui/spinner'
 
-import PlayersDaTable from './columns'
-import { usePlayers } from '@/app/hooks/useUsers'
+import { getPlayers } from '@/app/modules/users/users.api'
+import { columns } from './columns'
+import { useQuery } from '@tanstack/react-query'
+import { DataTable } from './data-table'
+import { useQueryState } from 'nuqs'
 
-function UsersPageContent() {
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    const initialSearch = searchParams.get('id') || searchParams.get('search') || ""
-    const initialPage = Number(searchParams.get('page') || '1')
 
-    const [search, setSearch] = React.useState<string>(initialSearch)
-    const [page, setPage] = React.useState<number>(initialPage)
+export default function UsersPageContent() {
 
-    const { data, isLoading, isError, error } = usePlayers({
-        page,
-        limit: 20,
-        search,
-        sortBy: "id",
-        order: "desc"
+    const [search, setSearch] = useQueryState('search', {
+        defaultValue: ""
+    })
+    const [page, setPage] = useQueryState('page', {
+        defaultValue: "1"
+    })
+    const [limit, setLimit] = useQueryState('limit', {
+        defaultValue: "25"
+    })
+    const [sortBy, setSortBy] = useQueryState('sortBy', {
+        defaultValue: 'id'
+    })
+    const [order, setOrder] = useQueryState('order', {
+        defaultValue: 'desc'
     })
 
-    const updateUrlQuery = (newSearch: string, newPage: number) => {
-      const params = new URLSearchParams()
-      if (newSearch) params.set('search', newSearch)
-      if (newPage > 1) params.set('page', String(newPage))
-      router.replace(`/dashboard/users?${params.toString()}`)
-    }
+
+    const { data, isLoading, isPending, isError, error } = useQuery({
+        queryKey: ['players', page, limit, search, sortBy, order],
+        queryFn: () => getPlayers({
+            page: page ? parseInt(page) : 1,
+            limit: limit ? parseInt(limit) : 25,
+            search: search,
+            sortBy: sortBy,
+            order: order
+        }),
+    })
+
+ 
 
     const handleSearch = (value: string) => {
-      setSearch(value)
-      setPage(1)
-      updateUrlQuery(value, 1)
+        setSearch(value)
+        setPage("1")
     }
 
     const handlePageChange = (newPage: number) => {
-      if (newPage < 1) return
-      setPage(newPage)
-      updateUrlQuery(search, newPage)
+        if (newPage < 1) return
+        setPage(newPage.toString())
     }
 
-    
-    if (isLoading) return <Spinner />
+
 
     if (isError) return <div>Error: {(error as Error).message}</div>
 
 
     return (
         <>
-        <div>
-            <Breadcrumb className='m-5'>
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbPage><p>Players</p></BreadcrumbPage>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
-        </div>
-        <div className='space-y-6 grid grid-cols-1'>
-        <Card size='sm' className=' shadow-lg shadow-gray-300/20 m-6' >
-            <CardHeader className='border-b'>
-                <CardTitle><p className='text-lg font-bold text-shadow-lg text-shadow-sky-300/25'>Players</p></CardTitle>
-            </CardHeader>
-            <CardDescription>
-                <p className='text-muted-foreground ml-3'>
-                    Manage and view all players in the system.
-                </p>
-            </CardDescription>
-            <CardContent>
-             <PlayersDaTable
-               players={data?.users || []}
-               search={search}
-               onSearch={handleSearch}
-               page={page}
-               onPageChange={handlePageChange}
-               hasNextPage={(data?.users?.length || 0) >= 20}
-             />
-            </CardContent>
-        </Card>
-        
-     
-        </div>
+            <div>
+                <Breadcrumb className='m-5'>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage><p>Players</p></BreadcrumbPage>
+                        </BreadcrumbItem>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </div>
+            <div className='space-y-6 grid grid-cols-1'>
+                <Card size='sm' className=' shadow-lg shadow-gray-300/20 m-6' >
+                    <CardHeader className='border-b'>
+                        <CardTitle><p className='text-lg font-bold text-shadow-lg text-shadow-sky-300/10'>Players</p></CardTitle>
+                    </CardHeader>
+                    <CardDescription>
+                        <p className='text-muted-foreground ml-3'>
+                            Manage and view all players in the system.
+                        </p>
+                    </CardDescription>
+                    <CardContent>
+                        <DataTable
+                            columns={columns}
+                            data={data?.users || []}
+                            search={search}
+                            onSearch={handleSearch}
+                            page={parseInt(page)}
+                            onPageChange={handlePageChange}
+                            hasNextPage={(data?.users?.length || 0) >= 20}
+                            isLoading={isPending}
+
+                        />
+                    </CardContent>
+                </Card>
+
+
+            </div>
         </>
     )
-}
-
-export default function Page() {
-  return (
-    <React.Suspense fallback={<Spinner />}>
-      <UsersPageContent />
-    </React.Suspense>
-  )
 }

@@ -32,7 +32,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowDownIcon } from 'lucide-react'
+import { Spinner } from '@/components/ui/spinner'
+import { Skeleton } from '@/components/ui/skeleton'
+
+import { FaArrowRight} from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
+
+
 
 import { IoFilter } from "react-icons/io5";
 interface DataTableProps<TData, TValue> {
@@ -43,7 +49,9 @@ interface DataTableProps<TData, TValue> {
   onSearch?: (value: string) => void
   page: number
   onPageChange?: (page: number) => void
+  isLoading: boolean
   hasNextPage?: boolean
+
 }
 
 export function DataTable<TData, TValue>({
@@ -54,6 +62,7 @@ export function DataTable<TData, TValue>({
   page = 1,
   onPageChange,
   hasNextPage = false,
+  isLoading 
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = react.useState<SortingState>([])
   const [inputValue, setInputValue] = react.useState<string>(search)
@@ -148,42 +157,61 @@ export function DataTable<TData, TValue>({
           <TableHeader className='border-b-2'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead className='border-t-2 p-1' key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead className='border-t-2 p-1' key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody className='m-3'>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {(() => {
+              let rowModel;
+              try {
+                rowModel = table?.getRowModel();
+              } catch (e) {
+                rowModel = null;
+              }
+              const rows = rowModel?.rows;
+              if (rows && rows.length > 0) {
+                return rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              } else {
+                return (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                      {isLoading ? (
+                        <>
+                          <Spinner className='mx-auto size-7' />
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-sm text-muted-foreground">
+                            No results.
+                          </p>
+                        </>
+                      )}
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
+                  </TableRow>
+                );
+              }
+            })()}
           </TableBody>
         </Table>
         <div className="flex items-center justify-end space-x-2 py-4 m-4">
@@ -193,16 +221,16 @@ export function DataTable<TData, TValue>({
             onClick={() => onPageChange?.(page - 1)}
             disabled={page <= 1}
           >
-            Previous
+            <FaArrowLeft/>
           </Button>
-          <span className='text-sm text-muted-foreground'>Page {page}</span>
+          
           <Button
             variant="outline"
             size="sm"
             onClick={() => onPageChange?.(page + 1)}
             disabled={!hasNextPage}
           >
-            Next
+            <FaArrowRight/>
           </Button>
         </div>
       </div>

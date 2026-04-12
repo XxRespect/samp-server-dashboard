@@ -24,6 +24,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+import { Spinner } from '@/components/ui/spinner'
+import { Skeleton } from '@/components/ui/skeleton'
+
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -32,13 +36,14 @@ export function DataTable<TData, TValue>({
   setPage,
   totalPages,
   total,
+  isLoading
 }: DataTableProps<TData, TValue> & { 
   page: number; 
   limit: number; 
   setPage: (value: string) => void;
   totalPages: number;
   total: number;
-}) {
+  isLoading: boolean;}) {
   const table = useReactTable({
     data,
     columns,
@@ -46,7 +51,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <Card>
+    <Card className='shadow-lg shadow-gray-600/10'>
     <div className="overflow-hidden rounded-md border m-5">
       <Table>
         <TableHeader>
@@ -68,8 +73,8 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {table.getRowModel()?.rows?.length > 0 ? (
+            table.getRowModel()?.rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
@@ -82,9 +87,13 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                {data.length === 0 ? "No Results" : "Loading..."}
+            <TableRow className='text-center flex align-center justify-center w-full'>
+              <TableCell colSpan={columns.length} className="h-24 ">
+                {isLoading ? (
+                 <div className="flex items-center justify-center m-auto"><Spinner className="size-7" /></div> 
+                ) : (
+                  "No results."
+                )}
               </TableCell>
             </TableRow>
           )}
@@ -93,7 +102,14 @@ export function DataTable<TData, TValue>({
       
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="text-sm text-muted-foreground">
-          Mostrando {((page - 1) * limit) + 1} a {Math.min(page * limit, total)} de {total} resultados
+          {isLoading ? 
+          (<>
+            <Skeleton className="ml-4 h-4 w-40" />
+          </> )
+          : 
+          (<><span className="ml-4">Mostrando {((page - 1) * limit) + 1} a {Math.min(page * limit, total)} de {new Intl.NumberFormat('pt-BR').format(total)} resultados</span></>)
+          }
+          
         </div>
         
         <div className="flex items-center space-x-2">

@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
             clanMembers: membersByClanId.get(clan.CLAN_ID) ?? 0
         }))
 
-
+        
         const totalPages = Math.ceil(total / limit)
 
         return NextResponse.json({

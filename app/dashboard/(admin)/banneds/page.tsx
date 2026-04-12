@@ -77,7 +77,6 @@ function BannedsPage() {
 
   return (
     <>
-    {isLoading && <p className="px-5">Loading banneds...</p>}
       <div>
         <Breadcrumb className='m-5'>
           <BreadcrumbList>
@@ -92,7 +91,7 @@ function BannedsPage() {
         </Breadcrumb>
       </div>
       <div className="m-5 shadow-lg shadow-grey-300/50">
-        <Card className='bg-primary-background'>
+        
           <div className="p-4 h-full">
             <div className="flex gap-2 max-w-sm">
               <Input
@@ -116,8 +115,9 @@ function BannedsPage() {
           limit={Number(limit)} 
           setPage={setPage} 
           totalPages={data?.totalPages || 0}
-          total={data?.total || 0} />
-        </Card>
+          total={data?.total || 0} isLoading={isLoading} />
+          
+     
       </div>
     </>
   )
