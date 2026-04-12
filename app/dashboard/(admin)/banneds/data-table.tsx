@@ -26,6 +26,9 @@ interface DataTableProps<TData, TValue> {
 
 import { Spinner } from '@/components/ui/spinner'
 import { Skeleton } from '@/components/ui/skeleton'
+import { FaArrowRight} from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
+
 
 
 export function DataTable<TData, TValue>({
@@ -87,10 +90,12 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))
           ) : (
-            <TableRow className='text-center flex align-center justify-center w-full'>
+            <TableRow className='text-center'>
               <TableCell colSpan={columns.length} className="h-24 ">
-                {isLoading ? (
-                 <div className="flex items-center justify-center m-auto"><Spinner className="size-7" /></div> 
+                {isLoading? (
+                  <>
+                  <Spinner className="mx-auto size-7" />
+                 </>
                 ) : (
                   "No results."
                 )}
@@ -119,7 +124,7 @@ export function DataTable<TData, TValue>({
             onClick={() => setPage(String(page - 1))}
             disabled={page <= 1}
           >
-            Previous
+            <FaArrowLeft />
           </Button>
           <span className="text-sm">
             Página {page} de {totalPages}
@@ -130,7 +135,7 @@ export function DataTable<TData, TValue>({
             onClick={() => setPage(String(page + 1))}
             disabled={page >= totalPages}
           >
-            Next
+            <FaArrowRight />
           </Button>
         </div>
       </div>

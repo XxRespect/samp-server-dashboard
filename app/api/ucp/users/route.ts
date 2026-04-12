@@ -55,7 +55,9 @@ export async function GET(req: NextRequest) {
             },
 
         });
-        return NextResponse.json({ message: 'UCP data fetched successfully', users }, { status: 200 });
+
+        
+        return NextResponse.json({ message: 'UCP data fetched successfully', users, }, { status: 200 });
     }
     catch (error) {
         console.error('Error fetching UCP:', error);

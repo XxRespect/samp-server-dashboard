@@ -1,0 +1,5 @@
+$kind: http-request
+name: banned
+url: ""
+method: GET
+order: 2187621380238367

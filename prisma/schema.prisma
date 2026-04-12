@@ -407,105 +407,108 @@ model objects {
 }
 
 model player {
-  id                Int         @id @default(autoincrement())
-  Nome              String      @unique(map: "unique_name") @db.VarChar(24)
-  Email             String      @default("Nao Definido") @db.VarChar(50)
-  Ip                String      @db.VarChar(20)
-  Admin             Int?        @default(0)
-  Score             Int?        @default(230)
-  Skin              Int?        @default(296)
-  Matou             Int?        @default(2)
-  Morreu            Int?        @default(3)
-  Vida              Float?      @default(100)
-  Colete            Float?      @default(100)
-  Registred         Int         @default(0)
-  Gpci              String      @default("1") @db.VarChar(255)
-  Dinheiro          BigInt      @default(3000)
-  HeadShots         Int         @default(1)
-  pPosX             Float?      @default(-2240.9197)
-  pPosY             Float?      @default(252.0263)
-  pPosZ             Float?      @default(35.3203)
-  pPosA             Float?      @default(91.2125)
-  SPAWN_L           Int         @default(0)
-  Salt              String      @default("0") @db.VarChar(255)
-  Spree             Int         @default(0)
-  LasTimer          Int?        @default(0)
-  Online            Boolean?    @default(false)
-  Clan              String      @default("Nenhum") @db.VarChar(24)
-  PLAYER_CLAN       Boolean     @default(false)
-  IS_VIP            Int         @default(0)
-  BUGED1            Int         @default(0)
-  BUGED2            Int         @default(0)
-  BUGED3            Int         @default(0)
-  Procurado         Int         @default(0)
-  BANNED            Int         @default(0)
-  H_PROP            Int         @default(0)
-  T_PROP            Int         @default(0)
-  SPAWN_LAST        Int         @default(0)
-  Warnings          Int         @default(0)
-  MUTED             Boolean     @default(false)
-  KitRun            Boolean     @default(false)
-  KitWalk           Boolean     @default(true)
-  Version           String      @default("3.0.1") @db.VarChar(24)
-  Device            String      @default("Nao Verificado") @db.VarChar(24)
-  Tag               String      @default("Grauzinho") @db.VarChar(255)
-  Tag_Color         String      @default("00FF00") @db.VarChar(255)
-  Tag_Color_hexa    String      @default("0x00FF00") @db.VarChar(255)
-  Tag_Inuse         Boolean     @default(true)
-  YouTuber          Boolean     @default(false)
-  PLYAERHASTAG      Boolean     @default(true)
-  TimerOnServer     Int         @default(1)
-  MODO_MATA         Boolean     @default(true)
-  Email_confirmed   Boolean     @default(false)
-  spawn_colete      Boolean     @default(false)
-  discord_id        String      @default("nenhum") @db.VarChar(255)
-  discord_codsync   String      @default("nenhum") @db.VarChar(255)
-  original_nickname String      @default("Sem set") @db.VarChar(255)
-  pais              String      @default("Nao Definido") @db.VarChar(255)
-  cidade            String      @default("Nao Definido") @db.VarChar(255)
-  regiao            String      @default("Nao Definido") @db.VarChar(255)
-  cep               String      @default("Nao Definido") @db.VarChar(255)
-  organizacao       String      @default("Nao Definido") @db.VarChar(255)
-  fuso_horario      String      @default("Nao Definido") @db.VarChar(255)
-  isp               String      @default("Nao Definido") @db.VarChar(255)
-  vpn               String      @default("Privado") @db.VarChar(255)
-  coordenadas       String      @default("Nao definido") @db.VarChar(255)
-  StoragedNick      Boolean     @default(false)
-  grupo             String      @default("semgrupo") @db.VarChar(100)
-  has_group         Boolean     @default(false)
-  admhide           Boolean     @default(false)
-  NickChange        Int         @default(0)
-  horas_jogadas     Int         @default(0)
-  Hud_stats_1       Boolean     @default(true)
-  Hud_stats_2       Boolean     @default(false)
-  Preso             Boolean     @default(false)
-  ADMIN_TEMP        Int         @default(0)
-  acessories        Int         @default(0)
-  has_accesories    Boolean     @default(false)
-  Arena_kills       Int         @default(0)
-  Arena_deaths      Int         @default(0)
-  Arena_scores      Int         @default(0)
-  Hud_players       Boolean     @default(true)
-  blockban          Boolean     @default(false)
-  Mapper            Boolean     @default(false)
-  isVpn             Boolean     @default(false)
-  banreason         String?     @default("Jogador nao banido") @db.VarChar(255)
-  Color             String?     @default("FFFFFF") @db.VarChar(10)
-  HasEmail          Boolean     @default(false)
-  EmailVerified     Boolean     @default(false)
-  EmailChangeTime   Int         @default(0)
-  Senha             String      @db.VarChar(255)
-  user_register     DateTime    @default(now()) @db.DateTime(0)
-  profile           String      @default("https://res.cloudinary.com/dcun12csz/image/upload/v1774628141/profile_cfxxfi.webp") @db.VarChar(100)
-  timestamp         DateTime    @default(now()) @db.Timestamp(0)
-  role              player_role @default(USER)
-  admintemp         admintemp[]
-  ban               ban[]
-  bantemp           bantemp[]
-  cnr               cnr[]
-  emails            emails[]
-  members           members[]
-  vips              vips[]
+  id                                    Int               @id @default(autoincrement())
+  Nome                                  String            @unique(map: "unique_name") @db.VarChar(24)
+  Email                                 String            @default("Nao Definido") @db.VarChar(50)
+  Ip                                    String            @db.VarChar(20)
+  Admin                                 Int?              @default(0)
+  Score                                 Int?              @default(230)
+  Skin                                  Int?              @default(296)
+  Matou                                 Int?              @default(2)
+  Morreu                                Int?              @default(3)
+  Vida                                  Float?            @default(100)
+  Colete                                Float?            @default(100)
+  Registred                             Int               @default(0)
+  Gpci                                  String            @default("1") @db.VarChar(255)
+  Dinheiro                              BigInt            @default(3000)
+  HeadShots                             Int               @default(1)
+  pPosX                                 Float?            @default(-2240.9197)
+  pPosY                                 Float?            @default(252.0263)
+  pPosZ                                 Float?            @default(35.3203)
+  pPosA                                 Float?            @default(91.2125)
+  SPAWN_L                               Int               @default(0)
+  Salt                                  String            @default("0") @db.VarChar(255)
+  Spree                                 Int               @default(0)
+  LasTimer                              Int?              @default(0)
+  Online                                Boolean?          @default(false)
+  Clan                                  String            @default("Nenhum") @db.VarChar(24)
+  PLAYER_CLAN                           Boolean           @default(false)
+  IS_VIP                                Int               @default(0)
+  BUGED1                                Int               @default(0)
+  BUGED2                                Int               @default(0)
+  BUGED3                                Int               @default(0)
+  Procurado                             Int               @default(0)
+  BANNED                                Int               @default(0)
+  H_PROP                                Int               @default(0)
+  T_PROP                                Int               @default(0)
+  SPAWN_LAST                            Int               @default(0)
+  Warnings                              Int               @default(0)
+  MUTED                                 Boolean           @default(false)
+  KitRun                                Boolean           @default(false)
+  KitWalk                               Boolean           @default(true)
+  Version                               String            @default("3.0.1") @db.VarChar(24)
+  Device                                String            @default("Nao Verificado") @db.VarChar(24)
+  Tag                                   String            @default("Grauzinho") @db.VarChar(255)
+  Tag_Color                             String            @default("00FF00") @db.VarChar(255)
+  Tag_Color_hexa                        String            @default("0x00FF00") @db.VarChar(255)
+  Tag_Inuse                             Boolean           @default(true)
+  YouTuber                              Boolean           @default(false)
+  PLYAERHASTAG                          Boolean           @default(true)
+  TimerOnServer                         Int               @default(1)
+  MODO_MATA                             Boolean           @default(true)
+  Email_confirmed                       Boolean           @default(false)
+  spawn_colete                          Boolean           @default(false)
+  discord_id                            String            @default("nenhum") @db.VarChar(255)
+  discord_codsync                       String            @default("nenhum") @db.VarChar(255)
+  original_nickname                     String            @default("Sem set") @db.VarChar(255)
+  pais                                  String            @default("Nao Definido") @db.VarChar(255)
+  cidade                                String            @default("Nao Definido") @db.VarChar(255)
+  regiao                                String            @default("Nao Definido") @db.VarChar(255)
+  cep                                   String            @default("Nao Definido") @db.VarChar(255)
+  organizacao                           String            @default("Nao Definido") @db.VarChar(255)
+  fuso_horario                          String            @default("Nao Definido") @db.VarChar(255)
+  isp                                   String            @default("Nao Definido") @db.VarChar(255)
+  vpn                                   String            @default("Privado") @db.VarChar(255)
+  coordenadas                           String            @default("Nao definido") @db.VarChar(255)
+  StoragedNick                          Boolean           @default(false)
+  grupo                                 String            @default("semgrupo") @db.VarChar(100)
+  has_group                             Boolean           @default(false)
+  admhide                               Boolean           @default(false)
+  NickChange                            Int               @default(0)
+  horas_jogadas                         Int               @default(0)
+  Hud_stats_1                           Boolean           @default(true)
+  Hud_stats_2                           Boolean           @default(false)
+  Preso                                 Boolean           @default(false)
+  ADMIN_TEMP                            Int               @default(0)
+  acessories                            Int               @default(0)
+  has_accesories                        Boolean           @default(false)
+  Arena_kills                           Int               @default(0)
+  Arena_deaths                          Int               @default(0)
+  Arena_scores                          Int               @default(0)
+  Hud_players                           Boolean           @default(true)
+  blockban                              Boolean           @default(false)
+  Mapper                                Boolean           @default(false)
+  isVpn                                 Boolean           @default(false)
+  banreason                             String?           @default("Jogador nao banido") @db.VarChar(255)
+  Color                                 String?           @default("FFFFFF") @db.VarChar(10)
+  HasEmail                              Boolean           @default(false)
+  EmailVerified                         Boolean           @default(false)
+  EmailChangeTime                       Int               @default(0)
+  Senha                                 String            @db.VarChar(255)
+  user_register                         DateTime          @default(now()) @db.DateTime(0)
+  profile                               String            @default("https://res.cloudinary.com/dcun12csz/image/upload/v1774628141/profile_cfxxfi.webp") @db.VarChar(100)
+  timestamp                             DateTime          @default(now()) @db.Timestamp(0)
+  role                                  player_role       @default(USER)
+  admintemp                             admintemp[]
+  ban                                   ban[]
+  bantemp                               bantemp[]
+  cnr                                   cnr[]
+  emails                                emails[]
+  members                               members[]
+  ticket_messages                       ticket_messages[]
+  tickets_tickets_author_accidToplayer  tickets[]         @relation("tickets_author_accidToplayer")
+  tickets_tickets_against_accidToplayer tickets[]         @relation("tickets_against_accidToplayer")
+  vips                                  vips[]
 }
 
 model pm_logs {
@@ -611,6 +614,38 @@ model weapons {
   @@index([weapon_id], map: "weapon_id")
 }
 
+model ticket_messages {
+  id           Int                  @id @default(autoincrement())
+  ticketid     Int
+  author_accid Int
+  message      String               @db.Text
+  role         ticket_messages_role @default(USER)
+  createdAt    DateTime             @default(now()) @db.Timestamp(0)
+  tickets      tickets              @relation(fields: [ticketid], references: [ticketid], onUpdate: Restrict, map: "ticket_messages_ibfk_1")
+  player       player               @relation(fields: [author_accid], references: [id], onUpdate: Restrict, map: "ticket_messages_ibfk_2")
+
+  @@index([author_accid], map: "author_accid")
+  @@index([ticketid], map: "ticketid")
+}
+
+model tickets {
+  ticketid                             Int                 @id @default(autoincrement())
+  ticket_type                          tickets_ticket_type
+  author                               String              @db.VarChar(100)
+  author_accid                         Int
+  against_accid                        Int?
+  name                                 String?             @db.VarChar(100)
+  status                               tickets_status?     @default(open)
+  createdAt                            DateTime            @default(now()) @db.Timestamp(0)
+  updatedAt                            DateTime            @default(now()) @db.Timestamp(0)
+  ticket_messages                      ticket_messages[]
+  player_tickets_author_accidToplayer  player              @relation("tickets_author_accidToplayer", fields: [author_accid], references: [id], onUpdate: Restrict, map: "tickets_ibfk_1")
+  player_tickets_against_accidToplayer player?             @relation("tickets_against_accidToplayer", fields: [against_accid], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "tickets_ibfk_2")
+
+  @@index([against_accid], map: "against_accid")
+  @@index([author_accid], map: "author_accid")
+}
+
 enum ban_logs_action {
   ban
   unban
@@ -662,4 +697,23 @@ enum player_role {
   SUPERVISOR
   OWNER
   DEV
+}
+
+enum tickets_ticket_type {
+  admin_report
+  ban_appeal
+  report
+}
+
+enum ticket_messages_role {
+  USER
+  ADMIN
+  MODERATOR
+  SUPERVISOR
+}
+
+enum tickets_status {
+  open
+  closed
+  denied
 }

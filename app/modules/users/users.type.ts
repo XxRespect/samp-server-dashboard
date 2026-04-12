@@ -16,4 +16,5 @@ export interface Players {
 export interface playersResponse {
     message: string,
     users: Players[]
+    total: number
 }

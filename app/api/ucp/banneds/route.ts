@@ -1,6 +1,6 @@
 import {prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-
+import { auth } from '@/lib/auth';
 
 
 export async function GET(req: NextRequest){
@@ -10,6 +10,11 @@ export async function GET(req: NextRequest){
     const page = Number(searchParams.get("page") || 1)
     const search =  searchParams.get("search") || ""
     const order = searchParams.get("orderBy") || "banid"
+
+    const session = await auth()
+    if(session?.user.role === "USER") {
+        return NextResponse.json({message: 'You are not allowed to access this route'}, {status: 403})
+    }
 
     try {
         const [banneds, total] = await Promise.all([

@@ -1,5 +1,12 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
-import React from 'react'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+}
+  from '@/components/ui/breadcrumb'
 
 
 function page() {
@@ -17,6 +24,12 @@ function page() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+
+        <div className='grid grid-cols-3 gap-2'>
+          <div className="bg-primary-foreground h-14"> </div>
+          <div className="bg-primary-foreground"></div>
+          <div className="bg-primary-foreground"></div>
+        </div>
       </div>
     </>
   )

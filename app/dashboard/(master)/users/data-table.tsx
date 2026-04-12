@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
           </Field>
           <div className='ml-auto'>
             <DropdownMenu  >
-              <DropdownMenuTrigger  asChild>
+              <DropdownMenuTrigger asChild>
                 <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">Filtering <IoFilter /></Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>

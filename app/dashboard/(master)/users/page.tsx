@@ -110,7 +110,6 @@ export default function UsersPageContent() {
                             onPageChange={handlePageChange}
                             hasNextPage={(data?.users?.length || 0) >= 20}
                             isLoading={isPending}
-
                         />
                     </CardContent>
                 </Card>

@@ -115,7 +115,8 @@ function BannedsPage() {
           limit={Number(limit)} 
           setPage={setPage} 
           totalPages={data?.totalPages || 0}
-          total={data?.total || 0} isLoading={isLoading} />
+          total={data?.total || 0} 
+          isLoading={isLoading} />
           
      
       </div>
