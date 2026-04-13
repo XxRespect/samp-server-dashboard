@@ -1,5 +1,5 @@
 
-
+import { UserType } from "../user/user.type";
 
 
 export interface DashBoardDataResponse {
@@ -9,4 +9,5 @@ export interface DashBoardDataResponse {
     totalPcPlayers: number;
     totalMobiles: number;
     totalOthers: number;
+    topScorePlayers: UserType[];
 }

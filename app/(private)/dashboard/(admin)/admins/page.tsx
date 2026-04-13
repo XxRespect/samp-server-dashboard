@@ -51,7 +51,7 @@ function AdminsPage() {
       <div className='m-8'>
         <div className='m-4'>
         </div>
-          <DataTawwwble data={data?.admins ?? []} 
+          <DataTable data={data?.admins ?? []} 
           columns={columns}
            isLoading={isLoading}
            totalAdmins={data?.totalAdmins ?? 0}
