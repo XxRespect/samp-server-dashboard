@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 
@@ -28,7 +28,7 @@ import { DataTable } from './data-table'
 import { useQueryState } from 'nuqs'
 
 
-export default function UsersPageContent() {
+function UsersPageContent() {
 
     const [search, setSearch] = useQueryState('search', {
         defaultValue: ""
@@ -58,7 +58,7 @@ export default function UsersPageContent() {
         }),
     })
 
- 
+
 
     const handleSearch = (value: string) => {
         setSearch(value)
@@ -117,5 +117,13 @@ export default function UsersPageContent() {
 
             </div>
         </>
+    )
+}
+
+export default function UsersPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <UsersPageContent />
+        </Suspense>
     )
 }

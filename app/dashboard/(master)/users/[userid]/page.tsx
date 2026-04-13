@@ -321,13 +321,11 @@ const UserPage = () => {
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="overflow-y-scroll h-95">
-                                    {session?.user.role === "ADMIN" && session?.user.admin >= 4 ? (
+                                    {
                                         data?.userChatLog.map((account) => (
                                             <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
                                         ))
-                                    ) : (
-                                        <span className="text-muted-foreground text-shadow-2xs font-medium">You don't have permission to view this</span>
-                                    )}
+                                    }
                                 </CardContent>
                             </Card>
                         </div>

@@ -1,14 +1,12 @@
 import { prisma } from '@/lib/prisma'
-import { auth } from '@/lib/auth'
+
 import { NextRequest, NextResponse } from 'next/server'
 
 
 
-export async function GET(req: NextRequest, {params}: {params: Promise<{userid: string}>}) {
+export async function GET(req: NextRequest) {
 
-    const { userid } = await params
-
-    let where = {}
+   
 
     try {
 

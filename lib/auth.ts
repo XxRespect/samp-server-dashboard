@@ -76,7 +76,7 @@ export const authConfig = {
         token.lastRefresh = Date.now(); // Inicializa no primeiro login
       }
 
-      const REFRESH_INTERVAL = 5 * 60 * 1000 // 5 minutes in milliseconds
+      const REFRESH_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds
       const lastRefresh = token.lastRefresh as number | undefined;
       const shouldRefresh = !lastRefresh || Date.now() - lastRefresh > REFRESH_INTERVAL
 
