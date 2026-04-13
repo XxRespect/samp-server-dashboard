@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
             </div>
             <div className=" rounded-md border">
 
-                <Table>
+                <Table className="h-full overflow-y-hidden">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -135,12 +135,7 @@ export function DataTable<TData, TValue>({
                             </TableRow>
                         )}
                     </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TableCell colSpan={3}>Total</TableCell>
-                            <TableCell className="text-right">{totalAdmins}</TableCell>
-                        </TableRow>
-                    </TableFooter>
+
                 </Table>
                 <div className='flex items-center justify-end space-x-2 py-4'>
                     <Button
