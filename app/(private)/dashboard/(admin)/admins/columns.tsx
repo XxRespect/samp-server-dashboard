@@ -5,7 +5,7 @@ import { AdminsInterface } from "./admins.types"
 // This type is used to define the shape of our data.
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { convertTimestampToDate } from '@/app/utils/datatime/timestamp.converter'
+import { convertTimestampToDate } from '@/utils/datatime/timestamp.converter'
 import { UserRoundPen } from 'lucide-react';
 
 

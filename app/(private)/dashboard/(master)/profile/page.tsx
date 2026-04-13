@@ -45,9 +45,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getUser } from "@/modules/user/user.api"
 import { useParams } from "next/navigation"
 import Link from "next/link"
-import { formatPlayerNumber } from "@/app/utils/number/number.formater"
-import { formatTime } from "@/app/utils/datatime/datetime.formater"
-import { convertTimestampToDate } from "@/app/utils/datatime/timestamp.converter"
+import { formatPlayerNumber } from "@/utils/number/number.formater"
+import { formatTime } from "@/utils/datatime/datetime.formater"
+import { convertTimestampToDate } from "@/utils/datatime/timestamp.converter"
 import { useSession } from 'next-auth/react'
 
 

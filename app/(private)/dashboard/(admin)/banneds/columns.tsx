@@ -1,5 +1,5 @@
 import { BannedsProps } from '@/modules/banneds/banned.type'
-import { formatTime } from '@/app/utils/datatime/datetime.formater'
+import { formatTime } from '@/utils/datatime/datetime.formater'
 import { ImBin } from "react-icons/im";
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from '@/components/ui/button';

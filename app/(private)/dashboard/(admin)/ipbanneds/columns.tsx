@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { IpBannedInterface } from "./ipbanned.types";
-import { formatTime } from '@/app/utils/datatime/datetime.formater'
+import { formatTime } from '@/utils/datatime/datetime.formater'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Trash2 } from 'lucide-react'

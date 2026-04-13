@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ClansInterface } from "./clans.type"
 import Link from "next/link"
-import { convertTimestampToDate } from '@/app/utils/datatime/timestamp.converter'
+import { convertTimestampToDate } from '@/utils/datatime/timestamp.converter'
 import { Button } from '@/components/ui/button'
 
 

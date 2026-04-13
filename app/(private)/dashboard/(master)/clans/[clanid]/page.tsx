@@ -39,7 +39,7 @@ import {
 /*SERVICES + BACKEND */
 import { getClan } from './clan.service'
 import { useParams } from 'next/navigation'
-import { convertTimestampToDate } from '@/app/utils/datatime/timestamp.converter'
+import { convertTimestampToDate } from '@/utils/datatime/timestamp.converter'
 
 
 

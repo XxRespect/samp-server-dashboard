@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-import { serializeBigInt } from '@/app/utils/api/serializer'
+import { serializeBigInt } from '@/utils/api/serializer'
 
 export async function GET(req: NextRequest) {
 
