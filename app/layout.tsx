@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '@/components/theme-provider';
-import { Providers } from '@/app/providers/authProvider';
+import { Providers } from '@/providers/authProvider';
 
 import AppFooter from '@/components/AppFooter'
 

@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/card'
 
 
-import { getPlayers } from '@/app/modules/users/users.api'
+import { getPlayers } from '@/modules/users/users.api'
 import { columns } from './columns'
 import { useQuery } from '@tanstack/react-query'
 import { DataTable } from './data-table'

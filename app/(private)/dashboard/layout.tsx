@@ -2,9 +2,9 @@
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import DashboardShell from "@/components/dashboard-shell";
-import QueryProvider from "@/app/providers/QueryProvider";
+import QueryProvider from "@/providers/QueryProvider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Providers } from '@/app/providers/authProvider';
+import { Providers } from '@/providers/authProvider';
 import AppFooter from "@/components/AppFooter";
 
 const dashboardFont = Inter({

@@ -42,7 +42,7 @@ import { Button } from "@/components/ui/button"
 
 /*backend data */
 import { useQuery } from '@tanstack/react-query'
-import { getUser } from "@/app/modules/user/user.api"
+import { getUser } from "@/modules/user/user.api"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import { formatPlayerNumber } from "@/app/utils/number/number.formater"

@@ -21,7 +21,7 @@ import {
 import { DataTable } from './data-table'
 import { useQuery } from '@tanstack/react-query'
 import { columns } from './columns'
-import getBanneds from '@/app/modules/banneds/banned.api'
+import getBanneds from '@/modules/banneds/banned.api'
 import {Card } from '@/components/ui/card'
 import { useQueryState } from 'nuqs'
 import { Suspense } from 'react'

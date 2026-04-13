@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { Players } from '@/app/modules/users/users.type'
+import { Players } from '@/modules/users/users.type'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatTime } from '@/app/utils/datatime/datetime.formater'
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-import { UserType } from '@/app/modules/user/user.type'
+import { UserType } from '@/modules/user/user.type'
 
 const getValidImageUrl = (url: string | null | undefined): string => {
     if (!url) return '/default-avatar.png'

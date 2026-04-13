@@ -19,7 +19,7 @@ import {
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { useSession } from 'next-auth/react'
 import { Users, Shield, Ban } from 'lucide-react'
-import { getData } from '@/app/modules/home/assets/service'
+import { getData } from '@/modules/assets/service'
 import { useQuery } from '@tanstack/react-query'
 import { Spinner } from '@/components/ui/spinner'
 

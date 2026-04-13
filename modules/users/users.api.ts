@@ -1,7 +1,7 @@
 import { api } from '@/lib/axios'
 import {
     playersResponse
-} from '@/app/modules/users/users.type'
+} from '@/modules/users/users.type'
 
 
 

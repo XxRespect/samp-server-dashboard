@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/chart"
 
 export const description = "A donut chart with text"
-import { getData } from '@/app/modules/home/assets/service'
+import { getData } from '@/modules/assets/service'
 import { useQuery } from '@tanstack/react-query'
 
 
