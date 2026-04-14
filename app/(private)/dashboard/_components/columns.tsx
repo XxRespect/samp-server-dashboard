@@ -113,7 +113,7 @@ export const topPlayersColumn: ColumnDef<UserType>[] = [
                     </p>
                     <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
                         <div
-                            className="h-full rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500"
+                            className="h-full rounded-full bg-linear-to-r from-amber-400 via-orange-400 to-rose-500"
                             style={{ width: `${progress}%` }}
                         />
                     </div>

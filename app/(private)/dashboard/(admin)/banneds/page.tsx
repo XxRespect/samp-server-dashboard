@@ -10,23 +10,13 @@ import { Breadcrumb,
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription
-} from '@/components/ui/alert'
-
-
-
 import { DataTable } from './data-table'
 import { useQuery } from '@tanstack/react-query'
 import { columns } from './columns'
 import getBanneds from '@/modules/banneds/banned.api'
-import {Card } from '@/components/ui/card'
 import { useQueryState } from 'nuqs'
 import { Suspense } from 'react'
-import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { Search, User } from 'lucide-react'
 
 
 
@@ -39,15 +29,11 @@ function BannedsPage() {
   const [page, setPage] = useQueryState('page', {
     defaultValue: '1'
   })
-  const [sortBy, setSortBy] = useQueryState('sortBy', {
+  const [sortBy] = useQueryState('sortBy', {
     defaultValue: 'banid'
   })
 
-  const [orderBy, setOrderBy] = useQueryState('orderBy', {
-    defaultValue: 'desc'
-  })
-
-  const [limit, setLimit] = useQueryState('limit', {
+  const [limit] = useQueryState('limit', {
     defaultValue: '25'
   })
 
@@ -56,13 +42,13 @@ function BannedsPage() {
     setPage('1') // Reset to first page when searching
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch()
     }
   }
 
-  const { data, isError, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['banneds', search, page, sortBy, limit],
     queryFn: () => getBanneds(
       { search: search || undefined, 
@@ -91,25 +77,33 @@ function BannedsPage() {
         </Breadcrumb>
       </div>
       <div className="m-5 shadow-lg shadow-grey-300/50">
-        
-          <div className="p-4 h-full">
-            <div className="flex gap-2 max-w-sm">
-              <Input
-                placeholder="Buscar por nickname..."
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="flex-1"
-              />
-                 <Button
-                className='max-w-sm shadow-xl/30 hover:cursor-pointer hover:transition-all'
-                variant='outline'
-                onClick={handleSearch}
-              >
-                Search
-              </Button>
+        <div className="rounded-2xl border bg-card/80 p-4 shadow-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end">
+            <div className="flex-1 space-y-2">
+              <p className="text-sm font-medium text-foreground">Nickname</p>
+              <div className="relative">
+                <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar por nickname..."
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="h-11 rounded-xl border-border/70 bg-background pl-10 shadow-sm"
+                />
+              </div>
             </div>
+            <Button
+              className='h-11 rounded-xl px-5 shadow-sm hover:cursor-pointer'
+              onClick={handleSearch}
+            >
+              <Search className="mr-2 size-4" />
+              Buscar
+            </Button>
           </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Pressione Enter para iniciar a busca.
+          </p>
+        </div>
           <DataTable columns={columns} data={data?.banneds ?? []} 
           page={Number(page)} 
           limit={Number(limit)} 

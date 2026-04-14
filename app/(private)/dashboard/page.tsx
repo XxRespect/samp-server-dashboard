@@ -97,7 +97,7 @@ export default function DashboardPage() {
                 <div className="bg-primary-foreground p-4 rounded-lg m-3 shadow-lg shadow-gray-600/10">
                     <ChartPieDonutText />
                 </div>
-                <div className="bg-primary-foreground p-4 rounded-lg m-3 shadow-lg shadow-gray-600/10">
+                <div className="m-3 bg-primary-foreground p-4 rounded-lg shadow-lg shadow-gray-600/10">
                     <CardList title="Raking" />
                 </div>
             </div>

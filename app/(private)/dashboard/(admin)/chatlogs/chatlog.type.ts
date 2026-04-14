@@ -1,17 +1,13 @@
 export interface ChatLogInterface {
     id: number,
-player_name: string,
-    ip: string | number,
-    version: string,
-    package_lost: number | string,
-    serial: string,
+    player_name: string,
     message: string,
-source: string | "Chat_Global",
     timestamp: string
 }
 
-
-
-export interface chatLoginResopnse {
-    chatlogs: ChatLogInterface[]
+export interface ChatLogResponse {
+    chatlogs: ChatLogInterface[],
+    total: number,
+    page: number,
+    limit: number
 }

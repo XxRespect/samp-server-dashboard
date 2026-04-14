@@ -9,6 +9,7 @@ import { columns } from './columns'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useQueryState } from 'nuqs'
+import { Search, ShieldBan } from 'lucide-react'
 
 function IpBannedsPage() {
 
@@ -45,7 +46,7 @@ function IpBannedsPage() {
 
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch()
     }
@@ -69,19 +70,30 @@ function IpBannedsPage() {
       </div>
   
       <div className='m-9'>
-        <div className='w-120 m-5 grid grid-cols-2'>
-          <Input
-            type="text"
-            placeholder="Search IP"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <div className="ml-3 hover:cursor-pointer">
-            <Button variant='outline' onClick={handleSearch}>
-              Search
+        <div className='m-5 rounded-2xl border bg-card/80 p-4 shadow-sm'>
+          <div className='flex flex-col gap-4 md:flex-row md:items-end'>
+            <div className='flex-1 space-y-2'>
+              <p className='text-sm font-medium text-foreground'>Endereço IP</p>
+              <div className='relative'>
+                <ShieldBan className='pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground' />
+                <Input
+                  type="text"
+                  placeholder="Search IP"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className='h-11 rounded-xl border-border/70 bg-background pl-10 shadow-sm'
+                />
+              </div>
+            </div>
+            <Button className='h-11 rounded-xl px-5 shadow-sm' onClick={handleSearch}>
+              <Search className='mr-2 size-4' />
+              Buscar
             </Button>
           </div>
+          <p className='mt-3 text-xs text-muted-foreground'>
+            Pressione Enter para aplicar o filtro de IP.
+          </p>
         </div>
         <DataTable data={data?.banned || []}
           columns={columns} />
