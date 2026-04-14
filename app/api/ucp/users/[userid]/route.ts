@@ -23,45 +23,6 @@ export async function GET(req: NextRequest,
             where: {
                 id: parsedUserId,
             },
-            select: {
-                Nome: true,
-                id: true,
-                Admin: true,
-                ADMIN_TEMP: true,
-                Score: true,
-                Gpci: true,
-                BANNED: true,
-                banreason: true,
-                Device: true,
-                pais: true,
-                cidade: true,
-                Dinheiro: true,
-                Online: true,
-                LasTimer: true,
-                regiao: true,
-                Skin: true,
-                cep: true,
-                Clan: true,
-                Preso: true,
-                organizacao: true,
-                fuso_horario: true,
-                isp: true,
-                Matou: true,
-                Morreu: true,
-                vpn: true,
-                IS_VIP: true,
-                coordenadas: true,
-                original_nickname: true,
-                user_register: true,
-                MODO_MATA: true,
-                Ip: true,
-                profile: true,
-                HeadShots: true,
-                Email: true,
-                HasEmail: true,
-                PLAYER_CLAN: true
-
-            },
 
         })
 
@@ -192,10 +153,9 @@ export async function GET(req: NextRequest,
 
         })
 
-        const safeUser = serializeBigInt(user)
         return NextResponse.json({
             message: `User ${user.Nome} fetched successfully`,
-            user: safeUser,
+           user: serializeBigInt(user),
             usersWithSameIp,
             usersWithSameSerial,
             user_ac,

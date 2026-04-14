@@ -1,6 +1,6 @@
 'use client'
-
-import React from 'react'
+import dynamic from 'next/dynamic'
+import React, { Suspense } from 'react'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,7 +18,7 @@ import { columns } from './columns'
 import { Input } from '@/components/ui/input'
 import { MessageSquare, Search, User } from 'lucide-react'
 
-function ChatLogs() {
+function ChatLogsContent() {
   const [search, setSearch] = useQueryState("search", {
     defaultValue: "",
   })
@@ -122,16 +122,24 @@ function ChatLogs() {
         </p>
       </div>
       <div>
-        <DataTable columns={columns} data={data?.chatlogs ?? []}
-        isLoading={isLoading}
-        page={Number(page)}
-        limit={data?.limit ?? 25}
-        total={data?.total ?? 0}
-        setPage={setPage}
-        />
+        <Suspense fallback={<p>Loading...</p>}>
+          <DataTable columns={columns} data={data?.chatlogs ?? []}
+            isLoading={isLoading}
+            page={Number(page)}
+            limit={data?.limit ?? 25}
+            total={data?.total ?? 0}
+            setPage={setPage}
+          />
+        </Suspense>
       </div>
     </>
   )
 }
 
-export default ChatLogs
+export default function ChatLogs() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ChatLogsContent />
+    </Suspense>
+  )
+}
