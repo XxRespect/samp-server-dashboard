@@ -10,6 +10,7 @@ export default async function LoginAction(prevState: any, formData: FormData) {
     await signIn("credentials", {
       Nome: formData.get("Nome") as string,
       password: formData.get("password") as string,
+      redirect: true,
       redirectTo: "/dashboard",
     });
   } catch (e) {
@@ -17,10 +18,14 @@ export default async function LoginAction(prevState: any, formData: FormData) {
     // Don't swallow it, otherwise the client sees an "Erro interno" while the session is created.
     if (isRedirectError(e)) throw e;
 
-    if (e instanceof AuthError && e.type === "CredentialsSignin") {
-      return { success: false, message: "Dados invalidos" };
+    if (e instanceof AuthError) {
+      console.error(`[AUTH] Sign in error: ${e.type}`, e);
+      if (e.type === "CredentialsSignin") {
+        return { success: false, message: "Dados invalidos" };
+      }
     }
 
+    console.error("[AUTH] Unexpected error during sign in:", e);
     return { success: false, message: "Erro interno" };
   }
 }

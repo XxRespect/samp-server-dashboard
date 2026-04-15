@@ -14,16 +14,26 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        // Validate credentials object exists
+        if (!credentials) {
+          console.error("[AUTH] No credentials provided");
+          return null;
+        }
 
-        const parsed = LoginSchema.safeParse(credentials);
+        // Parse and validate input
+        const parsed = LoginSchema.safeParse({
+          Nome: credentials.Nome,
+          password: credentials.password,
+        });
 
         if (!parsed.success) {
-          console.log("[AUTH] schema validation failed", parsed.error.flatten());
+          console.error("[AUTH] Schema validation failed:", parsed.error.flatten());
           return null;
         }
 
         const { Nome, password } = parsed.data;
 
+        // Find user in database
         const user = await prisma.player.findUnique({
           where: { Nome },
           select: {
@@ -37,14 +47,19 @@ export const authConfig = {
           },
         });
 
-        if (!user)
+        if (!user) {
+          console.error(`[AUTH] User not found: ${Nome}`);
           return null;
+        }
 
-
+        // Verify password
         const normalizedHash = user.Senha.replace(/^\$2y\$/, "$2b$");
         const isValidPassword = await bcrypt.compare(password, normalizedHash);
 
-        if (!isValidPassword) return null;
+        if (!isValidPassword) {
+          console.error(`[AUTH] Invalid password for user: ${Nome}`);
+          return null;
+        }
 
         const role = (user.role && (user.role as string) !== "") ? user.role : "USER";
 
@@ -66,7 +81,7 @@ export const authConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.Nome = user.Nome;
