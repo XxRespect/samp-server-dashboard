@@ -30,7 +30,6 @@ import { ChartLineDefault } from "@/components/KillsBarChart"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Progress } from "@/components/ui/progress"
 import { Spinner } from "@/components/ui/spinner"
-import { Skeleton } from "@/components/ui/skeleton"
 import {
     Alert,
     AlertDescription,
@@ -68,7 +67,7 @@ const UserPage = () => {
 
     });
 
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
 
     const kills = Number(data?.user?.Matou ?? 0)
@@ -459,7 +458,7 @@ const UserPage = () => {
                                 <Card>
                                     <CardTitle className="border-b p-1"><span className="text-1lg">Nicknames history</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
-                                        {data?.nicksChangeLogs.map((log, _) => (
+                                        {data?.nicksChangeLogs.map((log) => (
                                             <span className="text-muted-foreground text-shadow-2xs font-medium" key={log.id}>[{log.data}] {log.nick_antigo} → {log.nick} <br /></span>
                                         ))}
                                     </CardContent>

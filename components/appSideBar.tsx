@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 import { MdAdminPanelSettings, MdBlock, MdSupportAgent } from "react-icons/md";
 import {
-    FaCloudMoon,
     FaFlag,
     FaHome,
     FaShoppingBag,
@@ -23,7 +22,6 @@ import {
     SidebarMenuItem,
     SidebarMenuButton,
     SidebarMenu,
-    SidebarProvider,
     SidebarGroup,
     SidebarGroupLabel,
     SidebarGroupContent,
@@ -34,19 +32,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 import {
-    MessageCircleX,
     Columns4,
     CreditCard,
     MonitorCog,
-    LogOutIcon,
     SettingsIcon,
     UserIcon,
     ServerCrash,
     ChevronUp,
-    Moon,
-    Plus,
     Shield,
-    Sun,
     User2,
     Waypoints
 } from 'lucide-react';
@@ -65,25 +58,16 @@ import { IoIosPeople } from 'react-icons/io';
 import { RiAdminFill, } from "react-icons/ri";
 import { SiRockstargames } from "react-icons/si";
 import { LuLogs } from "react-icons/lu";
-import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { SiGeneralelectric, SiPlayerdotme } from "react-icons/si";
+import {SiPlayerdotme } from "react-icons/si";
 import { TbMessageCircleX } from 'react-icons/tb';
-import { AiOutlineSecurityScan } from "react-icons/ai";
 
 import {useSession} from 'next-auth/react'
 
@@ -125,7 +109,7 @@ const SideBar = () => {
         () => false,
     );
 
-        const {data:session, status} = useSession()
+        const {data:session} = useSession()
 
     return (
         <>
@@ -153,7 +137,7 @@ const SideBar = () => {
                         </SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {Items.map((item, index) => (
+                                {Items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
                                             <Link href={item.link}>
@@ -229,7 +213,7 @@ const SideBar = () => {
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton asChild>
-                                        <Link href='/dashboard/zones'>
+                                        <Link href='/dashboard/shops'>
                                             <FaShoppingBag className='w-4 h-4' />
                                             <span>Shop</span>
                                         </Link>

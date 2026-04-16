@@ -64,7 +64,7 @@ export async function GET(req: NextRequest,
                 timestamp: true,
 
             },
-            take: 2
+            take: 120
         })
 
         const usersWithSameIp = await prisma.player.findMany({
@@ -139,7 +139,7 @@ export async function GET(req: NextRequest,
             orderBy: {
                 id: "desc"
             },
-            take: 80
+            take: 90
 
         })
 
