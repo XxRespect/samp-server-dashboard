@@ -6,18 +6,16 @@ import { getClans } from './clans.service'
 import { useQuery } from '@tanstack/react-query'
 import { columns } from './columns'
 import { Button } from '@/components/ui/button'
-import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
+import { Card, CardHeader, CardTitle , CardFooter }
   from '@/components/ui/card'
 import { Suspense } from 'react'
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
+
   PaginationPrevious,
   PaginationNext,
 } from '@/components/ui/pagination'

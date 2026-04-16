@@ -92,7 +92,7 @@ const UserPage = () => {
             ? { label: "Admin", variant: "outline" as const }
             : { label: "Jogador", variant: "outline" as const }
 
-    if (isLoading) return <p className="text-bold flex">Loading <Spinner className="ml-14 size-5"></Spinner></p>
+  {/** if (isLoading) return <p className="text-bold flex">Loading <Spinner className="ml-14 size-5"></Spinner></p> */} 
     if (isError) return (
         <div className="w-full abosolute flex items-center justify-center">
             <Alert className="m-4 max-w-md" variant='destructive'>
@@ -314,17 +314,27 @@ const UserPage = () => {
                         </div>
                         <div className="col-span-1 space-y-3 shadow-lg shadow-gray-600/16">
                             <Card size="sm" className={`${dashboardCardClass} h-full`}>
-                                <CardHeader>
+                                <CardHeader className="border-b">
                                     <CardTitle>
-                                        Chat log: last messages
+                                        Chat log: last texts sent by <span className='font-bold '>{data?.user.Nome}</span>
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent className="overflow-y-scroll h-95">
-                                    {
-                                        data?.userChatLog.map((account) => (
-                                            <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
-                                        ))
-                                    }
+                                    {session?.user.role === "ADMIN" || session?.user.role !== "MODERATOR" && session?.user.Admin > 3 ? (
+                                        <>
+                                            {
+                                                data?.userChatLog.map((account) => (
+                                                    <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
+                                                ))
+                                            }
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="ml-2 text-muted-foreground text-shadow-2xs font-medium">You dont have permission to see this information</span>
+                                        </>
+                                    )}
+
+
                                 </CardContent>
                             </Card>
                         </div>
@@ -355,9 +365,9 @@ const UserPage = () => {
                                 <hr />
                                 <div className="grid grid-cols-2 gap-y-2 mt-4 mb-3 w-full max-w-2xl ">
                                     <span className="text-muted-foreground">IP:</span>
-                                    
 
-                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ?(
+
+                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ? (
                                         <span>{data?.geoLocation.query}</span>
                                     ) : (
                                         <span>********</span>
@@ -379,15 +389,15 @@ const UserPage = () => {
                                             <span className="text-muted-foreground">CEP:</span>
                                             <span>{data?.geoLocation.zip}</span>
                                         </>
-                                    ): (
+                                    ) : (
                                         <>
                                             <span className="text-muted-foreground">CEP:</span>
                                             <span>**********</span>
                                         </>
                                     )}
-                              
 
-                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ?(
+
+                                    {!session?.user.role || session?.user.role !== "ADMIN" && session?.user.role !== "MODERATOR" ? (
                                         <>
                                             <span className="text-muted-foreground">Country code:</span>
                                             <span>{data?.geoLocation.countryCode}</span>
@@ -468,17 +478,26 @@ const UserPage = () => {
                                 <Card size='sm' className={dashboardCardClass}>
                                     <CardTitle className="border-b p-1"><span className="text-1lg">Accounts on this IP: {data?.user.Ip}</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
-                                        {data?.usersWithSameIp?.length ? (
-                                            <div className="space-y-1">
-                                                {data.usersWithSameIp.map((account) => (
-                                                    <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
-                                                        <span>{account.Nome}<br /></span>
-                                                    </Link>
-                                                ))}
-                                            </div>
+                                        {session?.user.role !== "USER" && session?.user.Admin >= 2 ? (
+                                            <>
+                                                {data?.usersWithSameIp?.length ? (
+                                                    <div className="space-y-1">
+                                                        {data.usersWithSameIp.map((account) => (
+                                                            <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
+                                                                <span>{account.Nome}<br /></span>
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <p>No accounts found</p>
+                                                )}
+                                            </>
                                         ) : (
-                                            <p>No accounts found</p>
+                                            <>
+                                                <span className="text-muted-foreground text-shadow-2xs font-medium">You dont have permission to see this information</span>
+                                            </>
                                         )}
+
                                     </CardContent>
                                 </Card>
                             </div>
@@ -486,17 +505,24 @@ const UserPage = () => {
                                 <Card size='sm' className={dashboardCardClass}>
                                     <CardTitle className="border-b p-1"><span className="text-1lg">Accounts with same Serial: {data?.user.Gpci}</span></CardTitle>
                                     <CardContent className="overflow-y-scroll h-40">
-                                        {data?.usersWithSameSerial?.length ? (
-                                            <div className="space-y-1">
-                                                {data.usersWithSameSerial.map((account) => (
-                                                    <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
-                                                        <span>{account.Nome}<br /></span>
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <p>No accounts found</p>
+                                        {session?.user.Admin >= 3 ? (<>
+                                            {data?.usersWithSameSerial?.length ? (
+                                                <div className="space-y-1">
+                                                    {data.usersWithSameSerial.map((account) => (
+                                                        <Link href={`/dashboard/users/${account.id}`} className={account.BANNED ? "text-red-600" : "text-blue-400"} key={account.id}>
+                                                            <span>{account.Nome}<br /></span>
+                                                        </Link>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p>No accounts found</p>
+                                            )}
+                                        </>) : (
+                                            <>
+                                                <span className="text-muted-foreground text-shadow-2xs font-medium">You dont have permission to see this information</span>
+                                            </>
                                         )}
+
                                     </CardContent>
                                 </Card>
                             </div>

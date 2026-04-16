@@ -33,7 +33,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Spinner } from '@/components/ui/spinner'
-import { Skeleton } from '@/components/ui/skeleton'
 
 import { FaArrowRight} from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
@@ -198,7 +197,9 @@ export function DataTable<TData, TValue>({
                     <TableCell colSpan={columns.length} className="h-24 text-center">
                       {isLoading ? (
                         <>
-                          <Spinner className='mx-auto size-7' />
+                          <div className="mt-3">
+                            <Spinner className='mx-auto size-7' /> <br />Loading...
+                          </div>
                         </>
                       ) : (
                         <>

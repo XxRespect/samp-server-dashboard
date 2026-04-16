@@ -88,7 +88,7 @@ export const authConfig = {
         token.Admin = user.Admin;
         token.role = user.role;
         token.BANNED = user.BANNED;
-        token.lastRefresh = Date.now(); // Inicializa no primeiro login
+        token.lastRefresh = Date.now(); 
       }
 
       const REFRESH_INTERVAL = 1 * 60 * 1000 // 5 minutes in milliseconds

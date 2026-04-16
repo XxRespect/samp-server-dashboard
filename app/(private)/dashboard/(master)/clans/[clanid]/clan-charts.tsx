@@ -45,7 +45,7 @@ export function ChartTooltipIcons() {
   return (
     <Card className="h-full w-full shadow-lg shadow-gray-400/10">
       <CardHeader>
-        <CardTitle>Clan Territory activiy</CardTitle>
+        <CardTitle>Clan Territory Activity</CardTitle>
         <CardDescription>Hover the bar for more information</CardDescription>
       </CardHeader>
       <CardContent>
