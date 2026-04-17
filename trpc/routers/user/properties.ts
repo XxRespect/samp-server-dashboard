@@ -1,4 +1,4 @@
-import { baseProcedure } from "../init";
+import { baseProcedure } from "../../init";
 
 export const getProperties = baseProcedure
   .query(async ({ ctx }) => {

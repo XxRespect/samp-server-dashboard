@@ -19,7 +19,7 @@ function SupportPage() {
 
   const { data: session, status } = useSession()
 
-   const { data } = useQuery({
+   const { data} = useQuery({
     queryKey: ['userTickets', session?.user.id],
     queryFn: () => trpc.getUserTickets.getTickets.query({ userid: session?.user.id as number })
   })

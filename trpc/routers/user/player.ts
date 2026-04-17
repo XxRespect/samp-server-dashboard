@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { createTRPCRouter, baseProcedure } from '../init'
+import { createTRPCRouter, baseProcedure } from '../../init'
 import { serializeBigInt } from '@/utils/api/serializer'
 
 

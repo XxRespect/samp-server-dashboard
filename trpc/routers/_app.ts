@@ -1,8 +1,12 @@
 import { createTRPCRouter } from '../init';
-import { playerRouter } from './player';
-import { getProperties } from './properties'
-import {getUserTickets} from './usertickets'
 
+/**USER ROUTERS */
+import { playerRouter } from './user/player';
+import { getProperties } from './user/properties'
+import {getUserTickets} from './user/usertickets'
+
+
+/**ADMIN ROUTERS */
 
 export const appRouter = createTRPCRouter({
     player: playerRouter,

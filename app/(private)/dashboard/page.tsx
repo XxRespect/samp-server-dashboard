@@ -103,7 +103,7 @@ export default function DashboardPage() {
             </div>
 
             <div className='mx-3 mb-8 mt-4'>
-                <Card className="overflow-hidden border-none bg-[radial-gradient(circle_at_top_left,_rgba(251,191,36,0.24),_transparent_26%),radial-gradient(circle_at_top_right,_rgba(59,130,246,0.18),_transparent_24%),linear-gradient(135deg,_rgb(15,23,42),_rgb(30,41,59))] text-slate-50 shadow-2xl shadow-slate-950/15 ring-0">
+                <Card className="overflow-hidden border-none bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.24),transparent_26%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.18),transparent_24%),linear-gradient(135deg,rgb(15,23,42),rgb(30,41,59))] text-slate-50 shadow-2xl shadow-slate-950/15 ring-0">
                     <CardContent className="grid gap-6 px-6 py-6 lg:grid-cols-[1.4fr_0.9fr]">
                         <div className="space-y-4">
                             <Badge className="w-fit rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.22em] text-slate-100">
