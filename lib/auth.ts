@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { LoginSchema } from "@/schemas/login.schema";
 
 export const authConfig = {
+  trustHost: true,
   providers: [
     CredentialsProvider({
       name: "Credentials",

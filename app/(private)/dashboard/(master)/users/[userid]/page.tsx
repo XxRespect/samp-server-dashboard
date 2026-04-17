@@ -323,15 +323,13 @@ const UserPage = () => {
                                     {session?.user.role === "ADMIN" || session?.user.role !== "MODERATOR" && session?.user.Admin > 3 ? (
                                         <>
                                             {
-                                                data?.userChatLog.map((account) => (
-                                                    <span className="text-muted-foreground text-shadow-2xs font-medium" key={account.id}>[{formatTime(account.timestamp)}]: {account.message}<br /></span>
+                                                data?.userChatLog.map((account, index) => (
+                                                    <span key={index} className="text-muted-foreground text-shadow-2xs font-medium">[{formatTime(account.timestamp)}]: {account.message}<br /></span>
                                                 ))
                                             }
                                         </>
                                     ) : (
-                                        <>
-                                            <span className="ml-2 text-muted-foreground text-shadow-2xs font-medium">You dont have permission to see this information</span>
-                                        </>
+                                        <span className="text-muted-foreground text-shadow-2xs font-medium">You dont have permission to see this information</span>
                                     )}
 
 

@@ -92,8 +92,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="overflow-hidden rounded-md border  shadow-lg shadow-gray-300/6">
-        <div className="m-3 flex ">
+      <div className="overflow-hidden rounded-md border  shadow-lg shadow-gray-300/6 ">
+        <div className="m-3 flex sm:min-w-90">
           <Field >
             <ButtonGroup >
               <Input
@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
           <div className='ml-auto'>
             <DropdownMenu  >
               <DropdownMenuTrigger asChild>
-                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">Filtering <IoFilter /></Button>
+                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted sm:hidden' variant="outline">Filtering <IoFilter /></Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
@@ -137,7 +137,7 @@ export function DataTable<TData, TValue>({
           <div className='ml-3'>
             <DropdownMenu  >
               <DropdownMenuTrigger  asChild>
-                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted ' variant="outline">{currentPageSize} rows</Button>
+                <Button  className='shadow-xl/30  hover:cursor-pointer hover:transition-all active:bg-muted' variant="outline">{currentPageSize} rows</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>

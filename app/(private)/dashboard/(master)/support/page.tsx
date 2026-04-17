@@ -13,27 +13,19 @@ import { trpc } from '@/utils/trpc'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
-
 function SupportPage() {
 
 
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
-   const { data } = useQuery({
+  
+  const { data } = useQuery({
     queryKey: ['userTickets', session?.user.id],
-    queryFn: () => trpc.getUserTickets.getTickets.query({ userid: session?.user.id as number })
+    queryFn: () => trpc.getUserTickets.getTickets.query({
+      userid: Number(session?.user.id)
+    }),
+    enabled: !!session?.user.id
   })
-
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
-  if (!session) {
-    return <p>Not authenticated</p>;
-  }
-
-
-
  
 
   console.log(data)
@@ -59,7 +51,7 @@ function SupportPage() {
           <div className="bg-primary-foreground"></div>
         </div>
 
-
+        
       </div>
     </>
   )
