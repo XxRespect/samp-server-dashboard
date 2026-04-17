@@ -28,7 +28,10 @@ export const getUserTickets = createTRPCRouter({
                     }
                 }
             },
-            take: 100
+            take: 100,
+            orderBy: {
+                createdAt: "desc"
+            }
         })
         return (
             tickets.map((ticket) => ({

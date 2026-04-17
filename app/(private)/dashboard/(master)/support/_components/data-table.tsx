@@ -6,10 +6,15 @@ import {
   getCoreRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  getPaginationRowModel,
+  SortingState,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
+
 
 import {
   Table,
@@ -39,7 +44,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
-
+  const [sorting, setSorting] = useState<SortingState>([])
 
   const table = useReactTable({
     data,
@@ -47,8 +52,17 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
-      columnFilters
+      columnFilters,
+      sorting
+    },
+    initialState: {
+      pagination: {
+        pageSize: 25
+      }
     }
 
   })
@@ -58,14 +72,14 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="overflow-hidden rounded-md border">
-        <div className="flex items-center py-4 ml-auto">
+        <div className="flex items-end py-4 mr-4">
           <Input
             placeholder="Filter author names..."
             value={(table.getColumn("author_name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("author_name")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className="ml-auto w-37.5 md:w-62.5 mr-5"
           />
         </div>
         <Table className="text-left bg-primary-foreground">
@@ -116,7 +130,7 @@ export function DataTable<TData, TValue>({
                     </div>
                   ) : (
                     <p className="text-sm text-muted-foreground">
-                      No results.
+                      No Tickets
                     </p>
                   )}
                 </TableCell>
@@ -124,6 +138,24 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </>
   )

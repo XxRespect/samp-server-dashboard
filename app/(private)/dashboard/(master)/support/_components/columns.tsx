@@ -4,18 +4,37 @@ import { TicketsTypes } from './tickets.type'
 import {formatTime } from '@/utils/datatime/datetime.formater'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
-
+import { ArrowUpDown } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 
 export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    ID
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>      
+                </>
+            )
+        },
         cell: ({ row }) => <span className='font-mono ml-auto align-left'>{row.original.id}</span>
     },
     {
         accessorKey: 'ticket_type',
-        header: 'Assunto',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Tipo
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>      
+                </>
+            )
+        },
         cell: ({ row }) => {
             const type = row.original.ticket_type
 
@@ -31,7 +50,16 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
     },
     {
         accessorKey: 'author_name',
-        header: 'Autor',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Autor
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>      
+                </>
+            )
+        },
         cell: ({row}) => {
             const name = row.original.author_name
             return (
@@ -43,7 +71,16 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
     },
     {
         accessorKey: 'against_name',
-        header: 'Contra',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Contra
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+                </>
+            )
+        },
         cell: ({row}) => {
             const name = row.original.against_name
             if(!name) return <span className='text-gray-500 italic'>N/A</span>
@@ -56,7 +93,16 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({column}) => {
+            return (
+                <> 
+                    <Button variant='ghost' size='sm' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                        Status
+                        <ArrowUpDown className='ml-2 h-4 w-4' />
+                    </Button>
+                </>
+            )
+        },
         cell: ({ row }) => {
             const status = row.original.status
             let color = 'default'
@@ -73,12 +119,30 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
     },
     {
         accessorKey: 'created_at',
-        header: 'Created At',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Criado em
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>      
+                </>
+            )
+        },
         cell: ({ row }) => formatTime(row.original.created_at)
     },
     {
         accessorKey: 'updated_at',
-        header: 'Updated At',
+        header: ({column}) => {
+            return (
+                <>
+                <Button variant="ghost" size="sm" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Atualizado em
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>      
+                </>
+            )
+        },
         cell: ({ row }) => formatTime(row.original.updated_at)
     }
 ]

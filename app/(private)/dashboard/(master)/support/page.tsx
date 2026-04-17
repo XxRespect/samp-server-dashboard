@@ -128,7 +128,7 @@ function SupportPage() {
 
         {/* Tickets Recentes */}
         <div>
-          <h2 className='text-3xl font-bold text-white mb-6'>Seus Tickets Recentes</h2>
+          <h2 className='text-3xl font-bold text-white mb-3 mt-3'>Seus Tickets Recentes</h2>
           <Card className='bg-linear-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 rounded-xl overflow-hidden'>
             <div className='p-8'>
               <div className='text-center py-12'>
