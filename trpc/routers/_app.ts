@@ -12,7 +12,7 @@ export const appRouter = createTRPCRouter({
     player: playerRouter,
     getProperties: getProperties,
     getUserTickets: getUserTickets,
-    ticketIdRouter: ticketIdRouter
+    tickets: ticketIdRouter
 });
 
 export type AppRouter = typeof appRouter;

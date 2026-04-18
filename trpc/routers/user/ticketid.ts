@@ -13,12 +13,14 @@ export const ticketIdRouter = createTRPCRouter({
                 include: {
                     player_tickets_against_accidToplayer: {
                         select: {
-                            Nome: true
+                            Nome: true,
+                            profile:true,
                         }
                     },
                     player_tickets_author_accidToplayer: {
                         select: {
-                            Nome: true
+                            Nome: true,
+                            profile: true
                         }
                     }
                 }
@@ -29,28 +31,19 @@ export const ticketIdRouter = createTRPCRouter({
                     ticketid: input.ticketid
                 },
                 orderBy: {
-                    ticketid: "asc"
+                    createdAt: "asc"
                 },
                 include: {
-
+                    player: {
+                        select: {
+                            Nome: true,
+                            profile: true,
+                        }
+                    }
                 }
             })
 
-           let  extraInfo = null
-            if (ticket?.against_accid != null ) {
-                 extraInfo = await ctx.prisma.player.findMany({
-                    select: {
-                        Nome: true,
-                        profile: true
-                    },
-                    where: {
-                        OR: [
-                            { id: ticket?.against_accid },
-                            { id: ticket?.author_accid },
-                        ]
-                    }
-                })
-            }
+    
 
 
 
@@ -85,12 +78,14 @@ export const ticketIdRouter = createTRPCRouter({
                 messages: messages.map((msg) => ({
                     id: msg.id,
                     author_accid: msg.author_accid,
+                    author: msg.player.Nome,
+                    profile: msg.player.profile,
                     message: msg.message,
+                    role: msg.role,
                     created_at: msg.createdAt,
                     updated_at: msg.updatedAt,
                 })),
                 banInfo: banInfo,
-                Users: extraInfo
             }
         })
 })
