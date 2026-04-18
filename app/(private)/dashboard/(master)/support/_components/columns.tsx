@@ -38,10 +38,11 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
         cell: ({ row }) => {
             const type = row.original.ticket_type
 
+            
             if(type === "report") {
-                return (<>Denuncia</>)
+                return (<><Link href={`/dashboard/support/tickets/${row.original.id as number}`}>Denúncia</Link></>)
             } else if(type === "ban_appeal") {
-                return (<>Revisao de Banimento</>)
+                return (<><Link href={`/dashboard/support/tickets/${row.original.id as number}`}>Revisao de Banimento</Link></>)
             } else if(type === "admin_report") {
                 return (<>Denuncia contra Admin</>)
             }

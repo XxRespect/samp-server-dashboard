@@ -624,6 +624,7 @@ model ticket_messages {
   message      String               @db.Text
   role         ticket_messages_role @default(USER)
   createdAt    DateTime             @default(now()) @db.Timestamp(0)
+  updatedAt    DateTime             @default(now()) @db.Timestamp(0)
   tickets      tickets              @relation(fields: [ticketid], references: [ticketid], onUpdate: Restrict, map: "ticket_messages_ibfk_1")
   player       player               @relation(fields: [author_accid], references: [id], onUpdate: Restrict, map: "ticket_messages_ibfk_2")
 
