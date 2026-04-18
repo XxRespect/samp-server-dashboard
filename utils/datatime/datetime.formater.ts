@@ -8,5 +8,5 @@ export function formatTime(value: string | Date | number | null | undefined): st
     return d.toLocaleString("pt-BR", {
         dateStyle: "short",
         timeStyle: "short",
-    })
+    }).replace(",","")
 }

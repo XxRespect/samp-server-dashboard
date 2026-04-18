@@ -7,8 +7,9 @@ datasource db {
   provider = "mysql"
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model acessories {
-  ID             Int    @id @default(autoincrement())
+  ID             Int
   index          Int    @default(0)
   modelid        Int    @default(23455)
   bone           Int    @default(2)
@@ -24,6 +25,8 @@ model acessories {
   materialcolor1 Int    @default(0)
   materialcolor2 Int    @default(0)
   player_id      Int    @default(0)
+
+  @@ignore
 }
 
 model admin_commands_logs {
@@ -715,5 +718,6 @@ enum ticket_messages_role {
 enum tickets_status {
   open
   closed
+  accepted
   denied
 }

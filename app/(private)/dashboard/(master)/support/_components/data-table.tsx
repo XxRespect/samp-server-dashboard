@@ -82,8 +82,8 @@ export function DataTable<TData, TValue>({
             className="ml-auto w-37.5 md:w-62.5 mr-5"
           />
         </div>
-        <Table className="text-left bg-primary-foreground">
-          <TableHeader>
+        <Table className="text-left ">
+          <TableHeader className='bg-gray-700/70 text-gray-300 border-b border-gray-600/50'>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

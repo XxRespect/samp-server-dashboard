@@ -109,12 +109,14 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
             if (status === 'open') color = 'outline'
             else if (status === 'closed') color = 'outline'
             else if (status === 'pending') color = 'outline'
+            else if(status === "denied") color = 'outline'
             let statusText
             if(status === 'open') statusText = 'Aberto'
             else if(status === 'closed') statusText = 'Fechado'
             else if(status === 'pending') statusText = 'Pendente'
+            else if(status === 'denied') statusText = 'Recusado'
 
-            return <Badge className={`font-bold text-sm ${status === 'open' ? 'bg-green-500' : status === 'closed' ? 'bg-red-300' : 'bg-yellow-300'}`} variant={color as 'default' | 'outline'}><span >{statusText}</span></Badge>
+            return <Badge className={`font-bold text-sm ${status === 'open' ? 'bg-green-500' : status === 'closed' ? 'bg-gray-500' : 'bg-yellow-300'}`} variant={color as 'default' | 'outline'}><span >{statusText}</span></Badge>
         }
     },
     {
