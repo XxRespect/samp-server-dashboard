@@ -30,8 +30,29 @@ export const ticketIdRouter = createTRPCRouter({
                 },
                 orderBy: {
                     ticketid: "asc"
+                },
+                include: {
+
                 }
             })
+
+           let  extraInfo = null
+            if (ticket?.against_accid != null ) {
+                 extraInfo = await ctx.prisma.player.findMany({
+                    select: {
+                        Nome: true,
+                        profile: true
+                    },
+                    where: {
+                        OR: [
+                            { id: ticket?.against_accid },
+                            { id: ticket?.author_accid },
+                        ]
+                    }
+                })
+            }
+
+
 
             if (!ticket) {
                 throw new Error("Ticket não encontrado")
@@ -42,7 +63,7 @@ export const ticketIdRouter = createTRPCRouter({
                 banInfo = await ctx.prisma.ban.findFirst({
                     where: {
                         accid: ticket.author_accid
-                    }     
+                    }
 
                 })
             }
@@ -57,6 +78,7 @@ export const ticketIdRouter = createTRPCRouter({
                     type: ticket.ticket_type,
                     status: ticket.status,
                     created_at: ticket.createdAt,
+                    updated_at: ticket.updatedAt,
                     author: ticket.player_tickets_author_accidToplayer?.Nome,
                     against: ticket.player_tickets_against_accidToplayer?.Nome
                 },
@@ -67,7 +89,8 @@ export const ticketIdRouter = createTRPCRouter({
                     created_at: msg.createdAt,
                     updated_at: msg.updatedAt,
                 })),
-                banInfo: banInfo
+                banInfo: banInfo,
+                Users: extraInfo
             }
         })
 })

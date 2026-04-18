@@ -24,7 +24,7 @@ import {
 import { trpc } from '@/utils/trpc'
 import { useQuery } from '@tanstack/react-query'
 import { formatTime } from '@/utils/datatime/datetime.formater'
-import {  convertTimestampToDate} from '@/utils/datatime/timestamp.converter'
+import Link from 'next/link'
 
 export default function TicketIDPage() {
     const { ticketid } = useParams()
@@ -93,7 +93,9 @@ export default function TicketIDPage() {
     else if (status === 'closed') color = 'outline'
     else if (status === "denied") color = 'outline'
 
-
+    let statusPT: string = ""
+    if(status === "accepted") statusPT = "Aceito"
+    else if(status === "denied") statusPT = "Recusado"
 
     return (
         <>
@@ -134,20 +136,20 @@ export default function TicketIDPage() {
 
                                     <div>
                                         <span className='text-xs text-muted-foreground'>Autor</span>
-                                        <p className='font-medium'>{data?.ticket.author}</p>
+                                        <Link href={`/dashboard/users/${data?.ticket.author_accid}`}><p className='text-blue-400 hover:underline text-shadow-2xs '>{data?.ticket.author}</p></Link> 
                                     </div>
                                     <Separator />
 
                                     <div>
-                                        <span className='text-xs text-muted-foreground'>Contra</span>
-                                        <p className='font-medium'>{data?.ticket.against}</p>
+                                        <span className='text-xs text-muted-foreground'>Contra</span> <br />
+                                        <Link href={`/dashboard/users/${data?.ticket.against_accid}`}><p className='text-blue-400 hover:underline text-shadow-2xs '>{data?.ticket.against}</p></Link> 
                                     </div>
                                     <Separator />
 
                                     <div>
                                         <span className='text-xs text-muted-foreground'>Status</span>
                                         <div className='mt-2'>
-                                            <Badge className={`font-bold text-sm ${status === 'open' ? 'bg-green-500' : status === 'closed' ? 'bg-gray-500' : 'bg-yellow-300'}`} variant={color as 'default' | 'outline'}><span >{status}</span></Badge>
+                                            <Badge className={`font-bold text-sm ${status === 'open' ? 'bg-green-500' : status === 'closed' ? 'bg-gray-500' : 'bg-yellow-300'}`} variant={color as 'default' | 'outline'}><span >{statusPT}</span></Badge>
                                         </div>
                                     </div>
                                     <Separator />
@@ -176,10 +178,12 @@ export default function TicketIDPage() {
                                     </div>
                                 </div>
                             </CardContent>
+
                         </Card>
                     </aside>
 
                     <section className='flex-1 min-w-0 mt-7'>
+                        <p>Ultima atualizacao: {formatTime(data?.ticket.updated_at)}</p>
                         <div className='rounded-xl bg-primary-foreground p-6 shadow-lg shadow-gray-400/10'>
                             <div className='space-y-6'>
                                 {messages.map((msg) => (
