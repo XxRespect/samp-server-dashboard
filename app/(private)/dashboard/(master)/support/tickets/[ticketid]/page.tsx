@@ -12,7 +12,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { X, Check, Reply, Trash2 } from "lucide-react";
+import { X, Check, Reply, Trash2, PanelBottomOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -40,13 +40,8 @@ export default function TicketIDPage() {
     enabled: !!session?.user?.id,
   });
 
-  if (isLoading) {
-    return (
-      <div className="mx-auto">
-        <Spinner />
-      </div>
-    );
-  }
+
+  if(!session?.user.id == 0 || session?.user?.id === undefined || session?.user?.id === null){ return(<><Spinner /></>) }
 
   let RevisionType: string = "Unknown";
   if (data?.ticket.type === "report") {
@@ -72,16 +67,18 @@ export default function TicketIDPage() {
   else if (status === "closed") statusPT = "Fechado";
   else if (status === "denied") statusPT = "Recusado";
 
-  const isOpen = status === "open";
   const isClosed = status === "closed";
   const isDenied = status === "denied";
   const isAccepted = status === "accepted";
 
   const showStatusAlert = isClosed || isDenied || isAccepted;
-  const showActionButtons = isOpen || isClosed || isDenied;
 
   const baseActionButtonClassName =
     "hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500";
+
+  if (data?.ticket !== null || data?.ticket !== undefined) {
+    console.log(data?.ticket);
+  }
 
   return (
     <>
@@ -93,7 +90,7 @@ export default function TicketIDPage() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Suporte</BreadcrumbPage>
+              <BreadcrumbLink href="/dashboard/support">Suporte</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -153,8 +150,8 @@ export default function TicketIDPage() {
                     </span>
                     <div className="mt-2">
                       <Badge
-                        className={`font-bold text-sm ${status === "open" ? "bg-green-500" : status === "closed" ? "bg-gray-500" : "bg-yellow-300"}`}
-                        variant={color as "default" | "outline"}
+                        className={`font-bold text-sm ${status === "open" ? "bg-green-500" : status === "closed" ? "bg-gray-500" : ""}`}
+                        variant={color as "outline" | "outline"}
                       >
                         <span>{statusPT}</span>
                       </Badge>
@@ -244,58 +241,78 @@ export default function TicketIDPage() {
                   </div>
                 ))}
               </div>
-              
-              <div className="grid w-full gap-2 mt-5 h-120 ">
-                <Textarea
-                  className="h-40"
-                  placeholder="Type your message here."
-                />
+
+              <div className="grid w-full gap-2 mt-5  ">
+                {status === "closed" || status === "open" && (
+                  <>
+                    <Textarea
+                      className="h-40"
+                      placeholder="Type your message here."
+                    />
+                  </>
+                )}
+
                 <div>
+
                   {showStatusAlert && (
                     <Alert
-                      variant="destructive"
-                      className="shadow-lg shadow-gray-400"
+                      variant={`${status === "closed"  || status === "denied" ? "destructive" : "default"}`}
+                      className={`${status === "accepted" ? "bg-green-700 text-white" : ""}  shadow-lg shadow-gray-400/30`}
                     >
                       <AlertCircleIcon />
                       <AlertTitle>Ticket fechado</AlertTitle>
                       <AlertDescription>
-                        {RevisionType} {statusPT.toLowerCase()}
+                        <span className="text-white">{RevisionType} {statusPT.toLowerCase()}</span>
                       </AlertDescription>
                     </Alert>
                   )}
+
+                
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  {showActionButtons && (
+                  {status === "open" && (
                     <Button className={baseActionButtonClassName}>
                       <Reply />
                       Send message
                     </Button>
                   )}
 
-                  {showActionButtons && (
-                    <Button
-                      className={`bg-green-600 text-white ${baseActionButtonClassName}`}
-                    >
-                      <Check />
-                      Aceitar e desbanir
-                    </Button>
-                  )}
+                  
+                    {status === "open" && (
+                      <Button
+                        className={`bg-green-600 text-white ${baseActionButtonClassName}`}
+                      >
+                        <Check />
+                        Aceitar e desbanir
+                      </Button>
+                    )}
+                    {status === "closed" ||
+                      status === "open" ||
+                      status === "accepted" ||
+                      (status === "denied" && (
+                        <Button
+                          className={`bg-green-600 text-white ${baseActionButtonClassName}`}
+                        >
+                          <PanelBottomOpen />
+                          Reabrir
+                        </Button>
+                      ))}
+                    {status === "open" && (
+                      <Button
+                        className={`bg-red-500 text-white ${baseActionButtonClassName}`}
+                      >
+                        <X />
+                        Recusar
+                      </Button>
+                    )}
 
-                  {showActionButtons && (
                     <Button
                       className={`bg-red-500 text-white ${baseActionButtonClassName}`}
                     >
-                      <X />
-                      Recusar
+                      <Trash2 />
+                      Deletar
                     </Button>
-                  )}
-
-                  <Button
-                    className={`bg-red-500 text-white ${baseActionButtonClassName}`}
-                  >
-                    <Trash2 />
-                    Deletar
-                  </Button>
+                  
                 </div>
               </div>
             </div>
