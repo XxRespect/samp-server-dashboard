@@ -27,7 +27,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
-
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function TicketIDPage() {
   const { data: session } = useSession();
@@ -40,8 +41,6 @@ export default function TicketIDPage() {
     retry: 3,
     enabled: !!session?.user?.id,
   });
-
- 
 
   if (isLoading) return <Spinner />;
 
@@ -232,42 +231,54 @@ export default function TicketIDPage() {
                         <span className="text-xs text-muted-foreground text-right">
                           {formatTime(msg.updated_at)}
                         </span>
-          
                       </div>
-                      <p className="mt-2 text-sm text-foreground">
+
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({  ...props }) => (
+                            <a
+                              {...props}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline hover:text-blue-700"
+                            />
+                          ),
+                        }}
+                      >
                         {msg.message}
-                      </p>
+                      </ReactMarkdown>
                     </div>
                   </div>
                 ))}
               </div>
 
               <div className="grid w-full gap-2 mt-5  ">
-                {status === "closed" || status === "open" && (
-                  <>
-                    <Textarea
-                      className="h-40"
-                      placeholder="Type your message here."
-                    />
-                  </>
-                )}
+                {status === "closed" ||
+                  (status === "open" && (
+                    <>
+                      <Textarea
+                        className="h-40"
+                        placeholder="Type your message here."
+                      />
+                    </>
+                  ))}
 
                 <div>
-
                   {showStatusAlert && (
                     <Alert
-                      variant={`${status === "closed"  || status === "denied" ? "destructive" : "default"}`}
+                      variant={`${status === "closed" || status === "denied" ? "destructive" : "default"}`}
                       className={`${status === "accepted" ? "bg-green-700 text-white" : ""}  shadow-lg shadow-gray-400/30`}
                     >
                       <AlertCircleIcon />
                       <AlertTitle>Ticket fechado</AlertTitle>
                       <AlertDescription>
-                        <span className="text-white">{RevisionType} {statusPT.toLowerCase()}</span>
+                        <span className="text-white">
+                          {RevisionType} {statusPT.toLowerCase()}
+                        </span>
                       </AlertDescription>
                     </Alert>
                   )}
-
-                
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {status === "open" && (
@@ -277,42 +288,40 @@ export default function TicketIDPage() {
                     </Button>
                   )}
 
-                  
-                    {status === "open" && (
+                  {status === "open" && (
+                    <Button
+                      className={`bg-green-600 text-white ${baseActionButtonClassName}`}
+                    >
+                      <Check />
+                      Aceitar e desbanir
+                    </Button>
+                  )}
+                  {status === "closed" ||
+                    status === "open" ||
+                    status === "accepted" ||
+                    (status === "denied" && (
                       <Button
                         className={`bg-green-600 text-white ${baseActionButtonClassName}`}
                       >
-                        <Check />
-                        Aceitar e desbanir
+                        <PanelBottomOpen />
+                        Reabrir
                       </Button>
-                    )}
-                    {status === "closed" ||
-                      status === "open" ||
-                      status === "accepted" ||
-                      (status === "denied" && (
-                        <Button
-                          className={`bg-green-600 text-white ${baseActionButtonClassName}`}
-                        >
-                          <PanelBottomOpen />
-                          Reabrir
-                        </Button>
-                      ))}
-                    {status === "open" && (
-                      <Button
-                        className={`bg-red-500 text-white ${baseActionButtonClassName}`}
-                      >
-                        <X />
-                        Recusar
-                      </Button>
-                    )}
-
+                    ))}
+                  {status === "open" && (
                     <Button
                       className={`bg-red-500 text-white ${baseActionButtonClassName}`}
                     >
-                      <Trash2 />
-                      Deletar
+                      <X />
+                      Recusar
                     </Button>
-                  
+                  )}
+
+                  <Button
+                    className={`bg-red-500 text-white ${baseActionButtonClassName}`}
+                  >
+                    <Trash2 />
+                    Deletar
+                  </Button>
                 </div>
               </div>
             </div>
@@ -322,7 +331,6 @@ export default function TicketIDPage() {
     </>
   );
 }
-
 
 /**
  * TicketIDPage
