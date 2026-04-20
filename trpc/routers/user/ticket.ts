@@ -1,7 +1,7 @@
 import { baseProcedure, createTRPCRouter } from "../../init";
 import { z } from "zod";
 
-export const ticketIdRouter = createTRPCRouter({
+export const ticketid = createTRPCRouter({
     getTicketById: baseProcedure.input(z.object({
         ticketid: z.coerce.number()
     }))

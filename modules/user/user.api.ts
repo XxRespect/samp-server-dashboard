@@ -6,6 +6,7 @@ export async function getUsers(): Promise<UsersListResponse> {
     return data
 }
 
+
 export async function getUser(userId: number) {
     const response = await fetch(`/api/ucp/users/${userId}`, {
         method: 'GET',

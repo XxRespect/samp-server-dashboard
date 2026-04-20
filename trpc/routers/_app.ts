@@ -4,7 +4,7 @@ import { createTRPCRouter } from '../init';
 import { playerRouter } from './user/player';
 import { getProperties } from './user/properties'
 import {getUserTickets} from './user/usertickets'
-import { ticketIdRouter } from './user/ticketid';
+import { ticketid } from './user/ticket';
 
 /**ADMIN ROUTERS */
 
@@ -12,7 +12,7 @@ export const appRouter = createTRPCRouter({
     player: playerRouter,
     getProperties: getProperties,
     getUserTickets: getUserTickets,
-    tickets: ticketIdRouter
+    tickets: ticketid
 });
 
 export type AppRouter = typeof appRouter;

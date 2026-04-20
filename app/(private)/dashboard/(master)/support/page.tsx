@@ -35,6 +35,9 @@ function SupportPage() {
     enabled: !!session?.user.id
   })
 
+
+
+
   return (
     <div className='min-h-screen bg-linear-to-br from-gray-900 via-black to-gray-900 pb-20'>
       <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>

@@ -28,6 +28,7 @@ import { useSession } from "next-auth/react";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 
+
 export default function TicketIDPage() {
   const { data: session } = useSession();
   const { ticketid } = useParams();
@@ -40,8 +41,9 @@ export default function TicketIDPage() {
     enabled: !!session?.user?.id,
   });
 
+ 
 
-  if(!session?.user.id == 0 || session?.user?.id === undefined || session?.user?.id === null){ return(<><Spinner /></>) }
+  if (isLoading) return <Spinner />;
 
   let RevisionType: string = "Unknown";
   if (data?.ticket.type === "report") {
@@ -82,7 +84,7 @@ export default function TicketIDPage() {
 
   return (
     <>
-      <div className="px-4 pb-8 pt-6 sm:px-6 lg:px-8 m-6">
+      <div className="px-4 pb-8 pt-6 sm:px-6 lg:px-8 m-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -227,12 +229,10 @@ export default function TicketIDPage() {
                         <Badge variant="secondary" className="text-xs">
                           {msg.role}
                         </Badge>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground text-right">
                           {formatTime(msg.updated_at)}
                         </span>
-                        <span className="text-right text-xs text-muted-foreground">
-                          {formatTime(msg.updated_at)}
-                        </span>
+          
                       </div>
                       <p className="mt-2 text-sm text-foreground">
                         {msg.message}
@@ -322,3 +322,30 @@ export default function TicketIDPage() {
     </>
   );
 }
+
+
+/**
+ * TicketIDPage
+ *
+ * This page renders a single ticket with its associated messages,
+ * as well as the ticket's author and against information.
+ *
+ * If the ticket is closed, open, or accepted, a corresponding alert
+ * message will be displayed.
+ *
+ * If the ticket is open, buttons to accept, deny, or delete
+ * the ticket will be displayed.
+ *
+ * If the ticket is closed, a button to reopen the ticket will be
+ * displayed.
+ *
+ * If the ticket is denied, a button to reopen the ticket will be
+ * displayed.
+ *
+ * @param {object} data - The ticket data, including the ticket's messages,
+ * author, and against information.
+ * @param {boolean} isLoading - Whether the ticket data is loading.
+ * @param {object} session - The current user session.
+ * @param {string} ticketid - The ID of the ticket to be rendered.
+ * @returns {React.ReactElement} A React element representing the ticket page.
+ */
