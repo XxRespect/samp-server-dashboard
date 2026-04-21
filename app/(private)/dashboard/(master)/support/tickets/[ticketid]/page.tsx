@@ -12,10 +12,10 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { X, Check, Reply, Trash2, PanelBottomOpen } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-import { Textarea } from "@/components/ui/textarea";
+
+import { ReplyForm } from './_components/reply'
 
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -42,6 +42,9 @@ export default function TicketIDPage() {
     enabled: !!session?.user?.id,
   });
 
+
+  
+
   if (isLoading) return <Spinner />;
 
   let RevisionType: string = "Unknown";
@@ -51,7 +54,7 @@ export default function TicketIDPage() {
     RevisionType = "Revisão de Banimento";
   } else if (data?.ticket.type === "admin_report") {
     RevisionType = "Denúncia contra Admin";
-  } else if (data?.ticket.type === "other") {
+  } else if (data?.ticket.type === "ip_appeal") {
     RevisionType = "IP Revision";
   }
 
@@ -74,8 +77,7 @@ export default function TicketIDPage() {
 
   const showStatusAlert = isClosed || isDenied || isAccepted;
 
-  const baseActionButtonClassName =
-    "hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500";
+
 
   if (data?.ticket !== null || data?.ticket !== undefined) {
     console.log(data?.ticket);
@@ -257,10 +259,7 @@ export default function TicketIDPage() {
                 {status === "closed" ||
                   (status === "open" && (
                     <>
-                      <Textarea
-                        className="h-40"
-                        placeholder="Type your message here."
-                      />
+                      <ReplyForm ticketid={Number(ticketid)} sender={String(session?.user.id)} role={session?.user?.role as string} status={String(status) as "open" | "accepted" | "denied" | "closed"} />
                     </>
                   ))}
 
@@ -281,47 +280,9 @@ export default function TicketIDPage() {
                   )}
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  {status === "open" && (
-                    <Button className={baseActionButtonClassName}>
-                      <Reply />
-                      Send message
-                    </Button>
-                  )}
+             
 
-                  {status === "open" && (
-                    <Button
-                      className={`bg-green-600 text-white ${baseActionButtonClassName}`}
-                    >
-                      <Check />
-                      Aceitar e desbanir
-                    </Button>
-                  )}
-                  {status === "closed" ||
-                    status === "open" ||
-                    status === "accepted" ||
-                    (status === "denied" && (
-                      <Button
-                        className={`bg-green-600 text-white ${baseActionButtonClassName}`}
-                      >
-                        <PanelBottomOpen />
-                        Reabrir
-                      </Button>
-                    ))}
-                  {status === "open" && (
-                    <Button
-                      className={`bg-red-500 text-white ${baseActionButtonClassName}`}
-                    >
-                      <X />
-                      Recusar
-                    </Button>
-                  )}
-
-                  <Button
-                    className={`bg-red-500 text-white ${baseActionButtonClassName}`}
-                  >
-                    <Trash2 />
-                    Deletar
-                  </Button>
+                 
                 </div>
               </div>
             </div>

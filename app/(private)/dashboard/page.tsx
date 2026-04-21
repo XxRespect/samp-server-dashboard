@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Activity, Ban, Flame, Shield, Trophy, Users } from 'lucide-react'
 
+
 import { PlayersChart } from "@/components/appBarChat"
 import ChartPieDonutText from "@/components/AppPieChart"
 import CardList from "@/components/CardList"
@@ -91,7 +92,7 @@ export default function DashboardPage() {
                     </Card>
                 </div>
 
-                <div className="bg-primary-foreground p-4 rounded-lg m-3 shadow-lg shadow-gray-600/10 lg:col-span-2">
+                <div className="bg-primary-foreground p-4 rounded-lg m-3 shadow-lg shadow-gray-600/10 lg:col-span-2 sm:">
                     <PlayersChart />
                 </div>
                 <div className="bg-primary-foreground p-4 rounded-lg m-3 shadow-lg shadow-gray-600/10">
