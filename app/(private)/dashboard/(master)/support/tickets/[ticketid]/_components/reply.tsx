@@ -1,43 +1,63 @@
-'use client'
-import { Textarea } from '@/components/ui/textarea'
-import { useForm } from 'react-hook-form'
-import { TicketReplySchema } from '@/schemas/reply.schema'
-import { Button } from '@/components/ui/button'
-import { PanelBottomOpen, Reply, Trash2, X,Check} from 'lucide-react'
+"use client";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { TicketReplySchema } from "@/schemas/reply.schema";
+import { Button } from "@/components/ui/button";
+import { PanelBottomOpen, Reply, Trash2, X, Check } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { trpc } from "@/utils/trpc";
+import { toast } from "sonner";
 
 interface Props {
-  ticketid: number,
-  sender: string,
-  role: string
-  status: "open" | "closed" | "denied" | "accepted"
+  ticketid: number;
+  sender: number;
+  status: "open" | "closed" | "denied" | "accepted";
 }
 
-export function ReplyForm({ ticketid,
-  sender,
-  role,
-  status }: Props) {
+export function ReplyForm({ ticketid, sender, status }: Props) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<TicketReplySchema>({
+    resolver: zodResolver(TicketReplySchema),
+  });
 
-  const { register, handleSubmit } = useForm();
+  function onSubmit(payload: TicketReplySchema) {
+    trpc.ticketactions.reply.mutate({
+      ticketid,
+      sender,
+      message: payload.message,
+    });
 
-  function onSubmit(payload: any) {
-    console.log(payload)
+    reset();
+    return toast("the Message was sent", {
+      description: `Message sent at ${new Date().toLocaleString()}`,
+    });
   }
 
-    const baseActionButtonClassName =
+  const baseActionButtonClassName =
     "hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500 m-1";
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {errors.message && (
+          <>
+            <span className="text-red-500">{errors.message.message}</span>
+          </>
+        )}
         <Textarea
           {...register("message")}
           className="h-40"
           placeholder="Type your message here."
-
-
         />
+
         {status === "open" && (
-          <Button className='nst baseActionButtonClassName =
-    "hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500"'>
+          <Button
+            className="hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500"
+            type="submit"
+          >
             <Reply />
             Send message
           </Button>
@@ -79,5 +99,5 @@ export function ReplyForm({ ticketid,
         </Button>
       </form>
     </>
-  )
+  );
 }

@@ -703,13 +703,6 @@ enum player_role {
   DEV
 }
 
-enum ticket_messages_role {
-  USER
-  ADMIN
-  MODERATOR
-  SUPERVISOR
-}
-
 enum tickets_status {
   open
   closed
@@ -722,4 +715,13 @@ enum tickets_ticket_type {
   ban_appeal
   ip_appeal
   report
+}
+
+enum ticket_messages_role {
+  USER
+  ADMIN
+  MODERATOR
+  SUPERVISOR
+  OWNER
+  DEV
 }

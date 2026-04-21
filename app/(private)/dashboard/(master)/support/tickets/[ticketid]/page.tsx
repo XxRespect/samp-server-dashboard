@@ -26,9 +26,9 @@ import { formatTime } from "@/utils/datatime/datetime.formater";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
 
 export default function TicketIDPage() {
   const { data: session } = useSession();
@@ -257,9 +257,11 @@ export default function TicketIDPage() {
 
               <div className="grid w-full gap-2 mt-5  ">
                 {status === "closed" ||
-                  (status === "open" && (
+                  (status === "open" && !isLoading && (
                     <>
-                      <ReplyForm ticketid={Number(ticketid)} sender={String(session?.user.id)} role={session?.user?.role as string} status={String(status) as "open" | "accepted" | "denied" | "closed"} />
+                      <ReplyForm ticketid={Number(ticketid)} 
+                      sender={Number(session?.user.id)} 
+                      status={String(status) as "open" | "accepted" | "denied" | "closed"} />
                     </>
                   ))}
 
