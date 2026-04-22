@@ -12,9 +12,13 @@ interface Props {
   ticketid: number;
   sender: number;
   status: "open" | "closed" | "denied" | "accepted";
+  isLoading: boolean
 }
 
-export function ReplyForm({ ticketid, sender, status }: Props) {
+export function ReplyForm({ 
+ticketid, sender, status, isLoading 
+
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -57,6 +61,7 @@ export function ReplyForm({ ticketid, sender, status }: Props) {
           <Button
             className="hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500"
             type="submit"
+            disabled={isLoading}
           >
             <Reply />
             Send message

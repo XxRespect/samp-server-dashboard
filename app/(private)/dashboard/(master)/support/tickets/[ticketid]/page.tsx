@@ -85,7 +85,7 @@ export default function TicketIDPage() {
 
   return (
     <>
-      <div className="px-4 pb-8 pt-6 sm:px-6 lg:px-8 m-4">
+      <div>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -261,7 +261,8 @@ export default function TicketIDPage() {
                     <>
                       <ReplyForm ticketid={Number(ticketid)} 
                       sender={Number(session?.user.id)} 
-                      status={String(status) as "open" | "accepted" | "denied" | "closed"} />
+                      status={String(status) as "open" | "accepted" | "denied" | "closed"}
+                      isLoading={isLoading} />
                     </>
                   ))}
 

@@ -2,7 +2,7 @@ import react from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Players",
+    title: "Ticket",
     description: "Layout for user pages",
 }
 
