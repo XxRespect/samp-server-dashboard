@@ -7,6 +7,7 @@ const NavBar = dynamic(() => import("@/components/NavBar"), { ssr: false });
 
 import SideBar from "@/components/appSideBar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import AppFooter from "./AppFooter";
 
 type DashboardShellProps = {
@@ -19,15 +20,17 @@ export default function DashboardShell({
   fontClassName,
 }: DashboardShellProps) {
   return (
-    <SidebarProvider>
-      <div className={`${fontClassName} flex min-h-screen w-full bg-background`}>
-        <SideBar />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <NavBar />
-          <main className="min-w-0 flex-1">{children}</main>
-          <AppFooter />
+    <TooltipProvider delayDuration={150}>
+      <SidebarProvider>
+        <div className={`${fontClassName} flex min-h-screen w-full bg-background`}>
+          <SideBar />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <NavBar />
+            <main className="min-w-0 flex-1">{children}</main>
+            <AppFooter />
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </TooltipProvider>
   )
 }

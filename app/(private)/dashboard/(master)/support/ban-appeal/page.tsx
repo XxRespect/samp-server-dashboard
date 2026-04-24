@@ -152,8 +152,8 @@ export default function BanAppealPage() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(239,68,68,0.18),_transparent_30%),linear-gradient(180deg,_rgba(9,9,11,1)_0%,_rgba(3,7,18,1)_100%)]">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-20" />
+    <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,rgba(239,68,68,0.18),transparent_30%),linear-gradient(180deg,rgba(9,9,11,1)_0%,rgba(3,7,18,1)_100%)]">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[32px_32px] opacity-20" />
       <div className="absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-red-500/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
@@ -209,7 +209,7 @@ export default function BanAppealPage() {
               </div>
 
               <div className="grid gap-3 self-start">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
                   <p className="text-xs uppercase tracking-[0.28em] text-zinc-500">
                     Caso
                   </p>
@@ -218,7 +218,7 @@ export default function BanAppealPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
                   <p className="text-xs uppercase tracking-[0.28em] text-zinc-500">
                     Status
                   </p>
@@ -231,7 +231,7 @@ export default function BanAppealPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/4 p-4">
                   <p className="text-xs uppercase tracking-[0.28em] text-zinc-500">
                     Tempo restante
                   </p>
@@ -270,7 +270,7 @@ export default function BanAppealPage() {
                   {Array.from({ length: 4 }).map((_, index) => (
                     <div
                       key={index}
-                      className="h-28 animate-pulse rounded-2xl border border-white/10 bg-white/[0.04]"
+                      className="h-28 animate-pulse rounded-2xl border border-white/10 bg-white/4"
                     />
                   ))}
                 </div>
@@ -280,7 +280,7 @@ export default function BanAppealPage() {
                     {details.map(({ icon: Icon, label, value }) => (
                       <div
                         key={label}
-                        className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-inner shadow-black/20"
+                        className="rounded-2xl border border-white/10 bg-white/4 p-4 shadow-inner shadow-black/20"
                       >
                         <div className="mb-3 flex items-center gap-3">
                           <div className="flex size-10 items-center justify-center rounded-xl border border-white/10 bg-black/20 text-zinc-200">
@@ -357,7 +357,7 @@ export default function BanAppealPage() {
                   </Alert>
                 </>
               ) : (
-                <Alert className="border-white/10 bg-white/[0.04] text-zinc-100">
+                <Alert className="border-white/10 bg-white/4 text-zinc-100">
                   <ShieldAlert className="size-4" />
                   <AlertTitle>Nenhum banimento encontrado</AlertTitle>
                   <AlertDescription className="text-zinc-400">
@@ -439,14 +439,14 @@ export default function BanAppealPage() {
                       id="appeal-message"
                       {...register('message')}
                       placeholder="Explique por que esse banimento deve ser revisado e inclua o máximo de contexto útil."
-                      className="min-h-[220px] resize-none border-white/10 bg-black/30 px-4 py-3 text-sm leading-6 text-zinc-100 placeholder:text-zinc-500 focus-visible:border-red-400/40 focus-visible:ring-red-500/20"
+                      className="min-h-55 resize-none border-white/10 bg-black/30 px-4 py-3 text-sm leading-6 text-zinc-100 placeholder:text-zinc-500 focus-visible:border-red-400/40 focus-visible:ring-red-500/20"
                     />
 
                     <FieldError errors={[errors.message]} />
                   </FieldContent>
                 </Field>
 
-                <Alert className="border-white/10 bg-white/[0.04] text-zinc-100">
+                <Alert className="border-white/10 bg-white/4 text-zinc-100">
                   <ShieldAlert className="size-4" />
                   <AlertTitle>Análise manual</AlertTitle>
                   <AlertDescription className="text-zinc-400">
