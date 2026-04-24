@@ -29,7 +29,7 @@ ticketid, sender, status, isLoading
   });
 
   function onSubmit(payload: TicketReplySchema) {
-    trpc.ticketactions.reply.mutate({
+    trpc.tickets.reply.mutate({
       ticketid,
       sender,
       message: payload.message,

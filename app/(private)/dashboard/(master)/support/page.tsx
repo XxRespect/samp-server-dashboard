@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Gavel, Flag, Shield, MessageSquare } from 'lucide-react'
 import { TicketsDataTable } from './_components/columns'
+import Link from 'next/link'
+
 
 function SupportPage() {
   const { data: session } = useSession()
@@ -92,7 +94,7 @@ function SupportPage() {
               <h3 className='text-xl font-bold text-white mb-2'>Revisão de Ban</h3>
               <p className='text-gray-400 text-sm mb-6 grow'>Apele de uma banição em sua conta</p>
               <Button className='hover:cursor-pointer w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors'>
-                Apelar Ban
+                <Link href='/dashboard/support/ban-appeal'>Apelar ban</Link>
               </Button>
             </div>
           </Card>
