@@ -40,13 +40,13 @@ export default function BanAppealPage() {
 
     if(session?.user?.BANNED != 1) {
       alert("Voce nao esta banido")
-     return redirect("/dashboard/support")
+      redirect("/dashboard/support")
     }
 
 
     const { data } = useQuery({
         queryKey: ['banAppeal', session?.user.id],
-        queryFn: () => trpc.tickets.getBanInfo.query({ userid: session?.user.id as number }),
+        queryFn: () => trpc.ticket.getBanInfo.query({ userid: session?.user.id as number }),
         enabled: !!session?.user?.id
     })
 

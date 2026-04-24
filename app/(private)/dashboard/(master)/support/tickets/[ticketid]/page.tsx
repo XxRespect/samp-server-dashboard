@@ -37,7 +37,7 @@ export default function TicketIDPage() {
   const { data, isLoading } = useQuery({
     queryKey: ["ticket", ticketid],
     queryFn: () =>
-      trpc.tickets.getTicketById.query({ ticketid: Number(ticketid) }),
+      trpc.ticket.getTicketById.query({ ticketid: Number(ticketid) }),
     retry: 3,
     enabled: !!session?.user?.id,
   });
