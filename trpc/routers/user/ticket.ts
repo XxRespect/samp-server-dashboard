@@ -3,7 +3,6 @@ import { z } from "zod";
 
 export const tickets = createTRPCRouter({
 
-  
 
   getTickets: baseProcedure.input(z.object({
         userid: z.coerce.number()
@@ -77,6 +76,8 @@ export const tickets = createTRPCRouter({
           },
         },
       });
+
+      
 
       const messages = await ctx.prisma.ticket_messages.findMany({
         where: {
@@ -162,6 +163,7 @@ export const tickets = createTRPCRouter({
             player: {
               select: {
                 Nome: true,
+                id: true,
                 
               },
             }

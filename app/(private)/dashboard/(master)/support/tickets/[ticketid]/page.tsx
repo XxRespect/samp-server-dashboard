@@ -34,7 +34,7 @@ export default function TicketIDPage() {
   const { data: session } = useSession();
   const { ticketid } = useParams();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["ticket", ticketid],
     queryFn: () =>
       trpc.ticket.getTicketById.query({ ticketid: Number(ticketid) }),
@@ -43,6 +43,7 @@ export default function TicketIDPage() {
   });
 
 
+  console.log(error)
   
 
   if (isLoading) return <Spinner />;

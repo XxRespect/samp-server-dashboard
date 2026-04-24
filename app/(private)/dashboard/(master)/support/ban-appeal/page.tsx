@@ -49,6 +49,8 @@ import {
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useForm, useWatch } from 'react-hook-form';
+import Link from 'next/link'
+
 
 function formatRemainingTime(unbanTimestamp?: number | null) {
   const parsedTimestamp = Number(unbanTimestamp ?? 0);
@@ -127,12 +129,12 @@ export default function BanAppealPage() {
     {
       icon: Gavel,
       label: 'Admin responsável',
-      value: data?.adm ?? '--',
+      value: (<><Link className='hover:cursor-pointer text-blue-600 ' href={`/dashboard/users/${data?.adminid}`}>{data?.adm}</Link></>) ,
     },
     {
       icon: UserRound,
       label: 'Nick registrado',
-      value: playerName,
+      value: (<><Link className='hover:cursor-pointer text-blue-600' href={`/dashboard/users/${data?.player.id}`}>{playerName}</Link></>),
     },
     {
       icon: FileWarning,
