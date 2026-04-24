@@ -26,7 +26,7 @@ function SupportPage() {
 
   const { data, isLoading, isPending } = useQuery({
     queryKey: ['userTickets', session?.user.id],
-    queryFn: () => trpc.getUserTickets.getTickets.query({
+    queryFn: () => trpc.ticket.getTickets.query({
       userid: Number(session?.user.id)
     }),
     staleTime: Infinity,
