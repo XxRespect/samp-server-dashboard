@@ -7,20 +7,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb'
-import { useQuery } from '@tanstack/react-query'
-import { trpc } from '@/utils/trpc'
+import { trpc } from '@/trpc/client'
 import { PropertiesTable } from './columns'
 
 
 
 function Page() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['properties'],
-    queryFn: () => trpc.getProperties.query(),
-  })
+  const { data, isLoading, error } = trpc.getProperties.useQuery()
 
   if (isLoading) return <div>Carregando propriedades...</div>
-  if (error) return <div>Erro ao carregar propriedades: {(error as Error).message}</div>
+  if (error) return <div>Erro ao carregar propriedades: {error.message}</div>
 
   return (
     <>

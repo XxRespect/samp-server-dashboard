@@ -9,31 +9,31 @@ import {
   BreadcrumbSeparator
 }from '@/components/ui/breadcrumb'
 
-
-import { trpc } from '@/utils/trpc'
-import { useQuery } from '@tanstack/react-query'
+import { trpc } from '@/trpc/client'
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Gavel, Flag, Shield, MessageSquare } from 'lucide-react'
 import { TicketsDataTable } from './_components/columns'
+import Link from 'next/link'
+
 
 function SupportPage() {
   const { data: session } = useSession()
+  const userId = Number(session?.user.id)
 
-  const { data, isLoading, isPending } = useQuery({
-    queryKey: ['userTickets', session?.user.id],
-    queryFn: () => trpc.getUserTickets.getTickets.query({
-      userid: Number(session?.user.id)
-    }),
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    gcTime: Infinity,
-    retry: false,
-    enabled: !!session?.user.id
-  })
+  const { data, isLoading, isPending } = trpc.ticket.getTickets.useQuery(
+    { userid: userId },
+    {
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      gcTime: Infinity,
+      retry: false,
+      enabled: Number.isFinite(userId),
+    },
+  )
 
 
 
@@ -92,7 +92,7 @@ function SupportPage() {
               <h3 className='text-xl font-bold text-white mb-2'>Revisão de Ban</h3>
               <p className='text-gray-400 text-sm mb-6 grow'>Apele de uma banição em sua conta</p>
               <Button className='hover:cursor-pointer w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition-colors'>
-                Apelar Ban
+                <Link href='/dashboard/support/ban-appeal'>Apelar ban</Link>
               </Button>
             </div>
           </Card>
@@ -138,7 +138,7 @@ function SupportPage() {
                 <h1 className='text-2xl font-bold text-white mb-4 text-center'>Tickets</h1>
   
                 <div>
-                  <TicketsDataTable data={data}
+                  <TicketsDataTable data={data ?? []}
                   isLoading={isLoading} 
                   isPending={isPending}
                   />

@@ -1,19 +1,13 @@
 import { createTRPCRouter } from '../init';
 
 /**USER ROUTERS */
-import { playerRouter } from './user/player';
 import { getProperties } from './user/properties'
-import {getUserTickets} from './user/usertickets'
-import { ticketid } from './user/ticket';
-import {  replyRouter } from '../services/tickets/reply'
+import { tickets } from './user/ticket';
 /**ADMIN ROUTERS */
 
 export const appRouter = createTRPCRouter({
-    player: playerRouter,
     getProperties: getProperties,
-    getUserTickets: getUserTickets,
-    tickets: ticketid,
-    ticket: replyRouter
+    ticket: tickets,
 });
 
 export type AppRouter = typeof appRouter;

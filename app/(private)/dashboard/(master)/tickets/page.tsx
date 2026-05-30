@@ -9,20 +9,20 @@ import {
   BreadcrumbSeparator
 }
   from '@/components/ui/breadcrumb'
-import { trpc } from '@/utils/trpc'
-import { useQuery } from '@tanstack/react-query'
+import { trpc } from '@/trpc/client'
 import { useSession } from 'next-auth/react'
 
 
 function SupportPage() {
-
-
   const { data: session, status } = useSession()
+  const userId = Number(session?.user.id)
 
-   const { data} = useQuery({
-    queryKey: ['userTickets', session?.user.id],
-    queryFn: () => trpc.getUserTickets.getTickets.query({ userid: session?.user.id as number })
-  })
+  const { data } = trpc.ticket.getTickets.useQuery(
+    { userid: userId },
+    {
+      enabled: status === 'authenticated' && Number.isFinite(userId),
+    },
+  )
 
   if (status === "loading") {
     return <p>Loading...</p>;

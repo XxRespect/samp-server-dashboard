@@ -1,4 +1,8 @@
 "use client";
+
+
+export const dynamic = "force-dynamic";
+
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -15,34 +19,36 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 
+
 import { ReplyForm } from './_components/reply'
 
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-import { trpc } from "@/utils/trpc";
-import { useQuery } from "@tanstack/react-query";
+import { trpc } from "@/trpc/client";
 import { formatTime } from "@/utils/datatime/datetime.formater";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+
 export default function TicketIDPage() {
   const { data: session } = useSession();
-  const { ticketid } = useParams();
+  const { ticketid } = useParams<{ ticketid: string }>();
+  const ticketId = Number(ticketid);
+  const userId = Number(session?.user?.id);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["ticket", ticketid],
-    queryFn: () =>
-      trpc.tickets.getTicketById.query({ ticketid: Number(ticketid) }),
-    retry: 3,
-    enabled: !!session?.user?.id,
-  });
+  const { data, isLoading, error } = trpc.ticket.getTicketById.useQuery(
+    { ticketid: ticketId },
+    {
+      retry: 3,
+      enabled: Number.isFinite(userId) && Number.isFinite(ticketId),
+    },
+  );
 
 
+  console.log(error)
   
 
   if (isLoading) return <Spinner />;
@@ -85,7 +91,7 @@ export default function TicketIDPage() {
 
   return (
     <>
-      <div className="px-4 pb-8 pt-6 sm:px-6 lg:px-8 m-4">
+      <div>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -257,9 +263,11 @@ export default function TicketIDPage() {
 
               <div className="grid w-full gap-2 mt-5  ">
                 {status === "closed" ||
-                  (status === "open" && (
+                  (status === "open" && !isLoading && (
                     <>
-                      <ReplyForm ticketid={Number(ticketid)} sender={String(session?.user.id)} role={session?.user?.role as string} status={String(status) as "open" | "accepted" | "denied" | "closed"} />
+                      <ReplyForm ticketid={ticketId} 
+                      sender={userId} 
+                      status={String(status) as "open" | "accepted" | "denied" | "closed"} />
                     </>
                   ))}
 
