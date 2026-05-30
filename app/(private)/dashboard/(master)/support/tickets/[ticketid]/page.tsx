@@ -1,4 +1,8 @@
 "use client";
+
+
+export const dynamic = "force-dynamic";
+
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -15,13 +19,12 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 
+
 import { ReplyForm } from './_components/reply'
 
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-import { trpc } from "@/utils/trpc";
-import { useQuery } from "@tanstack/react-query";
+import { trpc } from "@/trpc/client";
 import { formatTime } from "@/utils/datatime/datetime.formater";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -32,15 +35,17 @@ import remarkGfm from "remark-gfm";
 
 export default function TicketIDPage() {
   const { data: session } = useSession();
-  const { ticketid } = useParams();
+  const { ticketid } = useParams<{ ticketid: string }>();
+  const ticketId = Number(ticketid);
+  const userId = Number(session?.user?.id);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["ticket", ticketid],
-    queryFn: () =>
-      trpc.ticket.getTicketById.query({ ticketid: Number(ticketid) }),
-    retry: 3,
-    enabled: !!session?.user?.id,
-  });
+  const { data, isLoading, error } = trpc.ticket.getTicketById.useQuery(
+    { ticketid: ticketId },
+    {
+      retry: 3,
+      enabled: Number.isFinite(userId) && Number.isFinite(ticketId),
+    },
+  );
 
 
   console.log(error)
@@ -260,10 +265,9 @@ export default function TicketIDPage() {
                 {status === "closed" ||
                   (status === "open" && !isLoading && (
                     <>
-                      <ReplyForm ticketid={Number(ticketid)} 
-                      sender={Number(session?.user.id)} 
-                      status={String(status) as "open" | "accepted" | "denied" | "closed"}
-                      isLoading={isLoading} />
+                      <ReplyForm ticketid={ticketId} 
+                      sender={userId} 
+                      status={String(status) as "open" | "accepted" | "denied" | "closed"} />
                     </>
                   ))}
 

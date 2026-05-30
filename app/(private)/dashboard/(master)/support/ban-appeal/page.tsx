@@ -32,10 +32,9 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { BanAppealSchema } from '@/schemas/banAppeal.schema';
+import { trpc } from '@/trpc/client';
 import { formatTime } from '@/utils/datatime/datetime.formater';
-import { trpc } from '@/utils/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
 import {
   CalendarClock,
   Clock3,
@@ -89,6 +88,7 @@ function formatRemainingTime(unbanTimestamp?: number | null) {
 
 export default function BanAppealPage() {
   const { data: session } = useSession();
+  const userId = Number(session?.user?.id);
 
   const {
     register,
@@ -103,12 +103,12 @@ export default function BanAppealPage() {
     },
   });
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['banAppeal', session?.user.id],
-    queryFn: () =>
-      trpc.ticket.getBanInfo.query({ userid: session?.user.id as number }),
-    enabled: !!session?.user?.id,
-  });
+  const { data, isLoading } = trpc.ticket.getBanInfo.useQuery(
+    { userid: userId },
+    {
+      enabled: Number.isFinite(userId),
+    },
+  );
 
   const message = useWatch({
     control,
@@ -468,9 +468,9 @@ export default function BanAppealPage() {
                     type="submit"
                     size="lg"
                     disabled={!data || isLoading || isSubmitting}
-                    className="h-11 rounded-xl bg-red-600 px-5 text-white shadow-lg shadow-red-950/40 transition-all hover:bg-red-500 hover:shadow-red-900/40"
+                    className="h-11 rounded-xl bg-red-600 hover:cursor-pointer  px-5 text-white shadow-lg shadow-red-950/40 transition-transform hover:bg-red-500 hover:shadow-red-900/40"
                   >
-                    <SendHorizonal className="size-4" />
+                    <SendHorizonal className="size-4 hover:rotate-45 hover:transition-discrete " />
                     Criar apelação
                   </Button>
                 </div>

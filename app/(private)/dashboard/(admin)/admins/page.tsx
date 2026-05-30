@@ -29,7 +29,7 @@ function AdminsPage() {
     })
 
     const {data: session} = useSession()
-    if(!session || session?.user?.Admin === 0 || session?.user?.role == "user" || session?.user?.role == "mod") {
+    if(!session || session?.user?.Admin == 0 || session?.user?.role === "USER" || session?.user?.role == "MODERATOR") {
       redirect('/dashboard')
     }
 

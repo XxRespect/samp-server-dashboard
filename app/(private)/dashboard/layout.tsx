@@ -2,10 +2,7 @@
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import DashboardShell from "@/components/dashboard-shell";
-import QueryProvider from "@/providers/QueryProvider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Providers } from '@/providers/authProvider';
-import AppFooter from "@/components/AppFooter";
 
 const dashboardFont = Inter({
   subsets: ["latin"],
@@ -29,10 +26,7 @@ export default function DashboardLayout({
   return (
     <DashboardShell fontClassName={dashboardFont.className}>
       <NuqsAdapter>
-        <QueryProvider>
-          <main className="flex-1">{children}</main>
-          
-        </QueryProvider>
+        <main className="flex-1">{children}</main>
       </NuqsAdapter>
     </DashboardShell>
   );

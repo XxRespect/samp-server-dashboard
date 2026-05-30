@@ -155,13 +155,13 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
 
 
 interface Props {
-    data?: TicketsTypes[]
+    data: TicketsTypes[]
     isLoading: boolean,
     isPending?: boolean
 }
 
 export function TicketsDataTable({data, isLoading, isPending}: Props) {
-    return <DataTable columns={TicketsColumns} data={data ?? []} 
+    return <DataTable columns={TicketsColumns} data={data} 
     isLoading={isLoading}
     isPending={isPending}
     />

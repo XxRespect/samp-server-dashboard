@@ -9,9 +9,7 @@ import {
   BreadcrumbSeparator
 }from '@/components/ui/breadcrumb'
 
-
-import { trpc } from '@/utils/trpc'
-import { useQuery } from '@tanstack/react-query'
+import { trpc } from '@/trpc/client'
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
@@ -23,19 +21,19 @@ import Link from 'next/link'
 
 function SupportPage() {
   const { data: session } = useSession()
+  const userId = Number(session?.user.id)
 
-  const { data, isLoading, isPending } = useQuery({
-    queryKey: ['userTickets', session?.user.id],
-    queryFn: () => trpc.ticket.getTickets.query({
-      userid: Number(session?.user.id)
-    }),
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    gcTime: Infinity,
-    retry: false,
-    enabled: !!session?.user.id
-  })
+  const { data, isLoading, isPending } = trpc.ticket.getTickets.useQuery(
+    { userid: userId },
+    {
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      gcTime: Infinity,
+      retry: false,
+      enabled: Number.isFinite(userId),
+    },
+  )
 
 
 
@@ -140,7 +138,7 @@ function SupportPage() {
                 <h1 className='text-2xl font-bold text-white mb-4 text-center'>Tickets</h1>
   
                 <div>
-                  <TicketsDataTable data={data}
+                  <TicketsDataTable data={data ?? []}
                   isLoading={isLoading} 
                   isPending={isPending}
                   />

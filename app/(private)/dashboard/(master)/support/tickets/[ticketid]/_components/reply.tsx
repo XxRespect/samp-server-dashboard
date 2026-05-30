@@ -5,39 +5,46 @@ import { TicketReplySchema } from "@/schemas/reply.schema";
 import { Button } from "@/components/ui/button";
 import { PanelBottomOpen, Reply, Trash2, X, Check } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpc/client";
 import { toast } from "sonner";
 
 interface Props {
   ticketid: number;
   sender: number;
   status: "open" | "closed" | "denied" | "accepted";
-  isLoading: boolean
 }
 
 export function ReplyForm({ 
-ticketid, sender, status, isLoading 
+ticketid, sender, status 
 
 }: Props) {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+      formState: { errors, isSubmitting },
   } = useForm<TicketReplySchema>({
     resolver: zodResolver(TicketReplySchema),
   });
+  const replyMutation = trpc.ticket.reply.useMutation({
+    onSuccess: () => {
+      reset();
+      toast("the Message was sent", {
+        description: `Message sent at ${new Date().toLocaleString()}`,
+      });
+    },
+    onError: (error) => {
+      toast("Error sending message", {
+        description: error.message,
+      });
+    },
+  });
 
   function onSubmit(payload: TicketReplySchema) {
-    trpc.ticket.reply.mutate({
+    replyMutation.mutate({
       ticketid,
       sender,
       message: payload.message,
-    });
-
-    reset();
-    return toast("the Message was sent", {
-      description: `Message sent at ${new Date().toLocaleString()}`,
     });
   }
 
@@ -61,7 +68,7 @@ ticketid, sender, status, isLoading
           <Button
             className="hover:cursor-pointer hover:shadow-lg hover:shadow-gray-500"
             type="submit"
-            disabled={isLoading}
+            disabled={isSubmitting || replyMutation.isPending}
           >
             <Reply />
             Send message
