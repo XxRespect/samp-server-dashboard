@@ -7,6 +7,7 @@ import { PanelBottomOpen, Reply, Trash2, X, Check } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trpc } from "@/trpc/client";
 import { toast } from "sonner";
+import error from "@/app/(private)/dashboard/error";
 
 interface Props {
   ticketid: number;
@@ -29,7 +30,7 @@ ticketid, sender, status
   const replyMutation = trpc.ticket.reply.useMutation({
     onSuccess: () => {
       reset();
-      toast("the Message was sent", {
+      toast("the Message was sent. Wait 1 min to send anything again.", {
         description: `Message sent at ${new Date().toLocaleString()}`,
       });
     },

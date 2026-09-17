@@ -208,7 +208,7 @@ export const tickets = createTRPCRouter({
       if (ticket) {
         await ctx.prisma.tickets.update({
           where: {
-            ticketid: input.sender,
+            ticketid: input.ticketid,
           },
           data: {
             updatedAt: new Date() as Date,
