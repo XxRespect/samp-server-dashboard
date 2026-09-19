@@ -1,4 +1,5 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from "@/lib/table";
+import { features } from "./data-table-features"
 import { IpBannedInterface } from "./ipbanned.types";
 import { formatTime } from '@/utils/datatime/datetime.formater'
 import { Button } from '@/components/ui/button'
@@ -6,7 +7,9 @@ import Link from 'next/link'
 import { Trash2 } from 'lucide-react'
 
 
-export const columns: ColumnDef<IpBannedInterface>[] = [
+const columnHelper = createColumnHelper<typeof features, IpBannedInterface>()
+
+export const columns = columnHelper.columns([
     {
         accessorKey: "IP",
         header: "IP",
@@ -48,4 +51,4 @@ export const columns: ColumnDef<IpBannedInterface>[] = [
             )
         }
     }
-]
+])

@@ -1,11 +1,7 @@
 "use client"
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { flexRender, useTable, type RowData, type TableColumnDef } from "@/lib/table"
+import { features } from "./data-table-features"
 
 import {
   Table,
@@ -18,25 +14,25 @@ import {
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from "@/lib/utils"
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+  columns: TableColumnDef<TData, typeof features>[]
   data: TData[]
   isLoading?: boolean
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   isLoading
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
+}: DataTableProps<TData>) {
+  const table = useTable({
+    features,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   })
 
   return (
-    <div className="overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/95 shadow-xl shadow-black/5 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+    <div className="overflow-hidden rounded-[1.5rem] border border-border/60 bg-card/95 shadow-xl shadow-black/5 backdrop-blur supports-backdrop-filter:bg-card/80">
       <Table>
         <TableHeader className="bg-muted/35">
           {table.getHeaderGroups().map((headerGroup) => (

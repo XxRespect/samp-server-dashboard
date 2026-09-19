@@ -1,7 +1,8 @@
 import { BannedsProps } from '@/modules/banneds/banned.type'
 import { formatTime } from '@/utils/datatime/datetime.formater'
 import { ImBin } from "react-icons/im";
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@/lib/table"
+import { features } from "./data-table-features"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input'
 
@@ -31,7 +32,9 @@ import Form from 'next/form'
 
 
 
-export const columns: ColumnDef<BannedsProps>[] = [
+const columnHelper = createColumnHelper<typeof features, BannedsProps>()
+
+export const columns = columnHelper.columns([
 
     {
         accessorKey: "Nick",
@@ -133,4 +136,4 @@ export const columns: ColumnDef<BannedsProps>[] = [
             )
         },
     }
-] 
+])

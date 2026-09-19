@@ -1,11 +1,7 @@
 "use client"
 
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
+import { flexRender, useTable, type TableColumnDef, type RowData } from "@/lib/table"
+import { features } from "./data-table-features"
 import {
     Table,
     TableBody,
@@ -20,8 +16,8 @@ import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+    columns: TableColumnDef<TData, typeof features>[]
     data: TData[]
     isLoading: boolean
     page: number
@@ -30,7 +26,7 @@ interface DataTableProps<TData, TValue> {
     setPage: (value: string) => void
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
     columns,
     data,
     isLoading,
@@ -38,12 +34,12 @@ export function DataTable<TData, TValue>({
     limit,
     total,
     setPage,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
     // eslint-disable-next-line react-hooks/incompatible-library
-    const table = useReactTable({
+    const table = useTable({
+        features,
         data,
         columns,
-        getCoreRowModel: getCoreRowModel(),
     })
 
     const totalPages = Math.max(1, Math.ceil(total / limit))

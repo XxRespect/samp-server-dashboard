@@ -1,20 +1,18 @@
 "use client"
 
 import {
-    ColumnDef,
     flexRender,
-    getCoreRowModel,
-    useReactTable,
-    ColumnFiltersState,
-    getFilteredRowModel,
-    getPaginationRowModel,
-} from "@tanstack/react-table"
+    useTable,
+    type ColumnFiltersState,
+    type RowData,
+    type TableColumnDef,
+} from "@/lib/table"
+import { features } from "./data-table-features"
 
 import {
     Table,
     TableBody,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -22,21 +20,12 @@ import {
 
 import { Input } from '@/components/ui/input'
 
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+    columns: TableColumnDef<TData, typeof features>[]
     data: TData[]
-    isLoading?: boolean | any
-    totalAdmins?: number | any
+    isLoading?: boolean
+    totalAdmins?: number 
 }
 
 import * as React from 'react'
@@ -44,36 +33,26 @@ import * as React from 'react'
 
 import { Button } from '@/components/ui/button'
 
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent,
-    CardFooter
-} from '@/components/ui/card'
 
-export function DataTable<TData, TValue>({
+
+export function DataTable<TData extends RowData>({
     columns,
     data,
     isLoading,
-    totalAdmins
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
 
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const table = useReactTable({
+    const table = useTable({
+        features,
         data,
         columns,
-
-        getCoreRowModel: getCoreRowModel(),
         onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         state: {
             columnFilters
         },
         initialState: {
             pagination: {
+                pageIndex: 0,
                 pageSize: 25,
             },
         },

@@ -1,4 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table'
+import { createColumnHelper } from '@/lib/table'
+import { features } from './data-table-features'
 import { DataTable } from '../_components/data-table'
 import { TicketsTypes } from './tickets.type'
 import {formatTime } from '@/utils/datatime/datetime.formater'
@@ -8,7 +9,9 @@ import { ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 
-export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
+const columnHelper = createColumnHelper<typeof features, TicketsTypes>()
+
+export const TicketsColumns = columnHelper.columns([
     {
         accessorKey: 'id',
         header: ({column}) => {
@@ -151,7 +154,7 @@ export const TicketsColumns: ColumnDef<TicketsTypes>[] = [
         },
         cell: ({ row }) => formatTime(row.original.updated_at)
     }
-]
+])
 
 
 interface Props {

@@ -1,6 +1,7 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@/lib/table"
+import { features } from "./data-table-features"
 import { AdminsInterface } from "./admins.types"
 // This type is used to define the shape of our data.
 import { Button } from '@/components/ui/button'
@@ -9,7 +10,9 @@ import { convertTimestampToDate } from '@/utils/datatime/timestamp.converter'
 import { UserRoundPen } from 'lucide-react';
 
 
-export const columns: ColumnDef<AdminsInterface>[] = [
+const columnHelper = createColumnHelper<typeof features, AdminsInterface>()
+
+export const columns = columnHelper.columns([
     {
         accessorKey: "Nome",
         header: "Admin",
@@ -67,4 +70,4 @@ export const columns: ColumnDef<AdminsInterface>[] = [
             )
         }
     },
-]
+])

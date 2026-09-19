@@ -1,4 +1,5 @@
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@/lib/table"
+import { features } from "./data-table-features"
 import Link from 'next/link'
 
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -34,7 +35,9 @@ const getPositionStyles = (position: number) => {
     return "border-border bg-muted/40 text-foreground"
 }
 
-export const topPlayersColumn: ColumnDef<UserType>[] = [
+const columnHelper = createColumnHelper<typeof features, UserType>()
+
+export const topPlayersColumn = columnHelper.columns([
     {
         id: "position",
         header: "#",
@@ -137,7 +140,7 @@ export const topPlayersColumn: ColumnDef<UserType>[] = [
             )
         }
     },
-]
+])
 
 interface Props {
     data: UserType[]

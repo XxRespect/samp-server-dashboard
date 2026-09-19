@@ -1,11 +1,7 @@
 "use client"
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { flexRender, useTable, type TableColumnDef, type RowData } from "@/lib/table"
+import { features } from "./data-table-features"
 
 
 
@@ -19,8 +15,8 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Card } from '@/components/ui/card'
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+  columns: TableColumnDef<TData, typeof features>[]
   data: TData[]
 }
 
@@ -31,7 +27,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   page,
@@ -40,17 +36,17 @@ export function DataTable<TData, TValue>({
   totalPages,
   total,
   isLoading
-}: DataTableProps<TData, TValue> & { 
+}: DataTableProps<TData> & {
   page: number; 
   limit: number; 
   setPage: (value: string) => void;
   totalPages: number;
   total: number;
   isLoading: boolean;}) {
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   })
 
   return (

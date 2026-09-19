@@ -1,11 +1,6 @@
 "use client"
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { flexRender, stockFeatures, useTable, type TableColumnDef, type RowData } from "@/lib/table"
 
 import {
   Table,
@@ -16,19 +11,19 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+  columns: TableColumnDef<TData>[]
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
+}: DataTableProps<TData>) {
+  const table = useTable({
+    features: stockFeatures,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
   })
 
   return (

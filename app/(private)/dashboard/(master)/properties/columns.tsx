@@ -1,10 +1,13 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { createColumnHelper } from "@/lib/table";
+import { features } from "./data-table-features"
 import { Properties } from './propertie.type'
 
 import { DataTable } from "./data-table";
 
 
-export const columns: ColumnDef<Properties>[] = [
+const columnHelper = createColumnHelper<typeof features, Properties>()
+
+export const columns = columnHelper.columns([
   {
     accessorKey: "HOUSE_ID",
     header: "ID",
@@ -21,7 +24,7 @@ export const columns: ColumnDef<Properties>[] = [
     accessorKey: "HOUSE_PRICE",
     header: "Price",
   },
-];
+]);
 
 
 interface PropertiesTableProps {

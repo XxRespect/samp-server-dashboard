@@ -1,16 +1,14 @@
 "use client"
 
 import {
-  ColumnDef,
   flexRender,
-  getCoreRowModel,
-  ColumnFiltersState,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  SortingState,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+  useTable,
+  type ColumnFiltersState,
+  type RowData,
+  type SortingState,
+  type TableColumnDef,
+} from "@/lib/table"
+import { features } from "./data-table-features"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -28,39 +26,37 @@ import { Spinner } from "@/components/ui/spinner"
 import { Input } from "@/components/ui/input"
 
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+  columns: TableColumnDef<TData, typeof features>[]
   data: TData[]
   isLoading?: boolean
   isPending?: boolean
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   isLoading,
   isPending
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   )
   const [sorting, setSorting] = useState<SortingState>([])
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
     state: {
       columnFilters,
       sorting
     },
     initialState: {
       pagination: {
+        pageIndex: 0,
         pageSize: 25
       }
     }

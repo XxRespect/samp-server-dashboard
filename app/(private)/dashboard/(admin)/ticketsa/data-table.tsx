@@ -1,7 +1,6 @@
 "use client"
 
-import { flexRender, useTable, type TableColumnDef, type RowData } from "@/lib/table"
-import { features } from "../data-table-features"
+import { useTable, type ColumnDef, type RowData } from "@tanstack/react-table"
 
 import {
   Table,
@@ -12,8 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { features, type DataTableFeatures } from "./data-table-features"
+
 interface DataTableProps<TData extends RowData> {
-  columns: TableColumnDef<TData, typeof features>[]
+  columns: ColumnDef<DataTableFeatures, TData>[]
   data: TData[]
 }
 
@@ -36,12 +37,9 @@ export function DataTable<TData extends RowData>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    {header.isPlaceholder ? null : (
+                      <table.FlexRender header={header} />
+                    )}
                   </TableHead>
                 )
               })}
@@ -49,15 +47,15 @@ export function DataTable<TData extends RowData>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel()?.rows?.length > 0 ? (
-            table.getRowModel()?.rows.map((row) => (
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}
               </TableRow>

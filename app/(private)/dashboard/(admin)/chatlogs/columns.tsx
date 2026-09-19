@@ -1,12 +1,15 @@
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@/lib/table"
+import { features } from "./data-table-features"
 import { ChatLogInterface } from "./chatlog.type"
 
 
 
-export const columns: ColumnDef<ChatLogInterface>[] = [
+const columnHelper = createColumnHelper<typeof features, ChatLogInterface>()
+
+export const columns = columnHelper.columns([
     {
         accessorKey: "timestamp",
-        header: "Data/Hora",
+        header: "Time",
         cell: ({ row }) => {
             const timestamp = row.getValue("timestamp") as string;
             return new Date(timestamp).toLocaleString("pt-BR");
@@ -25,5 +28,5 @@ export const columns: ColumnDef<ChatLogInterface>[] = [
             )
         }
     }
-]
+])
 

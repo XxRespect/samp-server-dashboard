@@ -1,13 +1,16 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { createColumnHelper } from "@/lib/table"
+import { features } from "./data-table-features"
 import { ClansInterface } from "./clans.type"
 import Link from "next/link"
 import { convertTimestampToDate } from '@/utils/datatime/timestamp.converter'
 import { Button } from '@/components/ui/button'
 
 
-export const columns: ColumnDef<ClansInterface>[] = [
+const columnHelper = createColumnHelper<typeof features, ClansInterface>()
+
+export const columns = columnHelper.columns([
   {
     accessorKey: "CLAN_NAME",
     header: "Clan/Tag",
@@ -45,4 +48,4 @@ export const columns: ColumnDef<ClansInterface>[] = [
     }
   },
   
-]
+])

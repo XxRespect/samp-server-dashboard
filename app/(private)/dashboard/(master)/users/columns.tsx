@@ -1,4 +1,5 @@
-import { ColumnDef } from '@tanstack/react-table'
+import { createColumnHelper } from '@/lib/table'
+import { features } from './data-table-features'
 import { Players } from '@/modules/users/users.type'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -30,7 +31,9 @@ const getValidImageUrl = (url: string | null | undefined): string => {
 
 
 
-export const columns: ColumnDef<Players>[] = [
+const columnHelper = createColumnHelper<typeof features, Players>()
+
+export const columns = columnHelper.columns([
 
     {
         accessorKey: "id",
@@ -169,4 +172,4 @@ export const columns: ColumnDef<Players>[] = [
         }
     }
 
-]
+])

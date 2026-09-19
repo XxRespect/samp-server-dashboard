@@ -3,13 +3,13 @@
 import * as react from 'react'
 
 import {
-  ColumnDef,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
-  SortingState,
-  getSortedRowModel,
-} from "@tanstack/react-table"
+  useTable,
+  type RowData,
+  type SortingState,
+  type TableColumnDef,
+} from "@/lib/table"
+import { features } from "./data-table-features"
 
 import {
   Table,
@@ -40,8 +40,8 @@ import { FaArrowLeft } from "react-icons/fa";
 
 
 import { IoFilter } from "react-icons/io5";
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+interface DataTableProps<TData extends RowData> {
+  columns: TableColumnDef<TData, typeof features>[]
   data: TData[]
   pageSize?: number
   search?: string
@@ -53,7 +53,7 @@ interface DataTableProps<TData, TValue> {
 
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   search = "",
@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
   onPageChange,
   hasNextPage = false,
   isLoading 
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = react.useState<SortingState>([])
   const [inputValue, setInputValue] = react.useState<string>(search)
   const [orderBy, setOrderBy] = react.useState<string>("Online")
@@ -76,11 +76,10 @@ export function DataTable<TData, TValue>({
     onSearch?.(inputValue)
   }
 
-  const table = useReactTable({
+  const table = useTable({
+    features,
     columns,
     data,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     state: {
       sorting,
