@@ -146,7 +146,35 @@ export const tickets = createTRPCRouter({
       };
     }),
 
+    getAllTickets: baseProcedure.input(z.object({})).query(async ({ ctx }) => {
+      const tickets = await ctx.prisma.tickets.findMany({
+        include: {
+          player_tickets_against_accidToplayer: {
+            select: {
+              Nome: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      })
 
+
+  
+      return tickets.map((ticket) => ({
+        ticketid: ticket.ticketid,
+        ticket_type: ticket.ticket_type,
+        author: ticket.author,
+        author_accid: ticket.author_accid,
+        against_accid: ticket.against_accid,
+        name: ticket.name,
+        status: ticket.status,
+        createdAt: ticket.createdAt.toISOString(),
+        updatedAt: ticket.updatedAt.toISOString(),
+        against_name: ticket.player_tickets_against_accidToplayer?.Nome ?? null,
+      }))
+    }),
 
     getBanInfo: baseProcedure.input(z.object({
       userid: z.coerce.number()
@@ -216,6 +244,8 @@ export const tickets = createTRPCRouter({
         });
       }
 
+
+
       const reply = await ctx.prisma.ticket_messages.create({
         data: {
           author_accid: input.sender,
@@ -226,4 +256,5 @@ export const tickets = createTRPCRouter({
       });
       return reply;
     }),
+
 });

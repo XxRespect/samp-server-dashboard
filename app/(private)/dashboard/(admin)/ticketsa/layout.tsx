@@ -7,10 +7,6 @@ export const metadata: Metadata = {
 }
 
 export default function TicketsLayout({ children }: { children: ReactNode }) {
-  return (
-    <div>
-      {children}
-    </div>
-  );
+  return <>{children}</>
 }
 

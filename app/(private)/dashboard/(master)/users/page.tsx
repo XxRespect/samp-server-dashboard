@@ -47,7 +47,7 @@ function UsersPageContent() {
     })
 
 
-    const { data, isLoading, isPending, isError, error } = useQuery({
+    const { data, isPending, isError, error } = useQuery({
         queryKey: ['players', page, limit, search, sortBy, order],
         queryFn: () => getPlayers({
             page: page ? parseInt(page) : 1,

@@ -8,6 +8,7 @@ import { tickets } from './user/ticket';
 export const appRouter = createTRPCRouter({
     getProperties: getProperties,
     ticket: tickets,
+    
 });
 
 export type AppRouter = typeof appRouter;

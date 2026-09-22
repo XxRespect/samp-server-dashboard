@@ -11,33 +11,37 @@ import {
   from '@/components/ui/breadcrumb'
 import { trpc } from '@/trpc/client'
 import { useSession } from 'next-auth/react'
+import { columns, TicketsDataTable } from './columns'
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { ArrowDown } from 'lucide-react'
 
 
-function SupportPage() {
-  const { data: session, status } = useSession()
-  const userId = Number(session?.user.id)
+export default function Page() {
+  const { status } = useSession()
 
-  const { data } = trpc.ticket.getTickets.useQuery(
-    { userid: userId },
+  const { data, isLoading } = trpc.ticket.getAllTickets.useQuery(
+    {},
     {
-      enabled: status === 'authenticated' && Number.isFinite(userId),
+      enabled: status === 'authenticated',
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
     },
   )
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
 
-  if (!session) {
-    return <p>Not authenticated</p>;
-  }
-
-
-
- 
 
   console.log(data)
-
   return (
     <>
       <div>
@@ -53,16 +57,32 @@ function SupportPage() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className='grid grid-cols-3 gap-2'>
-          <div className="bg-primary-foreground h-14"> </div>
+        <div className='grid grid-cols-3'>
+          <div className="bg-primary-foreground h-14">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="bg-primary-foreground m-3 p-4 text-xl cursor-pointer" variant="outline">Todos < ArrowDown className="ml-2 h-4 w-4" /></Button>
+                
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuGroup className='hover:bg-primary-foreground cursor-pointer'>
+                  <DropdownMenuLabel className='hover:cursor-pointer' ><p>Tickets</p></DropdownMenuLabel>
+                  <DropdownMenuItem className='hover:cursor-pointer'><p>Abertos</p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer'><p>Aceitos</p></DropdownMenuItem>
+                  <DropdownMenuItem className='hover:cursor-pointer'><p>Recusados</p></DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <div className="bg-primary-foreground"></div>
           <div className="bg-primary-foreground"></div>
         </div>
 
-
+        <div className='m-6'>
+          <TicketsDataTable data={data ?? []} />
+        </div>
       </div>
     </>
   )
 }
 
-export default SupportPage

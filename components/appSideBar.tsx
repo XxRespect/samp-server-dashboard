@@ -320,23 +320,7 @@ const SideBar = () => {
             </SidebarMenuItem>
           </SidebarMenu>
 
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent p-3 group-data-[collapsible=icon]:hidden">
-            <div className="mb-2 flex items-center gap-2">
-              <Badge className="bg-emerald-500/15 text-emerald-200 hover:bg-emerald-500/15">
-                Online
-              </Badge>
-              <Badge variant="outline" className="border-white/10 text-zinc-300">
-                Panel v2
-              </Badge>
-            </div>
-            <p className="text-sm font-medium text-zinc-100">
-              Navegação renovada
-            </p>
-            <p className="mt-1 text-xs leading-5 text-zinc-400">
-              Acesse áreas principais, ferramentas administrativas e atalhos do
-              servidor com um layout mais limpo.
-            </p>
-          </div>
+          
         </SidebarHeader>
 
         <SidebarSeparator className="mx-3 bg-white/10" />
